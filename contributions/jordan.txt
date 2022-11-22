@@ -1,2 +1,5 @@
-11/1/2022 - Pushed project template code
-11/8/2022 - Appended to UI template
+11/1/2022 - Pushed project template code and established backend server connection
+11/8/2022 - Appended to UI (navigation bar creation)
+11/14/2022 - Subscribed to OpenWeatherMap API and began to rework ER diagram
+11/15/2022 - Finished ER diagram rework and tested OpenWeatherMap API calls
+11/20/2022 - Conducted research for an additional API for radar data and line graph tool for Flutter
