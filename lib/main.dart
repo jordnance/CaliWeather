@@ -19,13 +19,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of our application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CaliWeather',
       theme: ThemeData(
-        // This is the theme of our application.
         primarySwatch: Colors.blue,
       ),
       home: const Main(title: 'CaliWeather'),
