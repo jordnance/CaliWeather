@@ -1,6 +1,6 @@
 10/16 - 10/22: Created test account with OpenWeather API, researched varioius weather apps
 10/23 - 10/31: Used test account to pull data from OpenWeather API;
 11/01 - 11/07: Switched to front end team; downloaded flutter and setup develop environment with Android Studio and Visual Studio Code
-11/07 - 11/14: Self studied with online tutorial and documentation to familiarize myself with dart and the flutter framework
+11/07 - 11/14: Self studied with online tutorials and documentation to familiarize myself with dart and the flutter framework
 11/14 - 11/21: Pair programmed final wire-frame for Home page; Discussed desired color scheme and methods/animations to display additional 							
 		weather data on home page
