@@ -1,0 +1,13 @@
+
+11/4-11/11: 
+       - Set up development environment.
+       - Installed VSCode, Android Studio and Flutter
+
+11/6-11/23:
+       - Began familiarizing myself with dart by watching youtube videos and tutorials 
+       - (Still getting accustomed to dart and flutter)
+
+11/23: 
+       - Met up with front-end team and pair programmed the wire-frame UI for our Home page 
+       - Discussed colortheme and animations features for our home page
+
