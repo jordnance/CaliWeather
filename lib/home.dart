@@ -14,28 +14,26 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.amber,
+        color: Colors.amber, // dynamic change needed
         child: Column(
           children: <Widget>[
-            //Expanded(
-            Container(
-              constraints: BoxConstraints(
-                  minHeight: 200,
-                  maxHeight: MediaQuery.of(context).size.height),
-              color: Colors.blue, // debugging row height
-              child: Row(
-                children: const <Widget>[
-                  Expanded(
-                    child: Text(
-                      'Bakersfield',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 40),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.25,
+              child: Container(
+                color: Colors.blue, // debugging row height
+                child: Row(
+                  children: const <Widget>[
+                    Expanded(
+                      child: Text(
+                        'Bakersfield',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 40),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            //),
             Expanded(
               child: Container(
                 color: Colors.pink, // debugging row height
@@ -53,9 +51,10 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Expanded(
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.30,
               child: Container(
-                color: Colors.deepPurple,
+                color: Colors.deepPurple, // debugging row height
                 child: Row(
                   children: const <Widget>[
                     Expanded(
