@@ -11,34 +11,92 @@ class RadarPage extends StatefulWidget {
 }
 
 class _RadarPageState extends State<RadarPage> {
+  double currentZoom = 5.6;
+  double minZoom = 2.5;
+  double maxZoom = 10;
+  MapController mapController = MapController();
+  LatLng currentCenter = LatLng(36.746842, -119.772586);
+
+  void zoomOut() {
+    if (currentZoom > minZoom) {
+      currentZoom = currentZoom - .5;
+      mapController.move(currentCenter, currentZoom);
+    }
+  }
+
+  void zoomIn() {
+    if (currentZoom < maxZoom) {
+      currentZoom = currentZoom + .5;
+      mapController.move(currentCenter, currentZoom);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: FlutterMap(
-          options: MapOptions(
-            center: LatLng(36.746842, -119.772586),
-            zoom: 5.6,
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: FlutterMap(
+        mapController: mapController,
+        options: MapOptions(
+            center: currentCenter,
+            zoom: currentZoom,
+            minZoom: minZoom,
+            maxZoom: maxZoom,
+            onPositionChanged: (MapPosition position, bool hasGesture) {
+              currentCenter = position.center!;
+              mapController.move(currentCenter, currentZoom);
+            }),
+        nonRotatedChildren: [
+          AttributionWidget.defaultWidget(
+            source: 'OpenStreetMap',
+            onSourceTapped: null,
           ),
-          nonRotatedChildren: [
-            AttributionWidget.defaultWidget(
-              source: 'OpenStreetMap',
-              onSourceTapped: null,
+        ],
+        children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'com.example.app',
+          ),
+          TileLayer(
+            urlTemplate:
+                'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png',
+            userAgentPackageName: 'com.example.app',
+            backgroundColor: Colors.transparent,
+          )
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned(
+            left: 20,
+            bottom: 80,
+            child: FloatingActionButton(
+              backgroundColor: Colors.red,
+              onPressed: zoomOut,
+              child: const Icon(
+                Icons.zoom_out_rounded,
+                size: 45,
+              ),
             ),
-          ],
-          children: [
-            TileLayer(
-              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.example.app',
+          ),
+          Positioned(
+            left: 20,
+            bottom: 5,
+            child: FloatingActionButton(
+              backgroundColor: Colors.green,
+              onPressed: zoomIn,
+              child: const Icon(
+                Icons.zoom_in_rounded,
+                size: 45,
+              ),
             ),
-            TileLayer(
-              urlTemplate: 'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.example.app',
-              backgroundColor: Colors.transparent,
-            )
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }
