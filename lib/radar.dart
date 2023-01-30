@@ -31,6 +31,11 @@ class _RadarPageState extends State<RadarPage> {
     }
   }
 
+  void centerBack() {
+    currentCenter = LatLng(36.746842, -119.772586);
+    mapController.move(currentCenter, currentZoom);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,9 +78,23 @@ class _RadarPageState extends State<RadarPage> {
         children: [
           Positioned(
             left: 20,
+            bottom: 155,
+            child: FloatingActionButton(
+              backgroundColor: Colors.blue,
+              tooltip: 'Center',
+              onPressed: centerBack,
+              child: const Icon(
+                Icons.my_location_rounded,
+                size: 30,
+              ),
+            ),
+          ),
+          Positioned(
+            left: 20,
             bottom: 80,
             child: FloatingActionButton(
               backgroundColor: Colors.red,
+              tooltip: 'Zoom Out',
               onPressed: zoomOut,
               child: const Icon(
                 Icons.zoom_out_rounded,
@@ -88,6 +107,7 @@ class _RadarPageState extends State<RadarPage> {
             bottom: 5,
             child: FloatingActionButton(
               backgroundColor: Colors.green,
+              tooltip: 'Zoom In',
               onPressed: zoomIn,
               child: const Icon(
                 Icons.zoom_in_rounded,
