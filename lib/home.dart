@@ -54,12 +54,121 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.30,
               child: Container(
+                padding: EdgeInsets.all(10),
                 color: Colors.deepPurple, // debugging row height
                 child: Row(
-                  children: const <Widget>[
+                  children: <Widget>[
                     Expanded(
-                      child: Text('Carousel PaceHolder',
-                          textAlign: TextAlign.center),
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: <Widget>[
+                          Card(
+                            child: Container(
+                              width: 160.0,
+                              color: Colors.red,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Cloudy"),
+                                  Text("54"),
+                                  Icon(Icons.ac_unit),
+                                  Text("Jan 29"),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Card(
+                            child: Container(
+                              width: 160.0,
+                              color: Colors.red,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Cloudy"),
+                                  Text("54"),
+                                  Icon(Icons.ac_unit),
+                                  Text("Jan 30"),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Card(
+                            child: Container(
+                              width: 160.0,
+                              color: Colors.red,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Cloudy"),
+                                  Text("54"),
+                                  Icon(Icons.ac_unit),
+                                  Text("Jan 31"),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Card(
+                            child: Container(
+                              width: 160.0,
+                              color: Colors.red,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Cloudy"),
+                                  Text("54"),
+                                  Icon(Icons.ac_unit),
+                                  Text("Feb 01"),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Card(
+                            child: Container(
+                              width: 160.0,
+                              color: Colors.red,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Cloudy"),
+                                  Text("54"),
+                                  Icon(Icons.ac_unit),
+                                  Text("Feb 02"),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Card(
+                            child: Container(
+                              width: 160.0,
+                              color: Colors.red,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Cloudy"),
+                                  Text("54"),
+                                  Icon(Icons.ac_unit),
+                                  Text("Feb 03"),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Card(
+                            child: Container(
+                              width: 160.0,
+                              color: Colors.red,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Cloudy"),
+                                  Text("54"),
+                                  Icon(Icons.ac_unit),
+                                  Text("Feb 04"),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
