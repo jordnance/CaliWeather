@@ -1,4 +1,5 @@
 import 'home.dart';
+import 'login.dart';
 import 'radar.dart';
 import 'analysis.dart';
 import 'settings.dart';
@@ -41,10 +42,21 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   int _selectedIndex = 0;
   static List<Widget> pageOptions = <Widget>[
-    const HomePage(title: 'Home Page',),
-    const RadarPage(title: 'Radar Page',),
-    const AnalysisPage(title: 'Analysis Page',),
-    const SettingsPage(title: 'Settings Page',)
+    const LoginPage(
+      title: 'Login Page',
+    ),
+    const HomePage(
+      title: 'Home Page',
+    ),
+    const RadarPage(
+      title: 'Radar Page',
+    ),
+    const AnalysisPage(
+      title: 'Analysis Page',
+    ),
+    const SettingsPage(
+      title: 'Settings Page',
+    )
   ];
 
   @override
@@ -55,6 +67,10 @@ class _MainState extends State<Main> {
       ),
       bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.login_rounded),
+                label: 'Log In',
+                backgroundColor: Color.fromARGB(255, 136, 136, 136)),
             BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Home',

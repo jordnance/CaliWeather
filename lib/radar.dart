@@ -18,12 +18,13 @@ class _RadarPageState extends State<RadarPage> {
   double maxZoom = 10;
   MapController mapController = MapController();
   LatLng currentCenter = LatLng(36.746842, -119.772586);
-  List<String> overlays = [
+  List<String> overlayUrl = [
     'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png',
     'https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
     'https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
     'https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3'
   ];
+  List<String> overlayTitle = ['Radar', 'Precipitation', 'Temperature', 'Wind Speed'];
 
   void zoomOut() {
     if (currentZoom > minZoom) {
@@ -98,7 +99,7 @@ class _RadarPageState extends State<RadarPage> {
                     ),
                     TileLayer(
                       tileProvider: NetworkTileProvider(),
-                      urlTemplate: overlays[index],
+                      urlTemplate: overlayUrl[index],
                       userAgentPackageName: 'com.example.app',
                       backgroundColor: Colors.transparent,
                     ),
@@ -111,7 +112,7 @@ class _RadarPageState extends State<RadarPage> {
                             height: 80,
                             builder: (context) => Container(
                                   child: const Icon(Icons.location_on,
-                                      color: Colors.red, size: 45),
+                                      color: Colors.deepPurple, size: 45),
                                 )),
                       ],
                     ),
@@ -127,13 +128,19 @@ class _RadarPageState extends State<RadarPage> {
         fit: StackFit.expand,
         children: [
           Positioned(
-            left: 15,
+            left: 10,
             bottom: 20,
-            child: FloatingActionButton(
+            child: FloatingActionButton.extended(
+              label: Text(
+                overlayTitle[index],
+                style: const TextStyle(
+                  fontSize: 14,
+                  ),
+                ),
               backgroundColor: Colors.orange,
               tooltip: 'Overlays',
               onPressed: changeOverlays,
-              child: const Icon(
+              icon: const Icon(
                 Icons.layers,
                 size: 45,
               ),
