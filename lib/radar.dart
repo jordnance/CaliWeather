@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 
 class RadarPage extends StatefulWidget {
@@ -12,19 +11,11 @@ class RadarPage extends StatefulWidget {
 }
 
 class _RadarPageState extends State<RadarPage> {
-  int index = 0;
-  double currentZoom = 5.5;
-  double minZoom = 3.5;
+  double currentZoom = 5.6;
+  double minZoom = 2.5;
   double maxZoom = 10;
   MapController mapController = MapController();
   LatLng currentCenter = LatLng(36.746842, -119.772586);
-  List<String> overlayUrl = [
-    'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png',
-    'https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
-    'https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
-    'https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3'
-  ];
-  List<String> overlayTitle = ['Radar', 'Precipitation', 'Temperature', 'Wind Speed'];
 
   void zoomOut() {
     if (currentZoom > minZoom) {
@@ -41,20 +32,8 @@ class _RadarPageState extends State<RadarPage> {
   }
 
   void centerBack() {
-    // Centers map back to Fresno (best place to get entire view of CA)
-    // This will be updated later to center on user's selected location
-    // once the Settings Page is functional
     currentCenter = LatLng(36.746842, -119.772586);
     mapController.move(currentCenter, currentZoom);
-  }
-
-  void changeOverlays() {
-    if (index != 3) {
-      index++;
-    } else {
-      index = 0;
-    }
-    setState(() {});
   }
 
   @override
@@ -63,91 +42,42 @@ class _RadarPageState extends State<RadarPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Container(
-          child: Column(
-            children: [
-              Flexible(
-                child: FlutterMap(
-                  mapController: mapController,
-                  options: MapOptions(
-                      center: currentCenter,
-                      zoom: currentZoom,
-                      minZoom: minZoom,
-                      maxZoom: maxZoom,
-                      maxBounds: LatLngBounds(
-                        LatLng(63.00, -148.00),
-                        LatLng(3.200, -95.75),
-                      ),
-                      onPositionChanged:
-                          (MapPosition position, bool hasGesture) {
-                        currentCenter = position.center!;
-                        mapController.move(currentCenter, currentZoom);
-                      }),
-                  nonRotatedChildren: [
-                    AttributionWidget.defaultWidget(
-                      source: 'OpenStreetMap',
-                      onSourceTapped: null,
-                      alignment: Alignment.bottomLeft,
-                    ),
-                  ],
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      userAgentPackageName: 'com.example.app',
-                    ),
-                    TileLayer(
-                      tileProvider: NetworkTileProvider(),
-                      urlTemplate: overlayUrl[index],
-                      userAgentPackageName: 'com.example.app',
-                      backgroundColor: Colors.transparent,
-                    ),
-                    MarkerLayer(
-                      markers: [
-                        Marker(
-                            // Will be updated to the user's set location in the future
-                            point: LatLng(36.746842, -119.772586),
-                            width: 80,
-                            height: 80,
-                            builder: (context) => Container(
-                                  child: const Icon(Icons.location_on,
-                                      color: Colors.deepPurple, size: 45),
-                                )),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
+      body: FlutterMap(
+        mapController: mapController,
+        options: MapOptions(
+            center: currentCenter,
+            zoom: currentZoom,
+            minZoom: minZoom,
+            maxZoom: maxZoom,
+            onPositionChanged: (MapPosition position, bool hasGesture) {
+              currentCenter = position.center!;
+              mapController.move(currentCenter, currentZoom);
+            }),
+        nonRotatedChildren: [
+          AttributionWidget.defaultWidget(
+            source: 'OpenStreetMap',
+            onSourceTapped: null,
           ),
-        ),
+        ],
+        children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'com.example.app',
+          ),
+          TileLayer(
+            urlTemplate:
+                'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png',
+            userAgentPackageName: 'com.example.app',
+            backgroundColor: Colors.transparent,
+          )
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Stack(
         fit: StackFit.expand,
         children: [
           Positioned(
-            left: 10,
-            bottom: 20,
-            child: FloatingActionButton.extended(
-              label: Text(
-                overlayTitle[index],
-                style: const TextStyle(
-                  fontSize: 14,
-                  ),
-                ),
-              backgroundColor: Colors.orange,
-              tooltip: 'Overlays',
-              onPressed: changeOverlays,
-              icon: const Icon(
-                Icons.layers,
-                size: 45,
-              ),
-            ),
-          ),
-          Positioned(
-            right: 15,
+            left: 20,
             bottom: 155,
             child: FloatingActionButton(
               backgroundColor: Colors.blue,
@@ -160,7 +90,7 @@ class _RadarPageState extends State<RadarPage> {
             ),
           ),
           Positioned(
-            right: 15,
+            left: 20,
             bottom: 80,
             child: FloatingActionButton(
               backgroundColor: Colors.red,
@@ -173,7 +103,7 @@ class _RadarPageState extends State<RadarPage> {
             ),
           ),
           Positioned(
-            right: 15,
+            left: 20,
             bottom: 5,
             child: FloatingActionButton(
               backgroundColor: Colors.green,
