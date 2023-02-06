@@ -4,17 +4,10 @@ import 'radar.dart';
 import 'analysis.dart';
 import 'settings.dart';
 import 'package:flutter/material.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 void main() async {
   runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
-  const keyApplicationId = '1pjvQXSwiEpbZJWtd73txBbtzvw0Bt5dZ2SpHGDx';
-  const keyClientKey = 'YG5m7NvzYAYBtijV6LID0ygPaNXaFGDea5JZlZCH';
-  const keyParseServerUrl = 'https://parseapi.back4app.com';
-
-  await Parse().initialize(keyApplicationId, keyParseServerUrl,
-      clientKey: keyClientKey, autoSendSessionId: true);
 }
 
 class MyApp extends StatelessWidget {
@@ -23,6 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'CaliWeather',
       theme: ThemeData(
         primarySwatch: Colors.blue,
