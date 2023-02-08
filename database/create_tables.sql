@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS User(
 );
 
 CREATE TABLE IF NOT EXISTS Preference(
-    userprefId integer PRIMARY KEY REFERENCES User(userId),
+    userprefId integer PRIMARY KEY REFERENCES User(userId) ON DELETE CASCADE,
     lang text default "English",
     fontSize integer default 12,
     alerts text default NULL,

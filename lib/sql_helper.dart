@@ -5,43 +5,46 @@ class SQLHelper {
     await database.execute("""CREATE TABLE IF NOT EXISTS User(
     userId integer PRIMARY KEY AUTOINCREMENT,
     username text NOT NULL,
-    password text NOT NULL,
-    prefId integer default NULL,
-    FOREIGN KEY (prefId) REFERENCES Preference(prefId)
+    password text NOT NULL
     )""");
     await database.execute("""CREATE TABLE IF NOT EXISTS Preference(
-    prefId integer PRIMARY KEY AUTOINCREMENT,
+    userprefId integer PRIMARY KEY REFERENCES User(userId) ON DELETE CASCADE,
     lang text default "English",
     fontSize integer default 12,
     alerts text default NULL,
     tempFormat text default "Fahrenheit",
     theme text default "Light",
-    locId integer default NULL,
-    FOREIGN KEY (locId) REFERENCES Location(locId)
-    )""");
-    await database.execute("""CREATE TABLE IF NOT EXISTS Location(
-    locId integer PRIMARY KEY AUTOINCREMENT,
-    cityName text NOT NULL,
-    latitude real NOT NULL,
-    longitude real NOT NULL,
-    hourlyTemp real default 0.00,
-    hourlyRain real default 0.00
+    cityName text default "Fresno"
     )""");
     await database.execute("PRAGMA foreign_keys = ON");
   }
 
+  static Future<void> insertData(sql.Database database) async {
+    await database.execute("""INSERT INTO User(username, password) 
+    VALUES 
+    ('testing', '123')""");
+    await database.execute(
+        """INSERT INTO Preference(lang, fontSize, alerts, tempFormat, theme, cityName) 
+    VALUES ('English', 12, 'Conserve water', 'Fahrenheit', 'Light', 'Bakersfield'),
+    ('Spanish', 14, 'Conserve energy', 'Fahrenheit', 'Dark', 'Modesto'), 
+    ('English', 16, 'Conserve water', 'Celsius', 'Light', 'Sacramento'), 
+    ('English', 18, 'Conserve energy', 'Celsius', 'Dark', 'Los Angeles'), 
+    ('Spanish', 20, 'Conserve water', 'Fahrenheit', 'Light', 'San Luis Obispo')""");
+  }
+
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'caliweather.db',
+      'one.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
+        await insertData(database);
       },
     );
   }
 
-  // Create new user
-  static Future<int> createUser(String username, String password) async {
+  // Create new user <-- WORKS
+  static Future<int> createUser(String? username, String? password) async {
     final db = await SQLHelper.db();
     final data = {'username': username, 'password': password};
     final userId = await db.insert('User', data,
@@ -49,13 +52,29 @@ class SQLHelper {
     return userId;
   }
 
-  // Read a single User by userId
-  static Future<List<Map<String, dynamic>>> getUser(int userId) async {
+  // Read all users <-- NEEDS TO BE TESTED
+  static Future<List<Map<String, dynamic>>> getUsers() async {
+    final db = await SQLHelper.db();
+    return db.query('User', orderBy: "userId");
+  }
+
+  // Read a single user by username and password <-- WORKS
+  static Future<List<Map<String, dynamic>>> getUser(
+      String username, String password) async {
+    final db = await SQLHelper.db();
+    return db.query('User',
+        where: "username = ? AND password = ?",
+        whereArgs: [username, password],
+        limit: 1);
+  }
+
+  // Read a single user by userId <-- WORKS
+  static Future<List<Map<String, dynamic>>> getUserById(int userId) async {
     final db = await SQLHelper.db();
     return db.query('User', where: "userId = ?", whereArgs: [userId], limit: 1);
   }
 
-  // Update language
+  // Update language <-- NEEDS TO BE TESTED
   static Future<int> updateLang(int userprefId, String lang) async {
     final db = await SQLHelper.db();
     final data = {'lang': lang};
@@ -64,7 +83,7 @@ class SQLHelper {
     return result;
   }
 
-  // Update font size
+  // Update font size <-- NEEDS TO BE TESTED
   static Future<int> updateSize(int userprefId, int fontSize) async {
     final db = await SQLHelper.db();
     final data = {'fontSize': fontSize};
@@ -73,7 +92,7 @@ class SQLHelper {
     return result;
   }
 
-  // Update alerts
+  // Update alerts <-- NEEDS TO BE TESTED
   static Future<int> updateAlerts(int userprefId, String alerts) async {
     final db = await SQLHelper.db();
     final data = {'alerts': alerts};
@@ -82,7 +101,7 @@ class SQLHelper {
     return result;
   }
 
-  // Update temp format
+  // Update temp format <-- NEEDS TO BE TESTED
   static Future<int> updateTemp(int userprefId, int tempFormat) async {
     final db = await SQLHelper.db();
     final data = {'tempFormat': tempFormat};
@@ -91,7 +110,7 @@ class SQLHelper {
     return result;
   }
 
-  // Update theme
+  // Update theme <-- NEEDS TO BE TESTED
   static Future<int> updateTheme(int userprefId, String theme) async {
     final db = await SQLHelper.db();
     final data = {'theme': theme};
@@ -100,7 +119,7 @@ class SQLHelper {
     return result;
   }
 
-  // Update city name
+  // Update city name <-- NEEDS TO BE TESTED
   static Future<int> updateCity(int userprefId, String cityName) async {
     final db = await SQLHelper.db();
     final data = {'cityName': cityName};

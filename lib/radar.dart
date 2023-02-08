@@ -1,8 +1,6 @@
-import 'sql_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -63,9 +61,6 @@ class _RadarPageState extends State<RadarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
         child: Container(
           child: Column(
@@ -96,6 +91,7 @@ class _RadarPageState extends State<RadarPage> {
                   ],
                   children: [
                     TileLayer(
+                      tileProvider: NetworkTileProvider(),
                       urlTemplate:
                           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                       userAgentPackageName: 'com.example.app',
@@ -145,7 +141,7 @@ class _RadarPageState extends State<RadarPage> {
               onPressed: changeOverlays,
               icon: const Icon(
                 Icons.layers,
-                size: 45,
+                size: 40,
               ),
             ),
           ),
@@ -171,7 +167,7 @@ class _RadarPageState extends State<RadarPage> {
               onPressed: zoomOut,
               child: const Icon(
                 Icons.zoom_out_rounded,
-                size: 45,
+                size: 40,
               ),
             ),
           ),
@@ -184,7 +180,7 @@ class _RadarPageState extends State<RadarPage> {
               onPressed: zoomIn,
               child: const Icon(
                 Icons.zoom_in_rounded,
-                size: 45,
+                size: 40,
               ),
             ),
           ),
