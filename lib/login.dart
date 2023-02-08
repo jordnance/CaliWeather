@@ -105,7 +105,6 @@ class _LoginPageState extends State<LoginPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          // This container is for database testing purposes
           const Padding(
             padding: EdgeInsets.all(10),
             child: Text(
@@ -152,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
               child: const Text('Sign In'),
             ),
           ),
-          // This container is for database testing purposes
+          // This container is for database testing purposes only
           const SizedBox(height: 10),
           Container(
             width: 75,
