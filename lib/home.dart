@@ -29,7 +29,7 @@ class ForecastWeather extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      color: Colors.white.withOpacity(0.5),
+      color: Colors.white.withOpacity(0.30),
       child: SizedBox(
         width: 160.0,
         child: Column(
@@ -45,7 +45,7 @@ class ForecastWeather extends StatelessWidget {
                 temperature.toString(),
                 style: const TextStyle(
                     fontSize: 26,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     color: Colors.white),
               ),
             ),
@@ -55,7 +55,7 @@ class ForecastWeather extends StatelessWidget {
                 description,
                 style: const TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w400,
                     color: Colors.white),
               ),
             ),
@@ -63,7 +63,7 @@ class ForecastWeather extends StatelessWidget {
               date,
               style: const TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w300,
+                  fontWeight: FontWeight.w400,
                   color: Colors.white),
             ),
           ],
@@ -83,10 +83,6 @@ class MainWeather extends StatelessWidget {
 
   const MainWeather(this.temperature, this.description, this.city, this.date,
       {super.key});
-
-  int get getTemp {
-    return temperature.toInt();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,26 +143,43 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Color> bgColorList = [
-    Colors.blueGrey,
-    Colors.amberAccent,
-    Colors.purpleAccent
-  ];
-
-  //int test = MainWeather.getTemp;
-
   @override
   Widget build(BuildContext context) {
+    /// *** temporary data until API calls are brought in *** ///
+    ///
+
+    int temp = getRndVal(); //temporary get main temperature value
+    String desc = "Cloudy";
+    String city = "Bakersfield";
+
+    ///
+    /// ***===============================================*** ///
+
+    late Color bgColor;
+    List<Color> bgColorList = [
+      Colors.indigo,
+      Colors.blueGrey,
+      Color.fromARGB(255, 254, 169, 0)
+    ];
+
+    if (temp >= 70) {
+      bgColor = bgColorList[2];
+    } else if (temp >= 30 && temp < 70) {
+      bgColor = bgColorList[1];
+    } else {
+      bgColor = bgColorList[0];
+    }
+
     return Scaffold(
       body: Container(
-        color: bgColorList[0], // dynamic change needed
+        color: bgColor,
         child: Column(
           children: <Widget>[
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  MainWeather(getRndVal(), "Cloudy", "Bakersfield", currDay),
+                  MainWeather(temp, desc, city, currDay),
                   IconButton(
                     iconSize: 25,
                     icon: const Icon(Icons.refresh),
@@ -189,13 +202,13 @@ class _HomePageState extends State<HomePage> {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: <Widget>[
-                          ForecastWeather(getRndVal(), "Cloudy", nextDay(1)),
-                          ForecastWeather(getRndVal(), "Cloudy", nextDay(2)),
-                          ForecastWeather(getRndVal(), "Cloudy", nextDay(3)),
-                          ForecastWeather(getRndVal(), "Cloudy", nextDay(4)),
-                          ForecastWeather(getRndVal(), "Cloudy", nextDay(5)),
-                          ForecastWeather(getRndVal(), "Cloudy", nextDay(6)),
-                          ForecastWeather(getRndVal(), "Cloudy", nextDay(7)),
+                          ForecastWeather(getRndVal(), desc, nextDay(1)),
+                          ForecastWeather(getRndVal(), desc, nextDay(2)),
+                          ForecastWeather(getRndVal(), desc, nextDay(3)),
+                          ForecastWeather(getRndVal(), desc, nextDay(4)),
+                          ForecastWeather(getRndVal(), desc, nextDay(5)),
+                          ForecastWeather(getRndVal(), desc, nextDay(6)),
+                          ForecastWeather(getRndVal(), desc, nextDay(7)),
                         ],
                       ),
                     ),
