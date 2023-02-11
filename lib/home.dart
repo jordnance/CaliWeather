@@ -27,6 +27,8 @@ class ForecastWeather extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String units = "°F"; //NOTE: may need to pull from settings
+
     return Card(
       elevation: 0,
       color: Colors.white.withOpacity(0.30),
@@ -39,15 +41,32 @@ class ForecastWeather extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: weathIcon,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                temperature.toString(),
-                style: const TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    temperature.toString(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 12),
+                  child: Text(
+                    units,
+                    style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white),
+                  ),
+                ),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -86,6 +105,8 @@ class MainWeather extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String units = "°F"; //NOTE: may need to pull from settings
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -93,16 +114,32 @@ class MainWeather extends StatelessWidget {
           padding: const EdgeInsets.all(4.0),
           child: weathIcon,
         ),
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Text(
-            temperature.toString(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontSize: 140,
-                fontWeight: FontWeight.w500,
-                color: Colors.white),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(
+                temperature.toString(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    fontSize: 120,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 32),
+              child: Text(
+                units,
+                style: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white),
+              ),
+            ),
+          ],
         ),
         Padding(
           padding: const EdgeInsets.all(4.0),
