@@ -1,3 +1,4 @@
+import 'globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -14,18 +15,33 @@ class RadarPage extends StatefulWidget {
 
 class _RadarPageState extends State<RadarPage> {
   int index = 0;
-  double currentZoom = 5.5;
   double minZoom = 3.5;
   double maxZoom = 10;
+  double currentZoom = 5.5;
   MapController mapController = MapController();
-  LatLng currentCenter = LatLng(36.746842, -119.772586);
+
+  Position? currentPosition;
+  LatLng currentCenter = LatLng(globals.positionLat, globals.positionLong);
+
   List<String> overlayUrl = [
     'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png',
     'https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
     'https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
     'https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3'
   ];
-  List<String> overlayTitle = ['Radar', 'Precipitation', 'Temperature', 'Wind Speed'];
+
+  List<String> overlayTitle = [
+    'Radar',
+    'Precipitation',
+    'Temperature',
+    'Wind Speed'
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentPosition();
+  }
 
   void zoomOut() {
     if (currentZoom > minZoom) {
@@ -42,11 +58,15 @@ class _RadarPageState extends State<RadarPage> {
   }
 
   void centerBack() {
-    // Centers map back to Fresno (best place to get entire view of CA)
-    // This will be updated later to center on user's selected location
-    // once the Settings Page is functional
-    currentCenter = LatLng(36.746842, -119.772586);
-    mapController.move(currentCenter, currentZoom);
+    if (currentPosition != null) {
+      globals.positionLat = currentPosition!.latitude;
+      globals.positionLong = currentPosition!.longitude;
+      currentCenter = LatLng(globals.positionLat, globals.positionLong);
+      mapController.move(currentCenter, currentZoom);
+    } else {
+      currentCenter = LatLng(globals.positionLat, globals.positionLong);
+      mapController.move(currentCenter, currentZoom);
+    }
   }
 
   void changeOverlays() {
@@ -56,6 +76,20 @@ class _RadarPageState extends State<RadarPage> {
       index = 0;
     }
     setState(() {});
+  }
+
+  getCurrentPosition() {
+    Geolocator.requestPermission();
+    Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.best,
+            forceAndroidLocationManager: true)
+        .then((Position position) {
+      setState(() {
+        currentPosition = position;
+      });
+    }).catchError((e) {
+      print(e);
+    });
   }
 
   @override
@@ -105,8 +139,8 @@ class _RadarPageState extends State<RadarPage> {
                     MarkerLayer(
                       markers: [
                         Marker(
-                            // Will be updated to the user's set location in the future
-                            point: LatLng(36.746842, -119.772586),
+                            point: LatLng(
+                                globals.positionLat, globals.positionLong),
                             width: 80,
                             height: 80,
                             builder: (context) => Container(
@@ -134,8 +168,8 @@ class _RadarPageState extends State<RadarPage> {
                 overlayTitle[index],
                 style: const TextStyle(
                   fontSize: 14,
-                  ),
                 ),
+              ),
               backgroundColor: Colors.orange,
               tooltip: 'Overlays',
               onPressed: changeOverlays,
