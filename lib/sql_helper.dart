@@ -68,6 +68,17 @@ class SQLHelper {
         limit: 1);
   }
 
+  // Read a single user by username<-- TESTING
+  static Future<List<Map<dynamic, dynamic>>> getUserByUsername(
+      String username) async {
+    sql.Database db = await SQLHelper.db();
+    return db.query('User',
+        where: "username = ?",
+        whereArgs: [username],
+        orderBy: "userId",
+        limit: 1);
+  }
+
   // Read a single user by userId <-- WORKS
   static Future<List<Map<String, dynamic>>> getUserById(int userId) async {
     final db = await SQLHelper.db();

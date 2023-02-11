@@ -67,10 +67,16 @@ class _LoginPageState extends State<LoginPage> {
                         newUsernameValue = _newUsernameController.text;
                         newPasswordValue = _newPasswordController.text;
                       });
-                      await _addUser();
-                      _newUsernameController.text = '';
-                      _newPasswordController.text = '';
-                      Navigator.of(context).pop();
+                      if (_checkUsername() == true) {
+                        await _addUser();
+                        _newUsernameController.text = '';
+                        _newPasswordController.text = '';
+                        Navigator.of(context).pop();
+                      } else {
+                        _newUsernameController.text = '';
+                        _newPasswordController.text = '';
+                        Navigator.of(context).pop();
+                      }
                     },
                     child: const Text('Sign Up'),
                   )
@@ -97,6 +103,21 @@ class _LoginPageState extends State<LoginPage> {
     }
     _usernameController.text = '';
     _passwordController.text = '';
+  }
+
+  Future<bool> _checkUsername() async {
+    bool valid = false;
+    var test = await SQLHelper.getUserByUsername('test1a');
+    print(test[0]['userId']);
+    if (test.isEmpty) {
+      showMessage("Username available");
+      valid = true;
+    } else {
+      globals.user_id = test[0]['userId'];
+      showMessage("Username already exists!");
+    }
+    _usernameController.text = '';
+    return valid;
   }
 
   @override
