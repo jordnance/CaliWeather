@@ -186,6 +186,7 @@ class _HomePageState extends State<HomePage> {
     ///
 
     int temp = getRndVal(); //temporary get main temperature value
+    int ftemp() => (temp - 10) + rnd.nextInt(10);
     String desc = "Cloudy";
     String city = "Bakersfield";
 
@@ -239,13 +240,13 @@ class _HomePageState extends State<HomePage> {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: <Widget>[
-                          ForecastWeather(getRndVal(), desc, nextDay(1)),
-                          ForecastWeather(getRndVal(), desc, nextDay(2)),
-                          ForecastWeather(getRndVal(), desc, nextDay(3)),
-                          ForecastWeather(getRndVal(), desc, nextDay(4)),
-                          ForecastWeather(getRndVal(), desc, nextDay(5)),
-                          ForecastWeather(getRndVal(), desc, nextDay(6)),
-                          ForecastWeather(getRndVal(), desc, nextDay(7)),
+                          ForecastWeather(ftemp(), desc, nextDay(1)),
+                          ForecastWeather(ftemp(), desc, nextDay(2)),
+                          ForecastWeather(ftemp(), desc, nextDay(3)),
+                          ForecastWeather(ftemp(), desc, nextDay(4)),
+                          ForecastWeather(ftemp(), desc, nextDay(5)),
+                          ForecastWeather(ftemp(), desc, nextDay(6)),
+                          ForecastWeather(ftemp(), desc, nextDay(7)),
                         ],
                       ),
                     ),
