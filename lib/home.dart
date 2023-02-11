@@ -2,6 +2,7 @@ import 'sql_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_icons/weather_icons.dart';
 
 ///* temporary; generating weather and date values *///
 import 'dart:math';
@@ -19,8 +20,8 @@ class ForecastWeather extends StatelessWidget {
   final int temperature;
   final String description;
   final String date;
-  final Icon weathIcon =
-      const Icon(Icons.cloudy_snowing, size: 50, color: Colors.white);
+  final BoxedIcon weathIcon =
+      const BoxedIcon(WeatherIcons.cloudy, size: 50, color: Colors.white);
 
   const ForecastWeather(this.temperature, this.description, this.date,
       {super.key});
@@ -57,7 +58,7 @@ class ForecastWeather extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 12),
+                  padding: const EdgeInsets.only(top: 12),
                   child: Text(
                     units,
                     style: const TextStyle(
@@ -130,7 +131,7 @@ class MainWeather extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 32),
+              padding: const EdgeInsets.only(top: 32),
               child: Text(
                 units,
                 style: const TextStyle(
@@ -196,7 +197,7 @@ class _HomePageState extends State<HomePage> {
     List<Color> bgColorList = [
       Colors.indigo,
       Colors.blueGrey,
-      Color.fromARGB(255, 254, 169, 0)
+      const Color.fromARGB(255, 254, 169, 0)
     ];
 
     if (temp >= 70) {
