@@ -222,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                     icon: const Icon(Icons.refresh),
                     color: Colors.white.withOpacity(0.6),
                     onPressed: () {
-                      temp = getRndVal(); //NOTE: Temporary functionality
+                      setState(() {}); //NOTE: Temporary functionality
                     },
                   ),
                 ],
