@@ -21,7 +21,7 @@ class ForecastWeather extends StatelessWidget {
   final String description;
   final String date;
   final BoxedIcon weathIcon = const BoxedIcon(WeatherIcons.day_thunderstorm,
-      size: 50, color: Colors.white);
+      size: 30, color: Colors.white);
 
   const ForecastWeather(this.temperature, this.description, this.date,
       {super.key});
@@ -99,7 +99,7 @@ class MainWeather extends StatelessWidget {
   final String city;
   final String date;
   final BoxedIcon weathIcon =
-      const BoxedIcon(WeatherIcons.rain_mix, size: 140, color: Colors.white);
+      const BoxedIcon(WeatherIcons.rain_mix, size: 120, color: Colors.white);
 
   const MainWeather(this.temperature, this.description, this.city, this.date,
       {super.key});
