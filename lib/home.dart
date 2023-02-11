@@ -20,8 +20,8 @@ class ForecastWeather extends StatelessWidget {
   final int temperature;
   final String description;
   final String date;
-  final BoxedIcon weathIcon =
-      const BoxedIcon(WeatherIcons.cloudy, size: 50, color: Colors.white);
+  final BoxedIcon weathIcon = const BoxedIcon(WeatherIcons.day_thunderstorm,
+      size: 50, color: Colors.white);
 
   const ForecastWeather(this.temperature, this.description, this.date,
       {super.key});
@@ -39,7 +39,7 @@ class ForecastWeather extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(2.0),
               child: weathIcon,
             ),
             Row(
@@ -62,7 +62,7 @@ class ForecastWeather extends StatelessWidget {
                   child: Text(
                     units,
                     style: const TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: Colors.white),
                   ),
@@ -98,8 +98,8 @@ class MainWeather extends StatelessWidget {
   final String description;
   final String city;
   final String date;
-  final Icon weathIcon =
-      const Icon(Icons.cloudy_snowing, size: 150, color: Colors.white);
+  final BoxedIcon weathIcon =
+      const BoxedIcon(WeatherIcons.rain_mix, size: 140, color: Colors.white);
 
   const MainWeather(this.temperature, this.description, this.city, this.date,
       {super.key});
@@ -111,21 +111,20 @@ class MainWeather extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(4.0),
+        Container(
           child: weathIcon,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
+            Container(
               padding: const EdgeInsets.all(4.0),
               child: Text(
                 temperature.toString(),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    fontSize: 120,
+                    fontSize: 110,
                     fontWeight: FontWeight.w500,
                     color: Colors.white),
               ),
@@ -223,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                     icon: const Icon(Icons.refresh),
                     color: Colors.white.withOpacity(0.6),
                     onPressed: () {
-                      // ...
+                      temp = getRndVal(); //NOTE: Temporary functionality
                     },
                   ),
                 ],
