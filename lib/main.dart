@@ -1,5 +1,9 @@
+import 'package:caliweather/pages/profile_page.dart';
+
 import 'home.dart';
-import 'login.dart';
+//import 'login.dart';
+import 'pages/login_page1.dart';
+//import 'pages/profile_page.dart';
 import 'radar.dart';
 import 'analysis.dart';
 import 'settings.dart';
@@ -36,9 +40,8 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   int _selectedIndex = 0;
   static List<Widget> pageOptions = <Widget>[
-    const LoginPage(
-      title: 'Login Page',
-    ),
+    const LoginPage(),
+    const ProfilePage(),
     const HomePage(
       title: 'Home Page',
     ),
@@ -63,7 +66,11 @@ class _MainState extends State<Main> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Icon(Icons.login_rounded),
-                label: 'Log In',
+                label: 'Login',
+                backgroundColor: Color.fromARGB(255, 136, 136, 136)),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person_pin),
+                label: 'Profile',
                 backgroundColor: Color.fromARGB(255, 136, 136, 136)),
             BottomNavigationBarItem(
                 icon: Icon(Icons.home),
