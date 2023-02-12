@@ -25,7 +25,8 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         ScaffoldMessenger.of(context)
           ..removeCurrentSnackBar()
-          ..showSnackBar(SnackBar(content: Text(message)));
+          ..showSnackBar(SnackBar(
+              behavior: SnackBarBehavior.floating, content: Text(message)));
       });
     }
   }
@@ -67,16 +68,14 @@ class _LoginPageState extends State<LoginPage> {
                         newUsernameValue = _newUsernameController.text;
                         newPasswordValue = _newPasswordController.text;
                       });
-                      if (_checkUsername() == true) {
+                      if (_validUsername() == true) {
                         await _addUser();
-                        _newUsernameController.text = '';
-                        _newPasswordController.text = '';
                         Navigator.of(context).pop();
                       } else {
-                        _newUsernameController.text = '';
-                        _newPasswordController.text = '';
-                        Navigator.of(context).pop();
+                        showMessage("Username already exists!");
                       }
+                      _newUsernameController.text = '';
+                      _newPasswordController.text = '';
                     },
                     child: const Text('Sign Up'),
                   )
@@ -92,31 +91,31 @@ class _LoginPageState extends State<LoginPage> {
     _newPasswordController.text = '';
   }
 
-  Future<void> _findUser() async {
-    var test = await SQLHelper.getUser(
-        _usernameController.text, _passwordController.text);
-    if (test.isEmpty) {
-      showMessage(_usernameController.text + " has not signed up");
-    } else {
-      globals.user_id = test[0]['userId'];
-      showMessage(_usernameController.text + " has signed in!");
+  Future<void> _checkCredentials() async {
+    var user = await SQLHelper.getUserByUsername(_usernameController.text);
+
+    if (user.isEmpty) {
+      showMessage("User not found");
+      _usernameController.text = '';
+      _passwordController.text = '';
+      return;
     }
+
+    if (user[0]['password'] != _passwordController.text) {
+      showMessage("Invalid Credentials");
+    } else {
+      globals.user_id = user[0]['userId'];
+      showMessage("Welcome back ${_usernameController.text}!");
+    }
+
     _usernameController.text = '';
     _passwordController.text = '';
   }
 
-  Future<bool> _checkUsername() async {
+  Future<bool> _validUsername() async {
     bool valid = false;
-    var test = await SQLHelper.getUserByUsername('test1a');
-    print(test[0]['userId']);
-    if (test.isEmpty) {
-      showMessage("Username available");
-      valid = true;
-    } else {
-      globals.user_id = test[0]['userId'];
-      showMessage("Username already exists!");
-    }
-    _usernameController.text = '';
+    var test = await SQLHelper.getUserByUsername(_usernameController.text);
+    if (test.isEmpty) valid = true;
     return valid;
   }
 
@@ -164,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                   usernameValue = _usernameController.text;
                   passwordValue = _passwordController.text;
                 });
-                await _findUser();
+                await _checkCredentials();
                 _usernameController.text = '';
                 _passwordController.text = '';
                 FocusScope.of(context).unfocus();
