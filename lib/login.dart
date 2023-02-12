@@ -151,30 +151,6 @@ class _LoginPageState extends State<LoginPage> {
               child: const Text('Sign In'),
             ),
           ),
-          // This container is for database testing purposes only
-          const SizedBox(height: 10),
-          Container(
-            width: 75,
-            height: 40,
-            decoration: BoxDecoration(
-                color: Colors.green,
-                border: Border.all(
-                  width: 3,
-                  color: Colors.black,
-                ),
-                borderRadius: BorderRadius.circular(10)),
-            child: Center(
-                child: Column(
-              children: [
-                const SizedBox(height: 8),
-                Text('ID: ' + globals.user_id.toString(),
-                    style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.black)),
-              ],
-            )),
-          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
