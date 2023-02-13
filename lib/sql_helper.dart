@@ -10,11 +10,10 @@ class SQLHelper {
     await database.execute("""CREATE TABLE IF NOT EXISTS Preference(
     userprefId integer PRIMARY KEY REFERENCES User(userId) ON DELETE CASCADE,
     lang text default "English",
-    fontSize integer default 12,
+    fontSize text default "Medium",
     alerts text default NULL,
     tempFormat text default "Fahrenheit",
     theme text default "Light",
-    cityName text default "Fresno"
     )""");
     await database.execute("PRAGMA foreign_keys = ON");
   }
@@ -24,17 +23,17 @@ class SQLHelper {
     VALUES 
     ('testing', '123')""");
     await database.execute(
-        """INSERT INTO Preference(lang, fontSize, alerts, tempFormat, theme, cityName) 
-    VALUES ('English', 12, 'Conserve water', 'Fahrenheit', 'Light', 'Bakersfield'),
-    ('Spanish', 14, 'Conserve energy', 'Fahrenheit', 'Dark', 'Modesto'), 
-    ('English', 16, 'Conserve water', 'Celsius', 'Light', 'Sacramento'), 
-    ('English', 18, 'Conserve energy', 'Celsius', 'Dark', 'Los Angeles'), 
-    ('Spanish', 20, 'Conserve water', 'Fahrenheit', 'Light', 'San Luis Obispo')""");
+        """INSERT INTO Preference(lang, fontSize, alerts, tempFormat, theme) 
+    VALUES ('English', 'Small', 'Conserve water', 'Fahrenheit', 'Light'),
+    ('Spanish', 'Medium', 'Conserve energy', 'Fahrenheit', 'Dark'), 
+    ('English', 'Medium', 'Conserve water', 'Celsius', 'Light'), 
+    ('English', 'Large', 'Conserve energy', 'Celsius', 'Dark'), 
+    ('Spanish', 'Large', 'Conserve water', 'Fahrenheit', 'Light')""");
   }
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'one.db',
+      'three.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
