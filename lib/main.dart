@@ -1,7 +1,6 @@
-import 'package:caliweather/pages/profile.dart';
 import 'home.dart';
-import 'pages/login.dart';
-import 'pages/profile.dart';
+import 'login.dart';
+import 'profile.dart';
 import 'radar.dart';
 import 'analysis.dart';
 import 'settings.dart';
