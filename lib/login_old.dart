@@ -2,15 +2,15 @@ import 'sql_helper.dart';
 import 'globals.dart' as globals;
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key, required this.title});
+class LoginPageOld extends StatefulWidget {
+  const LoginPageOld({super.key, required this.title});
   final String title;
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginPageOld> createState() => _LoginPageOldState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageOldState extends State<LoginPageOld> {
   String? usernameValue;
   String? passwordValue;
   String? newUsernameValue;

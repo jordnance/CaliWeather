@@ -9,7 +9,7 @@ class HeaderLoginProfile extends StatelessWidget {
       children: <Widget>[
         const SizedBox(height: 50),
         Image.asset(
-          'lib/images/Logo1a_nobg_bold_rounded.png',
+          'assets/Logo1a_nobg_bold_rounded.png',
           height: 225,
         ),
         const SizedBox(height: 15),
