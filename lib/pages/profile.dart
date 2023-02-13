@@ -54,7 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 // Start: Bottom divider
                 // aligned to match with Login page bottom divider
-                const SizedBox(height: 41),
+                const SizedBox(height: 106),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Divider(

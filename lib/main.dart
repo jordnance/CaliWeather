@@ -1,9 +1,7 @@
-import 'package:caliweather/pages/profile_page.dart';
-
+import 'package:caliweather/pages/profile.dart';
 import 'home.dart';
-//import 'login.dart';
-import 'pages/login_page1.dart';
-//import 'pages/profile_page.dart';
+import 'pages/login.dart';
+import 'pages/profile.dart';
 import 'radar.dart';
 import 'analysis.dart';
 import 'settings.dart';
@@ -38,7 +36,7 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
   static List<Widget> pageOptions = <Widget>[
     const LoginPage(),
     const ProfilePage(),
