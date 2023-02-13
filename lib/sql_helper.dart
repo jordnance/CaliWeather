@@ -4,6 +4,8 @@ class SQLHelper {
   static Future<void> createTables(sql.Database database) async {
     await database.execute("""CREATE TABLE IF NOT EXISTS User(
     userId integer PRIMARY KEY AUTOINCREMENT,
+    firstName text NOT NULL,
+    lastName text NOT NULL,
     username text NOT NULL,
     password text NOT NULL
     )""");
@@ -13,15 +15,15 @@ class SQLHelper {
     fontSize text default "Medium",
     alerts text default NULL,
     tempFormat text default "Fahrenheit",
-    theme text default "Light",
+    theme text default "Light"
     )""");
     await database.execute("PRAGMA foreign_keys = ON");
   }
 
   static Future<void> insertData(sql.Database database) async {
-    await database.execute("""INSERT INTO User(username, password) 
+    await database.execute("""INSERT INTO User(firstName, lastName, username, password) 
     VALUES 
-    ('testing', '123')""");
+    ('Bobby', 'Hill', 'testing', '123')""");
     await database.execute(
         """INSERT INTO Preference(lang, fontSize, alerts, tempFormat, theme) 
     VALUES ('English', 'Small', 'Conserve water', 'Fahrenheit', 'Light'),
@@ -33,7 +35,7 @@ class SQLHelper {
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'three.db',
+      'four.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
