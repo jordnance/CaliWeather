@@ -13,7 +13,7 @@ class SQLHelper {
     fontSize text default "Medium",
     alerts text default NULL,
     tempFormat text default "Fahrenheit",
-    theme text default "Light",
+    theme text default "Light"
     )""");
     await database.execute("PRAGMA foreign_keys = ON");
   }
