@@ -58,6 +58,7 @@ class _RadarPageState extends State<RadarPage> {
   }
 
   void centerBack() {
+    moveMarker();
     if (currentPosition != null) {
       globals.positionLat = currentPosition!.latitude;
       globals.positionLong = currentPosition!.longitude;
@@ -76,6 +77,12 @@ class _RadarPageState extends State<RadarPage> {
       index = 0;
     }
     setState(() {});
+  }
+
+  void moveMarker() {
+    if (globals.positionLat != 36.746842 || globals.positionLong != -119.772586) {
+      setState(() {});
+    }
   }
 
   getCurrentPosition() {
