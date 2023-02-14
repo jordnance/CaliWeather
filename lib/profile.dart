@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:caliweather/components/button_login.dart';
 import 'package:caliweather/components/header_login_profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:caliweather/userverify.dart';
+import 'package:caliweather/sql_helper.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -11,6 +13,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   String? userFirstName;
+
+  void _signOut() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    _prefs.remove('userId');
+    _prefs.setBool('isLoggedIn', false);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => UserVerify()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,22 +44,52 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                AuthButton(
-                  buttonText: 'Preferences',
-                  bgColor: Color.fromARGB(255, 37, 37, 37),
-                  onCustomButtonPressed: () {},
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        minimumSize: const Size.fromHeight(60),
+                        backgroundColor: Color.fromARGB(255, 37, 37, 37),
+                        textStyle: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        )),
+                    child: const Text('Preferences'),
+                  ),
                 ),
                 const SizedBox(height: 15),
-                AuthButton(
-                  buttonText: 'Profile Info',
-                  bgColor: Color.fromARGB(255, 37, 37, 37),
-                  onCustomButtonPressed: () {},
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        minimumSize: const Size.fromHeight(60),
+                        backgroundColor: Color.fromARGB(255, 37, 37, 37),
+                        textStyle: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        )),
+                    child: const Text('Profile Info'),
+                  ),
                 ),
                 const SizedBox(height: 15),
-                AuthButton(
-                  buttonText: 'Sign Out',
-                  bgColor: const Color.fromARGB(255, 0, 83, 129),
-                  onCustomButtonPressed: () {},
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ElevatedButton(
+                    onPressed: _signOut,
+                    style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        minimumSize: const Size.fromHeight(60),
+                        backgroundColor: const Color.fromARGB(255, 0, 83, 129),
+                        textStyle: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        )),
+                    child: const Text('Sign Out'),
+                  ),
                 ),
 
                 // Start: Bottom divider

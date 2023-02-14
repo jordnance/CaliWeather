@@ -1,8 +1,8 @@
+import 'package:caliweather/userverify.dart';
 import 'package:flutter/material.dart';
 import 'package:caliweather/sql_helper.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:caliweather/components/textfield_login.dart';
-import 'package:caliweather/components/button_login.dart';
 import 'package:caliweather/components/header_login_profile.dart';
 import 'package:caliweather/globals.dart' as globals;
 
@@ -23,27 +23,6 @@ class _LoginPageState extends State<LoginPage> {
   //final TextEditingController _newUsernameController = TextEditingController();
   //final TextEditingController _newPasswordController = TextEditingController();
 
-  Future<void> _checkCredentials() async {
-    var user = await SQLHelper.getUserByUsername(_usernameController.text);
-
-    if (user.isEmpty) {
-      showMessage("User not found");
-      _usernameController.text = '';
-      _passwordController.text = '';
-      return;
-    }
-
-    if (user[0]['password'] != _passwordController.text) {
-      showMessage("Invalid Credentials");
-    } else {
-      globals.user_id = user[0]['userId'];
-      showMessage("Welcome back ${_usernameController.text}!");
-    }
-
-    _usernameController.text = '';
-    _passwordController.text = '';
-  }
-
   // temporary function until final ui for displaying error messages
   void showMessage(String message) {
     if (mounted) {
@@ -61,10 +40,29 @@ class _LoginPageState extends State<LoginPage> {
       usernameValue = _usernameController.text;
       passwordValue = _passwordController.text;
     });
-    await _checkCredentials();
+
+    var user = await SQLHelper.getUserByUsername(usernameValue ?? "");
+
+    if (user.isEmpty) {
+      showMessage("User not found");
+      return;
+    }
+
+    if (user[0]['password'] != passwordValue) {
+      showMessage("Incorrect Password");
+    } else {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      _prefs.setInt("userId", user[0]['userId']);
+      _prefs.setBool("isLoggedIn", true);
+      globals.user_id = _prefs.getInt('userId') ?? 0;
+      showMessage("Welcome back ${_usernameController.text}!");
+    }
+
     _usernameController.text = '';
     _passwordController.text = '';
     FocusScope.of(context).unfocus();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => UserVerify()));
   }
 
   @override
