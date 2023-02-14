@@ -19,7 +19,6 @@ class _UserVerifyState extends State<UserVerify> {
     isLoggedIn = _prefs.then((SharedPreferences prefs) {
       return (prefs.getBool('isLoggedIn') ?? false);
     });
-    print(isLoggedIn);
     super.initState();
   }
 
