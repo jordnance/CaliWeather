@@ -1,3 +1,4 @@
+import 'userverify.dart';
 import 'home.dart';
 import 'login.dart';
 import 'profile.dart';
@@ -7,8 +8,8 @@ import 'settings.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
-  runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,13 +18,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'CaliWeather',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Main(title: 'CaliWeather'),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'CaliWeather',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const Main(title: 'CaliWeather'),
+        routes: {'/settings': (_) => const SettingsPage(title: 'Settings')});
   }
 }
 
@@ -35,10 +36,9 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 1;
   static List<Widget> pageOptions = <Widget>[
-    const LoginPage(),
-    const ProfilePage(),
+    const UserVerify(),
     const HomePage(
       title: 'Home Page',
     ),
