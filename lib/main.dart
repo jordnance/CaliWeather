@@ -63,10 +63,6 @@ class _MainState extends State<Main> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Icon(Icons.login_rounded),
-                label: 'Login',
-                backgroundColor: Color.fromARGB(255, 136, 136, 136)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person_pin),
                 label: 'Profile',
                 backgroundColor: Color.fromARGB(255, 136, 136, 136)),
             BottomNavigationBarItem(
