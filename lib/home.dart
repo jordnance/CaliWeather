@@ -53,7 +53,7 @@ class ForecastWeather extends StatelessWidget {
 
     return Card(
       elevation: 0,
-      color: Colors.white.withOpacity(0.30),
+      color: const Color.fromARGB(255, 87, 87, 87).withOpacity(0.30),
       child: SizedBox(
         width: 160.0,
         child: Column(
@@ -141,7 +141,7 @@ class MainWeather extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         BoxedIcon(WeatherIcons.fromString(iconName),
-            size: 120, color: Colors.white),
+            size: 120, color: const Color.fromARGB(255, 87, 87, 87)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +154,7 @@ class MainWeather extends StatelessWidget {
                 style: const TextStyle(
                     fontSize: 110,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white),
+                    color: const Color.fromARGB(255, 87, 87, 87)),
               ),
             ),
             Padding(
@@ -164,7 +164,7 @@ class MainWeather extends StatelessWidget {
                 style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white),
+                    color: const Color.fromARGB(255, 87, 87, 87)),
               ),
             ),
           ],
@@ -174,7 +174,9 @@ class MainWeather extends StatelessWidget {
           child: Text(
             description,
             style: const TextStyle(
-                fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white),
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: const Color.fromARGB(255, 87, 87, 87)),
           ),
         ),
         Padding(
@@ -183,7 +185,9 @@ class MainWeather extends StatelessWidget {
             city,
             textAlign: TextAlign.center,
             style: const TextStyle(
-                fontSize: 20, fontWeight: FontWeight.w300, color: Colors.white),
+                fontSize: 20,
+                fontWeight: FontWeight.w300,
+                color: const Color.fromARGB(255, 87, 87, 87)),
           ),
         ),
         Padding(
@@ -191,7 +195,9 @@ class MainWeather extends StatelessWidget {
           child: Text(
             DateFormat('MMM dd').format(DateTime.now()).toString(),
             style: const TextStyle(
-                fontSize: 18, fontWeight: FontWeight.w300, color: Colors.white),
+                fontSize: 18,
+                fontWeight: FontWeight.w300,
+                color: const Color.fromARGB(255, 87, 87, 87)),
           ),
         ),
       ],
@@ -229,20 +235,7 @@ class _HomePageState extends State<HomePage> {
     ///
     /// ***============================================================================*** ///
 
-    late Color bgColor;
-    List<Color> bgColorList = [
-      Colors.indigo,
-      Colors.blueGrey,
-      const Color.fromARGB(255, 254, 169, 0)
-    ];
-
-    if (temp >= 70) {
-      bgColor = bgColorList[2];
-    } else if (temp >= 30 && temp < 70) {
-      bgColor = bgColorList[1];
-    } else {
-      bgColor = bgColorList[0];
-    }
+    Color bgColor = Colors.grey.shade200;
 
     return Scaffold(
       body: Container(
@@ -257,7 +250,8 @@ class _HomePageState extends State<HomePage> {
                   IconButton(
                     iconSize: 25,
                     icon: const Icon(Icons.refresh),
-                    color: Colors.white.withOpacity(0.6),
+                    color:
+                        const Color.fromARGB(255, 87, 87, 87).withOpacity(0.6),
                     onPressed: () {
                       setState(() {}); //NOTE: Temporary functionality
                     },

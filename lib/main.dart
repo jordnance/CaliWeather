@@ -1,13 +1,15 @@
+import 'userverify.dart';
 import 'home.dart';
 import 'login.dart';
+import 'profile.dart';
 import 'radar.dart';
 import 'analysis.dart';
 import 'settings.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
-  runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,13 +18,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'CaliWeather',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Main(title: 'CaliWeather'),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'CaliWeather',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const Main(title: 'CaliWeather'),
+        routes: {'/settings': (_) => const SettingsPage(title: 'Settings')});
   }
 }
 
@@ -34,11 +36,9 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   static List<Widget> pageOptions = <Widget>[
-    const LoginPage(
-      title: 'Login Page',
-    ),
+    const UserVerify(),
     const HomePage(
       title: 'Home Page',
     ),
@@ -63,7 +63,11 @@ class _MainState extends State<Main> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Icon(Icons.login_rounded),
-                label: 'Log In',
+                label: 'Login',
+                backgroundColor: Color.fromARGB(255, 136, 136, 136)),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person_pin),
+                label: 'Profile',
                 backgroundColor: Color.fromARGB(255, 136, 136, 136)),
             BottomNavigationBarItem(
                 icon: Icon(Icons.home),
