@@ -35,6 +35,11 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void clearTextControllers() {
+    _usernameController.text = '';
+    _passwordController.text = '';
+  }
+
   void _signIn() async {
     setState(() {
       usernameValue = _usernameController.text;
@@ -45,21 +50,29 @@ class _LoginPageState extends State<LoginPage> {
 
     if (user.isEmpty) {
       showMessage("User not found");
+      clearTextControllers();
       return;
     }
 
     if (user[0]['password'] != passwordValue) {
       showMessage("Incorrect Password");
-    } else {
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
-      _prefs.setInt("userId", user[0]['userId']);
-      _prefs.setBool("isLoggedIn", true);
-      globals.user_id = _prefs.getInt('userId') ?? 0;
-      showMessage("Welcome back ${_usernameController.text}!");
+      clearTextControllers();
+      return;
     }
 
-    _usernameController.text = '';
-    _passwordController.text = '';
+    // get shrd_pref instance
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+
+    // set shrd_pref flag for login
+    _prefs.setBool("isLoggedIn", true);
+    // set user data in shrd_pref
+    _prefs.setInt("userId", user[0]['userId']);
+    _prefs.setString("userFirstName", user[0]['firstName']);
+    globals.user_id = _prefs.getInt('userId') ?? 0;
+
+    // show welcome message
+    showMessage("Welcome back ${usernameValue}!");
+    clearTextControllers();
     FocusScope.of(context).unfocus();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => UserVerify()));
