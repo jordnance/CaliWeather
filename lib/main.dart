@@ -6,9 +6,11 @@ import 'radar.dart';
 import 'analysis.dart';
 import 'settings.dart';
 import 'package:flutter/material.dart';
+import 'package:caliweather/sharedprefutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SharedPrefUtil.init();
   runApp(const MyApp());
 }
 
