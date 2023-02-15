@@ -69,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
     _prefs.setInt("userId", user[0]['userId']);
     _prefs.setString("userFirstName", user[0]['firstName']);
     globals.user_id = _prefs.getInt('userId') ?? 0;
+    globals.userFirstName = user[0]['firstName'];
 
     // show welcome message
     showMessage("Welcome back ${usernameValue}!");
