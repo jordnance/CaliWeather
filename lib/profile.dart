@@ -18,8 +18,11 @@ class _ProfilePageState extends State<ProfilePage> {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     _prefs.remove('userId');
     _prefs.setBool('isLoggedIn', false);
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => UserVerify()));
+    Navigator.push(
+            context, MaterialPageRoute(builder: (context) => UserVerify()))
+        .then((value) {
+      initState();
+    });
   }
 
   @override

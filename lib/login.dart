@@ -74,8 +74,11 @@ class _LoginPageState extends State<LoginPage> {
     showMessage("Welcome back ${usernameValue}!");
     clearTextControllers();
     FocusScope.of(context).unfocus();
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => UserVerify()));
+    Navigator.push(
+            context, MaterialPageRoute(builder: (context) => UserVerify()))
+        .then((value) {
+      initState();
+    });
   }
 
   @override
