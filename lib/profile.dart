@@ -3,6 +3,7 @@ import 'package:caliweather/components/header_login_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:caliweather/userverify.dart';
 import 'package:caliweather/sql_helper.dart';
+import 'package:caliweather/globals.dart' as globals;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,8 +13,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String? userFirstName;
-
   void _signOut() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     _prefs.remove('userId');
@@ -40,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 // Start: Login Section
                 Text(
-                  'Welcome, $userFirstName!',
+                  'Welcome, ${globals.userFirstName}!',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 14,
