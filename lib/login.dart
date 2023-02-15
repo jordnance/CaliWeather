@@ -2,6 +2,7 @@ import 'package:caliweather/userverify.dart';
 import 'package:flutter/material.dart';
 import 'package:caliweather/sql_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:caliweather/sharedpref.dart' as shprefs;
 import 'package:caliweather/components/textfield_login.dart';
 import 'package:caliweather/components/header_login_profile.dart';
 import 'package:caliweather/globals.dart' as globals;
@@ -60,19 +61,25 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    // get shrd_pref instance
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    print(user);
 
-    // set shrd_pref flag for login
-    _prefs.setBool("isLoggedIn", true);
-    // set user data in shrd_pref
-    _prefs.setInt("userId", user[0]['userId']);
-    _prefs.setString("userFirstName", user[0]['firstName']);
-    globals.user_id = _prefs.getInt('userId') ?? 0;
-    globals.userFirstName = user[0]['firstName'];
+    shprefs.SessionManager _prefs = shprefs.SessionManager();
+    _prefs.setUserLogin(
+      user[0]['userId'],
+      user[0]['firstName'],
+      user[0]['lastName'],
+      user[0]['username'],
+      // user[0]['lang'],
+      // user[0]['fontsize'],
+      // user[0]['alerts'],
+      // user[0]['tempFormat'],
+      // user[0]['theme']
+    );
 
     // show welcome message
-    showMessage("Welcome back ${usernameValue}!");
+    showMessage("Welcome back ${user[0]['firstName']}!");
+
+    // clear login page state and push to profile page
     clearTextControllers();
     FocusScope.of(context).unfocus();
     Navigator.push(
