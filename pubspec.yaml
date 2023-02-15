@@ -1,9 +1,6 @@
 name: caliweather
-
 description: A new Flutter project.
-
 publish_to: 'none'
-
 version: 1.0.0+1
 
 environment:
@@ -16,10 +13,15 @@ dependencies:
   path:
   geolocator: ^9.0.2
   path_provider: ^2.0.12
+  flutter_native_splash: ^2.2.17
+  weather: ^2.0.1
+  cached_network_image: ^3.2.3
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
   carousel_slider: ^4.2.1
+  weather_icons: ^3.0.0-nullsafety.x
+  shared_preferences: ^2.0.17
 
 dev_dependencies:
   flutter_test:
@@ -28,3 +30,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/  
+
+flutter_native_splash:
+  image: assets/splash.png
+  color: "FFFFFF"

@@ -4,37 +4,38 @@ class SQLHelper {
   static Future<void> createTables(sql.Database database) async {
     await database.execute("""CREATE TABLE IF NOT EXISTS User(
     userId integer PRIMARY KEY AUTOINCREMENT,
+    firstName text NOT NULL,
+    lastName text NOT NULL,
     username text NOT NULL,
     password text NOT NULL
     )""");
     await database.execute("""CREATE TABLE IF NOT EXISTS Preference(
     userprefId integer PRIMARY KEY REFERENCES User(userId) ON DELETE CASCADE,
     lang text default "English",
-    fontSize integer default 12,
+    fontSize text default "Medium",
     alerts text default NULL,
     tempFormat text default "Fahrenheit",
-    theme text default "Light",
-    cityName text default "Fresno"
+    theme text default "Light"
     )""");
     await database.execute("PRAGMA foreign_keys = ON");
   }
 
   static Future<void> insertData(sql.Database database) async {
-    await database.execute("""INSERT INTO User(username, password) 
+    await database.execute("""INSERT INTO User(firstName, lastName, username, password) 
     VALUES 
-    ('testing', '123')""");
+    ('Bobby', 'Hill', 'testing', '123')""");
     await database.execute(
-        """INSERT INTO Preference(lang, fontSize, alerts, tempFormat, theme, cityName) 
-    VALUES ('English', 12, 'Conserve water', 'Fahrenheit', 'Light', 'Bakersfield'),
-    ('Spanish', 14, 'Conserve energy', 'Fahrenheit', 'Dark', 'Modesto'), 
-    ('English', 16, 'Conserve water', 'Celsius', 'Light', 'Sacramento'), 
-    ('English', 18, 'Conserve energy', 'Celsius', 'Dark', 'Los Angeles'), 
-    ('Spanish', 20, 'Conserve water', 'Fahrenheit', 'Light', 'San Luis Obispo')""");
+        """INSERT INTO Preference(lang, fontSize, alerts, tempFormat, theme) 
+    VALUES ('English', 'Small', 'Conserve water', 'Fahrenheit', 'Light'),
+    ('Spanish', 'Medium', 'Conserve energy', 'Fahrenheit', 'Dark'), 
+    ('English', 'Medium', 'Conserve water', 'Celsius', 'Light'), 
+    ('English', 'Large', 'Conserve energy', 'Celsius', 'Dark'), 
+    ('Spanish', 'Large', 'Conserve water', 'Fahrenheit', 'Light')""");
   }
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'one.db',
+      'four.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -66,6 +67,14 @@ class SQLHelper {
         where: "username = ? AND password = ?",
         whereArgs: [username, password],
         limit: 1);
+  }
+
+  // Read a single user by username <-- WORKS
+  static Future<List<Map<dynamic, dynamic>>> getUserByUsername(
+      String username) async {
+    sql.Database db = await SQLHelper.db();
+    return db.query('User',
+        where: "username = ?", whereArgs: [username], limit: 1);
   }
 
   // Read a single user by userId <-- WORKS
