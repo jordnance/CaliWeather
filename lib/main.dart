@@ -43,8 +43,8 @@ class _MainState extends State<Main> {
   List<Widget> _navBarPages() {
     return [
       const UserVerify(),
-      const HomePage(title: 'Home Page'),
       const RadarPage(title: 'Radar Page'),
+      const HomePage(title: 'Home Page'),
       const AnalysisPage(title: 'Analysis Page'),
       const SettingsPage(title: 'Settings Page'),
     ];
@@ -59,14 +59,14 @@ class _MainState extends State<Main> {
         inactiveColorPrimary: const Color.fromARGB(255, 136, 136, 136),
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.home),
-        title: ('Home'),
+        icon: const Icon(Icons.radar),
+        title: ('Radar'),
         activeColorPrimary: const Color.fromARGB(255, 0, 83, 129),
         inactiveColorPrimary: const Color.fromARGB(255, 136, 136, 136),
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.radar),
-        title: ('Radar'),
+        icon: const Icon(Icons.home),
+        title: ('Home'),
         activeColorPrimary: const Color.fromARGB(255, 0, 83, 129),
         inactiveColorPrimary: const Color.fromARGB(255, 136, 136, 136),
       ),
