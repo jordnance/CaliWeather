@@ -64,7 +64,9 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     //NOT ERRORS FOUND, FINISH LOGIN
-    SharedPrefUtil.setUserLogin(user[0]);
+    var userinfo = await SQLHelper.getUserInfo(user[0]['userId']);
+    print(userinfo[0]);
+    SharedPrefUtil.setUserLogin(userinfo[0]);
     showMessage("Welcome back ${user[0]['firstName']}!");
     clearTextControllers();
     FocusScope.of(context).unfocus();

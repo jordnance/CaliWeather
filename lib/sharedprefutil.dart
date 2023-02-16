@@ -73,6 +73,21 @@ class SharedPrefUtil {
   static Future<void> setLogout() async => await _prefs.clear();
 
   static Future<void> setUserLogin(Map user) async {
+    //  userId: 1,
+    //  firstName: Bobby,
+    //  lastName: Hill,
+    //  username: testing,
+    //  userprefId: 1,
+    //  lang: English,
+    //  fontSize: Small,
+    //  tempFormat: F,
+    //  location: Bakersfield,
+    //  theme: Light,
+    //  prefalertId: 1,
+    //  conserveEnergy: On,
+    //  conserveWater: Off,
+    //  apiRelated: Off}
+
     setIsLoggedIn(true);
     setUserId(user[userId]);
     setUserFirstName(user[firstName]);

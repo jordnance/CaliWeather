@@ -5,6 +5,8 @@ import 'package:caliweather/sharedprefutil.dart';
 import 'package:caliweather/userverify.dart';
 import 'package:caliweather/globals.dart' as globals;
 
+import 'package:caliweather/sql_helper.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -64,6 +66,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ElevatedButton(
                     onPressed: () {
+                      var userinfo;
+                      () async {
+                        userinfo = await SQLHelper.getUserInfo(1);
+                      };
+
                       print(SharedPrefUtil.getUserId());
                       print(SharedPrefUtil.getUsername());
                       print(SharedPrefUtil.getUserFirstName());
