@@ -50,7 +50,7 @@ class _MainState extends State<Main> {
     ];
   }
 
-  List<PersistentBottomNavBarItem> _navBarsItems() {
+  List<PersistentBottomNavBarItem> _navBarItems() {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.person_2),
@@ -92,7 +92,7 @@ class _MainState extends State<Main> {
         context,
         controller: _controller,
         screens: _navBarPages(),
-        items: _navBarsItems(),
+        items: _navBarItems(),
         confineInSafeArea: true,
         backgroundColor: Colors.white,
         handleAndroidBackButtonPress: true,
