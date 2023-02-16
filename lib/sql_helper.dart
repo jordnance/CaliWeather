@@ -23,6 +23,7 @@ class SQLHelper {
     conserveWater text default NULL,
     apiRelated text default NULL
     )""");
+    await database.execute("PRAGMA foreign_keys = ON");
   }
 
   static Future<void> insertData(sql.Database database) async {
