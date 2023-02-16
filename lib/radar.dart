@@ -80,7 +80,8 @@ class _RadarPageState extends State<RadarPage> {
   }
 
   void moveMarker() {
-    if (globals.positionLat != 36.746842 || globals.positionLong != -119.772586) {
+    if (globals.positionLat != 36.746842 ||
+        globals.positionLong != -119.772586) {
       setState(() {});
     }
   }
@@ -104,6 +105,7 @@ class _RadarPageState extends State<RadarPage> {
     return Scaffold(
       body: Center(
         child: Container(
+          padding: EdgeInsetsDirectional.only(bottom: 10),
           child: Column(
             children: [
               Flexible(
