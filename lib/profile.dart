@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:caliweather/components/header_login_profile.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:caliweather/sharedprefutil.dart';
 import 'package:caliweather/userverify.dart';
-import 'package:caliweather/globals.dart' as globals;
-
-import 'package:caliweather/sql_helper.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -17,11 +14,12 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   void _signOut() async {
     SharedPrefUtil.setLogout();
-    Navigator.push(
-            context, MaterialPageRoute(builder: (context) => UserVerify()))
-        .then((value) {
-      initState();
-    });
+    PersistentNavBarNavigator.pushNewScreen(
+      context,
+      screen: UserVerify(),
+      withNavBar: true, // OPTIONAL VALUE. True by default.
+      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+    );
   }
 
   void _testing() async {
@@ -60,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: ElevatedButton.styleFrom(
                         elevation: 3,
                         minimumSize: const Size.fromHeight(60),
-                        backgroundColor: Color.fromARGB(255, 37, 37, 37),
+                        backgroundColor: const Color.fromARGB(255, 37, 37, 37),
                         textStyle: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -76,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: ElevatedButton.styleFrom(
                         elevation: 3,
                         minimumSize: const Size.fromHeight(60),
-                        backgroundColor: Color.fromARGB(255, 37, 37, 37),
+                        backgroundColor: const Color.fromARGB(255, 37, 37, 37),
                         textStyle: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
