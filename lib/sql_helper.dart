@@ -17,25 +17,27 @@ class SQLHelper {
     tempFormat text default "Fahrenheit",
     theme text default "Light"
     )""");
-    await database.execute("PRAGMA foreign_keys = ON");
   }
 
   static Future<void> insertData(sql.Database database) async {
-    await database.execute("""INSERT INTO User(firstName, lastName, username, password) 
+    await database
+        .execute("""INSERT INTO User(firstName, lastName, username, password) 
     VALUES 
-    ('Bobby', 'Hill', 'testing', '123')""");
-    await database.execute(
-        """INSERT INTO Preference(lang, fontSize, alerts, tempFormat, theme) 
-    VALUES ('English', 'Small', 'Conserve water', 'Fahrenheit', 'Light'),
+    ('Bobby', 'Hill', 'testing', '123'), 
+    ('Eric', 'Cartman', 'southpark', '456'),
+    ('Peter', 'Griffin', 'familyguy', '789')
+    """);
+    await database.execute("""INSERT INTO Preference(lang, fontSize, alerts, tempFormat, theme) 
+    VALUES 
+    ('English', 'Small', 'Conserve water', 'Fahrenheit', 'Light'),
     ('Spanish', 'Medium', 'Conserve energy', 'Fahrenheit', 'Dark'), 
-    ('English', 'Medium', 'Conserve water', 'Celsius', 'Light'), 
-    ('English', 'Large', 'Conserve energy', 'Celsius', 'Dark'), 
-    ('Spanish', 'Large', 'Conserve water', 'Fahrenheit', 'Light')""");
+    ('English', 'Large', 'API', 'Celsius', 'Light')
+    """);
   }
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'four.db',
+      'five.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -51,12 +53,6 @@ class SQLHelper {
     final userId = await db.insert('User', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return userId;
-  }
-
-  // Read all users <-- NEEDS TO BE TESTED
-  static Future<List<Map<String, dynamic>>> getUsers() async {
-    final db = await SQLHelper.db();
-    return db.query('User', orderBy: "userId");
   }
 
   // Read a single user by username and password <-- WORKS
@@ -81,6 +77,14 @@ class SQLHelper {
   static Future<List<Map<String, dynamic>>> getUserById(int userId) async {
     final db = await SQLHelper.db();
     return db.query('User', where: "userId = ?", whereArgs: [userId], limit: 1);
+  }
+
+  // Read user and preference info by userId <-- WORKS
+  static Future<List<Map<String, dynamic>>> getUserInfo(int userId) async {
+    final db = await SQLHelper.db();
+    return db.rawQuery(
+        """SELECT u.userId, u.firstName, u.lastName, u.username, p.* FROM User AS u
+     INNER JOIN Preference AS p ON u.userId = ? WHERE u.userId = p.userprefId""", [userId]);
   }
 
   // Update language <-- NEEDS TO BE TESTED
