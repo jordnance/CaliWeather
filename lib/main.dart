@@ -38,7 +38,7 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 1);
+      PersistentTabController(initialIndex: 2);
 
   List<Widget> _navBarPages() {
     return [
