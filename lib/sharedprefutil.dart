@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefUtil {
@@ -21,135 +23,99 @@ class SharedPrefUtil {
   static const String tempFormat = 'tempFormat';
   static const String theme = 'theme';
 
-  //SETTER FUNCTIONS
+  //AMBIGOUS SETTER FUNCTIONS
+  static Future<void> setIntByKey(String key, int val) async =>
+      await _prefs.setInt(key, val);
+
+  static Future<void> setDoubleByKey(String key, double val) async =>
+      await _prefs.setDouble(key, val);
+
+  static Future<void> setStringByKey(String key, String val) async =>
+      await _prefs.setString(key, val);
+
+  static Future<void> setStringListByKey(String key, List<String> val) async =>
+      await _prefs.setStringList(key, val);
+
+  static Future<void> setBoolByKey(String key, bool val) async =>
+      await _prefs.setBool(key, val);
+
+  //USER AND PROFILE SETTERS
   static Future<void> setIsLoggedIn(bool val) async =>
       await _prefs.setBool(SharedPrefUtil.isLoggedIn, val);
 
-  // static Future<void> setUserId(int userId) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setInt(this.userId, userId);
-  // }
+  static Future<void> setUserId(int val) async =>
+      await _prefs.setInt(SharedPrefUtil.userId, val);
 
-  // static Future<void> setFirstName(String firstName) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString(this.firstName, firstName);
-  // }
+  static Future<void> setUserFirstName(String val) async =>
+      await _prefs.setString(SharedPrefUtil.firstName, val);
 
-  // static Future<void> setLastName(String lastName) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString(this.lastName, lastName);
-  // }
+  static Future<void> setUserLastName(String val) async =>
+      await _prefs.setString(SharedPrefUtil.lastName, val);
 
-  // static Future<void> setUsername(String username) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString(this.username, username);
-  // }
+  static Future<void> setUsername(String val) async =>
+      await _prefs.setString(SharedPrefUtil.username, val);
 
-  // static Future<void> setLang(String lang) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString(this.lang, lang);
-  // }
+  static Future<void> setLanguage(String val) async =>
+      await _prefs.setString(SharedPrefUtil.lang, val);
 
-  // static Future<void> setFontSize(String fontSize) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString(this.fontSize, fontSize);
-  // }
+  static Future<void> setFontSize(String val) async =>
+      await _prefs.setString(SharedPrefUtil.fontSize, val);
 
-  // static Future<void> setAlerts(String alerts) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString(this.alerts, alerts);
-  // }
+  static Future<void> setAlerts(String val) async =>
+      await _prefs.setString(SharedPrefUtil.alerts, val);
 
-  // static Future<void> setTempFormat(String tempFormat) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString(this.tempFormat, tempFormat);
-  // }
+  static Future<void> setTempFormat(String val) async =>
+      await _prefs.setString(SharedPrefUtil.tempFormat, val);
 
-  // static Future<void> setTheme(String theme) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString(this.theme, theme);
-  // }
+  static Future<void> setTheme(String val) async =>
+      await _prefs.setString(SharedPrefUtil.theme, val);
 
-  // static Future<void> setUserLogin(
-  //   int userId,
-  //   String firstName,
-  //   String lastName,
-  //   String username,
-  //   // String lang,
-  //   // String fontSize,
-  //   // String alerts,
-  //   // String tempFormat,
-  //   // String theme
-  // ) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setIsLoggedIn(true);
-  //   setUserId(userId);
-  //   setFirstName(firstName);
-  //   setLastName(lastName);
-  //   setUsername(username);
-  //   // setLang(lang);
-  //   // setFontSize(fontSize);
-  //   // setAlerts(alerts);
-  //   // setTempFormat(tempFormat);
-  //   // setTheme(theme);
-  // }
+  static Future<void> setLogout() async => await _prefs.clear();
 
-  static Future<void> setUserLogout() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+  static Future<void> setUserLogin(Map user) async {
+    setIsLoggedIn(true);
+    setUserId(user[userId]);
+    setUserFirstName(user[firstName]);
+    setUserLastName(user[lastName]);
+    setUsername(user[username]);
   }
 
-  //GETTER FUNCTIONS
-  // static Future<bool> getIsLoggedIn() async {
-  //   final SharedPreferences pref = await SharedPreferences.getInstance();
-  //   return pref.getBool(isLoggedIn) ?? false;
-  // }
+  //AMBIGOUS SETTER FUNCTIONS
+  // static int getIntByKey(String key) => _prefs.getInt(key) ?? -1;
 
+  // static double getDoubleByKey(String key) => _prefs.getDouble(key) ?? -1;
+
+  // static String getStringByKey(String key) => _prefs.getString(key) ?? 'err';
+
+  // static List<String> getStringListByKey(String key) =>
+  //     _prefs.getStringList(key) ?? ['err'];
+
+  // static bool getBoolByKey(String key) => _prefs.getBool(key);
+
+  //USER AND PROFILE GETTER FUNCTIONS
   static bool getIsLoggedIn() =>
       _prefs.getBool(SharedPrefUtil.isLoggedIn) ?? false;
 
-  // static Future<int> getUserId() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getInt(userId) ?? 0;
-  // }
+  static int getUserId() => _prefs.getInt(SharedPrefUtil.userId) ?? 0;
 
-  // static Future<String> getFirstName() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getString(firstName) ?? '';
-  // }
+  static String getUserFirstName() =>
+      _prefs.getString(SharedPrefUtil.firstName) ?? 'err';
 
-  // static Future<String> getLastName() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getString(lastName) ?? '';
-  // }
+  static String getUserLastName() =>
+      _prefs.getString(SharedPrefUtil.lastName) ?? 'err';
 
-  // static Future<String> getUsername() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getString(username) ?? '';
-  // }
+  static String getUsername() =>
+      _prefs.getString(SharedPrefUtil.username) ?? 'err';
 
-  // static Future<String> getLang() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getString(lang) ?? '';
-  // }
+  static String getLanguage() => _prefs.getString(SharedPrefUtil.lang) ?? 'err';
 
-  // static Future<String> getFontSize(String fontSize) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getString(fontSize) ?? '';
-  // }
+  static String getFontSize() =>
+      _prefs.getString(SharedPrefUtil.fontSize) ?? 'err';
 
-  // static Future<String> getAlerts() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getString(alerts) ?? '';
-  // }
+  static String getAlerts() => _prefs.getString(SharedPrefUtil.alerts) ?? 'err';
 
-  // static Future<String> getTempFormat() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getString(tempFormat) ?? '';
-  // }
+  static String getTempFormat() =>
+      _prefs.getString(SharedPrefUtil.tempFormat) ?? 'err';
 
-  // static Future<String> getTheme() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getString(theme) ?? '';
-  // }
+  static String getTheme() => _prefs.getString(SharedPrefUtil.theme) ?? 'err';
 }

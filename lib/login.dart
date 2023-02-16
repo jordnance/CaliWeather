@@ -1,7 +1,6 @@
 import 'package:caliweather/userverify.dart';
 import 'package:flutter/material.dart';
 import 'package:caliweather/sql_helper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:caliweather/sharedprefutil.dart';
 import 'package:caliweather/components/textfield_login.dart';
 import 'package:caliweather/components/header_login_profile.dart';
@@ -42,13 +41,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _signIn() async {
+    //SAVE USER INPUT TO SAFE VAR
     setState(() {
       usernameValue = _usernameController.text;
       passwordValue = _passwordController.text;
     });
 
+    //QUERY DB FOR USER INFORMATION
     var user = await SQLHelper.getUserByUsername(usernameValue ?? "");
 
+    //CATCH ERRORS AND RETURN
     if (user.isEmpty) {
       showMessage("User not found");
       clearTextControllers();
@@ -61,31 +63,9 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    print(user);
-    SharedPrefUtil.setIsLoggedIn(true);
-
-    bool temp = false;
-    print(temp);
-    temp = SharedPrefUtil.getIsLoggedIn();
-    print(temp);
-
-    // PreferenceUtil _prefs = PreferenceUtil();
-    // _prefs.setUserLogin(
-    //   user[0]['userId'],
-    //   user[0]['firstName'],
-    //   user[0]['lastName'],
-    //   user[0]['username'],
-    //   // user[0]['lang'],
-    //   // user[0]['fontsize'],
-    //   // user[0]['alerts'],
-    //   // user[0]['tempFormat'],
-    //   // user[0]['theme']
-    // );
-
-    // show welcome message
+    //NOT ERRORS FOUND, FINISH LOGIN
+    SharedPrefUtil.setUserLogin(user[0]);
     showMessage("Welcome back ${user[0]['firstName']}!");
-
-    // clear login page state and push to profile page
     clearTextControllers();
     FocusScope.of(context).unfocus();
     Navigator.push(
