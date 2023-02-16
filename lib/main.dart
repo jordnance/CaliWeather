@@ -6,9 +6,11 @@ import 'radar.dart';
 import 'analysis.dart';
 import 'settings.dart';
 import 'package:flutter/material.dart';
+import 'package:caliweather/sharedprefutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SharedPrefUtil.init();
   runApp(const MyApp());
 }
 
@@ -62,7 +64,7 @@ class _MainState extends State<Main> {
       bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(Icons.login_rounded),
+                icon: Icon(Icons.person_2),
                 label: 'Profile',
                 backgroundColor: Color.fromARGB(255, 136, 136, 136)),
             BottomNavigationBarItem(

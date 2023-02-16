@@ -1,7 +1,7 @@
 import 'package:caliweather/userverify.dart';
 import 'package:flutter/material.dart';
 import 'package:caliweather/sql_helper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:caliweather/sharedprefutil.dart';
 import 'package:caliweather/components/textfield_login.dart';
 import 'package:caliweather/components/header_login_profile.dart';
 import 'package:caliweather/globals.dart' as globals;
@@ -41,13 +41,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _signIn() async {
+    //SAVE USER INPUT TO SAFE VAR
     setState(() {
       usernameValue = _usernameController.text;
       passwordValue = _passwordController.text;
     });
 
+    //QUERY DB FOR USER INFORMATION
     var user = await SQLHelper.getUserByUsername(usernameValue ?? "");
 
+    //CATCH ERRORS AND RETURN
     if (user.isEmpty) {
       showMessage("User not found");
       clearTextControllers();
@@ -60,19 +63,10 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    // get shrd_pref instance
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-
-    // set shrd_pref flag for login
-    _prefs.setBool("isLoggedIn", true);
-    // set user data in shrd_pref
-    _prefs.setInt("userId", user[0]['userId']);
-    _prefs.setString("userFirstName", user[0]['firstName']);
-    globals.user_id = _prefs.getInt('userId') ?? 0;
-    globals.userFirstName = user[0]['firstName'];
-
-    // show welcome message
-    showMessage("Welcome back ${usernameValue}!");
+    //NOT ERRORS FOUND, FINISH LOGIN
+    var userinfo = await SQLHelper.getUserInfo(user[0]['userId']);
+    SharedPrefUtil.setUserLogin(userinfo[0]);
+    showMessage("Welcome back ${SharedPrefUtil.getUserFirstName()}!");
     clearTextControllers();
     FocusScope.of(context).unfocus();
     Navigator.push(
@@ -80,6 +74,13 @@ class _LoginPageState extends State<LoginPage> {
         .then((value) {
       initState();
     });
+  }
+
+  void _testing() async {
+    // var userinfo = await SQLHelper.getUserInfo(1);
+    // print(userinfo);
+    //SharedPrefUtil.setUserLogin(userinfo[0]);
+    SharedPrefUtil.checkAllPrefs();
   }
 
   @override
@@ -131,11 +132,14 @@ class _LoginPageState extends State<LoginPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 12,
+                      InkWell(
+                        onTap: _testing,
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                     ],
@@ -167,14 +171,17 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(width: 3),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(right: 12.0),
-                        child: Text(
-                          'Register here',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500),
+                        child: InkWell(
+                          onTap: _testing,
+                          child: const Text(
+                            'Register here',
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
                       Expanded(

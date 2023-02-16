@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:caliweather/components/header_login_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:caliweather/sharedprefutil.dart';
 import 'package:caliweather/userverify.dart';
-import 'package:caliweather/sql_helper.dart';
 import 'package:caliweather/globals.dart' as globals;
+
+import 'package:caliweather/sql_helper.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -14,14 +16,19 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   void _signOut() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    _prefs.remove('userId');
-    _prefs.setBool('isLoggedIn', false);
+    SharedPrefUtil.setLogout();
     Navigator.push(
             context, MaterialPageRoute(builder: (context) => UserVerify()))
         .then((value) {
       initState();
     });
+  }
+
+  void _testing() async {
+    // var userinfo = await SQLHelper.getUserInfo(1);
+    // print(userinfo);
+    //SharedPrefUtil.setUserLogin(userinfo[0]);
+    SharedPrefUtil.checkAllPrefs();
   }
 
   @override
@@ -39,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 // Start: Login Section
                 Text(
-                  'Welcome, ${globals.userFirstName}!',
+                  'Welcome, ${SharedPrefUtil.getUserFirstName()}!',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 14,
@@ -65,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _testing,
                     style: ElevatedButton.styleFrom(
                         elevation: 3,
                         minimumSize: const Size.fromHeight(60),
