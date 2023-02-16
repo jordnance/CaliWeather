@@ -13,10 +13,15 @@ class SQLHelper {
     userprefId integer PRIMARY KEY REFERENCES User(userId) ON DELETE CASCADE,
     lang text default "English",
     fontSize text default "Medium",
-    alerts text default NULL,
-    tempFormat text default "Fahrenheit",
+    tempFormat text default "F",
     location text default "Fresno",
     theme text default "Light"
+    )""");
+    await database.execute("""CREATE TABLE IF NOT EXISTS Alerts(
+    prefalertId integer PRIMARY KEY REFERENCES Preference(userprefId) ON DELETE CASCADE,
+    conserveEnergy text default NULL,
+    conserveWater text default NULL,
+    apiRelated text default NULL
     )""");
   }
 
@@ -29,17 +34,24 @@ class SQLHelper {
     ('Peter', 'Griffin', 'familyguy', '789')
     """);
     await database.execute(
-        """INSERT INTO Preference(lang, fontSize, alerts, tempFormat, location, theme) 
+        """INSERT INTO Preference(lang, fontSize, tempFormat, location, theme) 
     VALUES 
-    ('English', 'Small', 'Conserve water', 'Fahrenheit', 'Bakersfield', 'Light'),
-    ('Spanish', 'Medium', 'Conserve energy', 'Fahrenheit', 'Los Angeles', 'Dark'), 
-    ('English', 'Large', 'API', 'Celsius', 'San Luis Obispo', 'Light')
+    ('English', 'Small', 'F', 'Bakersfield', 'Light'),
+    ('Spanish', 'Medium', 'F', 'Los Angeles', 'Dark'), 
+    ('English', 'Large', 'C', 'San Luis Obispo', 'Light')
+    """);
+    await database.execute(
+        """INSERT INTO Alerts(conserveEnergy, conserveWater, apiRelated) 
+    VALUES 
+    ('On', 'Off', 'Off'),
+    ('On', 'On', 'Off'), 
+    ('On', 'On', 'On')
     """);
   }
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'six.db',
+      'seven.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -81,13 +93,15 @@ class SQLHelper {
     return db.query('User', where: "userId = ?", whereArgs: [userId], limit: 1);
   }
 
-  // Read user and preference info by userId <-- WORKS
+  // Read user, preference, and alert info by userId <-- WORKS
   static Future<List<Map<String, dynamic>>> getUserInfo(int userId) async {
     final db = await SQLHelper.db();
     return db.rawQuery(
-        """SELECT u.userId, u.firstName, u.lastName, u.username, p.* FROM User AS u
-     INNER JOIN Preference AS p ON u.userId = ? WHERE u.userId = p.userprefId""",
-        [userId]);
+        """SELECT u.userId, u.firstName, u.lastName, u.username, p.*, a.* FROM User AS u
+     INNER JOIN Preference AS p ON u.userId = ? 
+     INNER JOIN Alerts AS a ON p.userprefId = a.prefalertId
+     WHERE u.userId = p.userprefId  
+     """, [userId]);
   }
 
   // Update language <-- NEEDS TO BE TESTED
