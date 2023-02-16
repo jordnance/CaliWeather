@@ -15,6 +15,7 @@ class SQLHelper {
     fontSize text default "Medium",
     alerts text default NULL,
     tempFormat text default "Fahrenheit",
+    location text default "Fresno",
     theme text default "Light"
     )""");
   }
@@ -27,17 +28,18 @@ class SQLHelper {
     ('Eric', 'Cartman', 'southpark', '456'),
     ('Peter', 'Griffin', 'familyguy', '789')
     """);
-    await database.execute("""INSERT INTO Preference(lang, fontSize, alerts, tempFormat, theme) 
+    await database.execute(
+        """INSERT INTO Preference(lang, fontSize, alerts, tempFormat, location, theme) 
     VALUES 
-    ('English', 'Small', 'Conserve water', 'Fahrenheit', 'Light'),
-    ('Spanish', 'Medium', 'Conserve energy', 'Fahrenheit', 'Dark'), 
-    ('English', 'Large', 'API', 'Celsius', 'Light')
+    ('English', 'Small', 'Conserve water', 'Fahrenheit', 'Bakersfield', 'Light'),
+    ('Spanish', 'Medium', 'Conserve energy', 'Fahrenheit', 'Los Angeles', 'Dark'), 
+    ('English', 'Large', 'API', 'Celsius', 'San Luis Obispo', 'Light')
     """);
   }
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'five.db',
+      'six.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -84,7 +86,8 @@ class SQLHelper {
     final db = await SQLHelper.db();
     return db.rawQuery(
         """SELECT u.userId, u.firstName, u.lastName, u.username, p.* FROM User AS u
-     INNER JOIN Preference AS p ON u.userId = ? WHERE u.userId = p.userprefId""", [userId]);
+     INNER JOIN Preference AS p ON u.userId = ? WHERE u.userId = p.userprefId""",
+        [userId]);
   }
 
   // Update language <-- NEEDS TO BE TESTED
@@ -123,19 +126,19 @@ class SQLHelper {
     return result;
   }
 
-  // Update theme <-- NEEDS TO BE TESTED
-  static Future<int> updateTheme(int userprefId, String theme) async {
+  // Update location <-- NEEDS TO BE TESTED
+  static Future<int> updateCity(int userprefId, String location) async {
     final db = await SQLHelper.db();
-    final data = {'theme': theme};
+    final data = {'location': location};
     final result = await db.update('Preference', data,
         where: "userprefId = ?", whereArgs: [userprefId]);
     return result;
   }
 
-  // Update city name <-- NEEDS TO BE TESTED
-  static Future<int> updateCity(int userprefId, String cityName) async {
+  // Update theme <-- NEEDS TO BE TESTED
+  static Future<int> updateTheme(int userprefId, String theme) async {
     final db = await SQLHelper.db();
-    final data = {'cityName': cityName};
+    final data = {'theme': theme};
     final result = await db.update('Preference', data,
         where: "userprefId = ?", whereArgs: [userprefId]);
     return result;
