@@ -1,6 +1,3 @@
-import 'dart:ffi';
-import 'dart:math';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefUtil {
