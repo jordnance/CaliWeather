@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:caliweather/components/header_login_profile.dart';
 import 'package:caliweather/sharedprefutil.dart';
 import 'package:caliweather/userverify.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,11 +14,12 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   void _signOut() async {
     SharedPrefUtil.setLogout();
-    Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const UserVerify()))
-        .then((value) {
-      initState();
-    });
+    PersistentNavBarNavigator.pushNewScreen(
+      context,
+      screen: UserVerify(),
+      withNavBar: true, // OPTIONAL VALUE. True by default.
+      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+    );
   }
 
   void _testing() async {

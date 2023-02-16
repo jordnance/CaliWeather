@@ -4,6 +4,7 @@ import 'package:caliweather/sql_helper.dart';
 import 'package:caliweather/sharedprefutil.dart';
 import 'package:caliweather/components/textfield_login.dart';
 import 'package:caliweather/components/header_login_profile.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -68,11 +69,12 @@ class _LoginPageState extends State<LoginPage> {
     showMessage("Welcome back ${SharedPrefUtil.getUserFirstName()}!");
     clearTextControllers();
     FocusScope.of(context).unfocus();
-    Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const UserVerify()))
-        .then((value) {
-      initState();
-    });
+    PersistentNavBarNavigator.pushNewScreen(
+      context,
+      screen: const UserVerify(),
+      withNavBar: true, // OPTIONAL VALUE. True by default.
+      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+    );
   }
 
   void _testing() async {
