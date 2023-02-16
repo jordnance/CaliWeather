@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:math';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,11 +18,16 @@ class SharedPrefUtil {
   static const String firstName = 'firstName';
   static const String lastName = 'lastName';
   static const String username = 'username';
+  static const String userprefId = 'userprefId';
   static const String lang = 'lang';
   static const String fontSize = 'fontSize';
-  static const String alerts = 'alerts';
   static const String tempFormat = 'tempFormat';
+  static const String location = 'location';
   static const String theme = 'theme';
+  static const String prefalertId = 'prefalertId';
+  static const String conserveEnergy = 'conserveEnergy';
+  static const String conserveWater = 'conserveEnergy';
+  static const String apiRelated = 'conserveEnergy';
 
   //AMBIGOUS SETTER FUNCTIONS
   static Future<void> setIntByKey(String key, int val) async =>
@@ -55,57 +61,55 @@ class SharedPrefUtil {
   static Future<void> setUsername(String val) async =>
       await _prefs.setString(SharedPrefUtil.username, val);
 
+  static Future<void> setUserPrefId(int val) async =>
+      await _prefs.setInt(SharedPrefUtil.userprefId, val);
+
   static Future<void> setLanguage(String val) async =>
       await _prefs.setString(SharedPrefUtil.lang, val);
 
   static Future<void> setFontSize(String val) async =>
       await _prefs.setString(SharedPrefUtil.fontSize, val);
 
-  static Future<void> setAlerts(String val) async =>
-      await _prefs.setString(SharedPrefUtil.alerts, val);
-
   static Future<void> setTempFormat(String val) async =>
       await _prefs.setString(SharedPrefUtil.tempFormat, val);
+
+  static Future<void> setLocation(String val) async =>
+      await _prefs.setString(SharedPrefUtil.location, val);
 
   static Future<void> setTheme(String val) async =>
       await _prefs.setString(SharedPrefUtil.theme, val);
 
+  static Future<void> setUserPrefAlertId(int val) async =>
+      await _prefs.setInt(SharedPrefUtil.prefalertId, val);
+
+  static Future<void> setConserveEnergy(String val) async =>
+      await _prefs.setString(SharedPrefUtil.conserveEnergy, val);
+
+  static Future<void> setConserveWater(String val) async =>
+      await _prefs.setString(SharedPrefUtil.conserveWater, val);
+
+  static Future<void> setApiRelated(String val) async =>
+      await _prefs.setString(SharedPrefUtil.apiRelated, val);
+
   static Future<void> setLogout() async => await _prefs.clear();
 
   static Future<void> setUserLogin(Map user) async {
-    //  userId: 1,
-    //  firstName: Bobby,
-    //  lastName: Hill,
-    //  username: testing,
-    //  userprefId: 1,
-    //  lang: English,
-    //  fontSize: Small,
-    //  tempFormat: F,
-    //  location: Bakersfield,
-    //  theme: Light,
-    //  prefalertId: 1,
-    //  conserveEnergy: On,
-    //  conserveWater: Off,
-    //  apiRelated: Off}
-
     setIsLoggedIn(true);
     setUserId(user[userId]);
     setUserFirstName(user[firstName]);
     setUserLastName(user[lastName]);
     setUsername(user[username]);
+    setUserPrefId(user[userprefId]);
+    setLanguage(user[lang]);
+    setFontSize(user[fontSize]);
+    setTempFormat(user[tempFormat]);
+    setLocation(user[location]);
+    setTheme(user[theme]);
+    setUserPrefAlertId(user[prefalertId]);
+    setConserveEnergy(user[conserveEnergy]);
+    setConserveWater(user[conserveWater]);
+    setApiRelated(user[apiRelated]);
   }
-
-  //AMBIGOUS SETTER FUNCTIONS
-  // static int getIntByKey(String key) => _prefs.getInt(key) ?? -1;
-
-  // static double getDoubleByKey(String key) => _prefs.getDouble(key) ?? -1;
-
-  // static String getStringByKey(String key) => _prefs.getString(key) ?? 'err';
-
-  // static List<String> getStringListByKey(String key) =>
-  //     _prefs.getStringList(key) ?? ['err'];
-
-  // static bool getBoolByKey(String key) => _prefs.getBool(key);
 
   //USER AND PROFILE GETTER FUNCTIONS
   static bool getIsLoggedIn() =>
@@ -122,15 +126,48 @@ class SharedPrefUtil {
   static String getUsername() =>
       _prefs.getString(SharedPrefUtil.username) ?? 'err';
 
+  static int getUserPrefId() => _prefs.getInt(SharedPrefUtil.userprefId) ?? 0;
+
   static String getLanguage() => _prefs.getString(SharedPrefUtil.lang) ?? 'err';
 
   static String getFontSize() =>
       _prefs.getString(SharedPrefUtil.fontSize) ?? 'err';
 
-  static String getAlerts() => _prefs.getString(SharedPrefUtil.alerts) ?? 'err';
-
   static String getTempFormat() =>
       _prefs.getString(SharedPrefUtil.tempFormat) ?? 'err';
 
+  static String getLocation() =>
+      _prefs.getString(SharedPrefUtil.location) ?? 'err';
+
   static String getTheme() => _prefs.getString(SharedPrefUtil.theme) ?? 'err';
+
+  static int getUserPrefAlertId() =>
+      _prefs.getInt(SharedPrefUtil.prefalertId) ?? 0;
+
+  static String getConserveEnergy() =>
+      _prefs.getString(SharedPrefUtil.conserveEnergy) ?? 'err';
+
+  static String getConserveWater() =>
+      _prefs.getString(SharedPrefUtil.conserveWater) ?? 'err';
+
+  static String getApiRelated() =>
+      _prefs.getString(SharedPrefUtil.apiRelated) ?? 'err';
+
+  static Future<void> checkAllPrefs() async {
+    print(getIsLoggedIn());
+    print(getUserId());
+    print(getUserFirstName());
+    print(getUserLastName());
+    print(getUsername());
+    print(getUserPrefId());
+    print(getLanguage());
+    print(getFontSize());
+    print(getTempFormat());
+    print(getLocation());
+    print(getTheme());
+    print(getUserPrefAlertId());
+    print(getConserveEnergy());
+    print(getConserveWater());
+    print(getApiRelated());
+  }
 }

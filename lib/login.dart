@@ -65,9 +65,8 @@ class _LoginPageState extends State<LoginPage> {
 
     //NOT ERRORS FOUND, FINISH LOGIN
     var userinfo = await SQLHelper.getUserInfo(user[0]['userId']);
-    print(userinfo[0]);
     SharedPrefUtil.setUserLogin(userinfo[0]);
-    showMessage("Welcome back ${user[0]['firstName']}!");
+    showMessage("Welcome back ${SharedPrefUtil.getUserFirstName()}!");
     clearTextControllers();
     FocusScope.of(context).unfocus();
     Navigator.push(
@@ -75,6 +74,13 @@ class _LoginPageState extends State<LoginPage> {
         .then((value) {
       initState();
     });
+  }
+
+  void _testing() async {
+    // var userinfo = await SQLHelper.getUserInfo(1);
+    // print(userinfo);
+    //SharedPrefUtil.setUserLogin(userinfo[0]);
+    SharedPrefUtil.checkAllPrefs();
   }
 
   @override
@@ -126,11 +132,14 @@ class _LoginPageState extends State<LoginPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 12,
+                      InkWell(
+                        onTap: _testing,
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                     ],
@@ -162,14 +171,17 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(width: 3),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(right: 12.0),
-                        child: Text(
-                          'Register here',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500),
+                        child: InkWell(
+                          onTap: _testing,
+                          child: const Text(
+                            'Register here',
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
                       Expanded(

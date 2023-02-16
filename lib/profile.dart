@@ -24,6 +24,13 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  void _testing() async {
+    // var userinfo = await SQLHelper.getUserInfo(1);
+    // print(userinfo);
+    //SharedPrefUtil.setUserLogin(userinfo[0]);
+    SharedPrefUtil.checkAllPrefs();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 // Start: Login Section
                 Text(
-                  'Welcome, ${globals.userFirstName}!',
+                  'Welcome, ${SharedPrefUtil.getUserFirstName()}!',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 14,
@@ -65,17 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ElevatedButton(
-                    onPressed: () {
-                      var userinfo;
-                      () async {
-                        userinfo = await SQLHelper.getUserInfo(1);
-                      };
-
-                      print(SharedPrefUtil.getUserId());
-                      print(SharedPrefUtil.getUsername());
-                      print(SharedPrefUtil.getUserFirstName());
-                      print(SharedPrefUtil.getUserLastName());
-                    },
+                    onPressed: _testing,
                     style: ElevatedButton.styleFrom(
                         elevation: 3,
                         minimumSize: const Size.fromHeight(60),
