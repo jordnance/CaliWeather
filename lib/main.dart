@@ -5,6 +5,7 @@ import 'analysis.dart';
 import 'settings.dart';
 import 'package:flutter/material.dart';
 import 'package:caliweather/sharedprefutil.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,59 +37,73 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  int _selectedIndex = 1;
-  static List<Widget> pageOptions = <Widget>[
-    const UserVerify(),
-    const HomePage(
-      title: 'Home Page',
-    ),
-    const RadarPage(
-      title: 'Radar Page',
-    ),
-    const AnalysisPage(
-      title: 'Analysis Page',
-    ),
-    const SettingsPage(
-      title: 'Settings Page',
-    )
-  ];
+  final PersistentTabController _controller =
+      PersistentTabController(initialIndex: 1);
+
+  List<Widget> _navBarPages() {
+    return [
+      const UserVerify(),
+      const HomePage(title: 'Home Page'),
+      const RadarPage(title: 'Radar Page'),
+      const AnalysisPage(title: 'Analysis Page'),
+      const SettingsPage(title: 'Settings Page'),
+    ];
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.person_2),
+        title: ('Profile'),
+        activeColorPrimary: const Color.fromARGB(255, 0, 83, 129),
+        inactiveColorPrimary: const Color.fromARGB(255, 136, 136, 136),
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.home),
+        title: ('Home'),
+        activeColorPrimary: const Color.fromARGB(255, 0, 83, 129),
+        inactiveColorPrimary: const Color.fromARGB(255, 136, 136, 136),
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.radar),
+        title: ('Radar'),
+        activeColorPrimary: const Color.fromARGB(255, 0, 83, 129),
+        inactiveColorPrimary: const Color.fromARGB(255, 136, 136, 136),
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.trending_up_rounded),
+        title: ('Analysis'),
+        activeColorPrimary: const Color.fromARGB(255, 0, 83, 129),
+        inactiveColorPrimary: const Color.fromARGB(255, 136, 136, 136),
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.settings),
+        title: ('Settings'),
+        activeColorPrimary: const Color.fromARGB(255, 0, 83, 129),
+        inactiveColorPrimary: const Color.fromARGB(255, 136, 136, 136),
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: pageOptions[_selectedIndex],
+    return Center(
+      child: PersistentTabView(
+        context,
+        controller: _controller,
+        screens: _navBarPages(),
+        items: _navBarsItems(),
+        confineInSafeArea: true,
+        backgroundColor: Colors.white,
+        handleAndroidBackButtonPress: true,
+        resizeToAvoidBottomInset: true,
+        hideNavigationBarWhenKeyboardShows: true,
+        decoration: NavBarDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        popAllScreensOnTapOfSelectedTab: true,
+        navBarStyle: NavBarStyle.style9,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person_2),
-                label: 'Profile',
-                backgroundColor: Color.fromARGB(255, 136, 136, 136)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-                backgroundColor: Color.fromARGB(255, 136, 136, 136)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.radar),
-                label: 'Radar',
-                backgroundColor: Color.fromARGB(255, 136, 136, 136)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.trending_up_rounded),
-                label: 'Analysis',
-                backgroundColor: Color.fromARGB(255, 136, 136, 136)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Settings',
-                backgroundColor: Color.fromARGB(255, 136, 136, 136)),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.yellow[600],
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          }),
     );
   }
 }
