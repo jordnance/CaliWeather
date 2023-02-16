@@ -8,7 +8,7 @@ class UserVerify extends StatefulWidget {
   const UserVerify({super.key});
 
   @override
-  _UserVerifyState createState() => _UserVerifyState();
+  State<UserVerify> createState() => _UserVerifyState();
 }
 
 class _UserVerifyState extends State<UserVerify> {
