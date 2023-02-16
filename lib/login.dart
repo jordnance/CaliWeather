@@ -4,7 +4,6 @@ import 'package:caliweather/sql_helper.dart';
 import 'package:caliweather/sharedprefutil.dart';
 import 'package:caliweather/components/textfield_login.dart';
 import 'package:caliweather/components/header_login_profile.dart';
-import 'package:caliweather/globals.dart' as globals;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -69,8 +68,8 @@ class _LoginPageState extends State<LoginPage> {
     showMessage("Welcome back ${SharedPrefUtil.getUserFirstName()}!");
     clearTextControllers();
     FocusScope.of(context).unfocus();
-    Navigator.push(
-            context, MaterialPageRoute(builder: (context) => UserVerify()))
+    Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const UserVerify()))
         .then((value) {
       initState();
     });
@@ -172,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(width: 3),
                       Padding(
-                        padding: EdgeInsets.only(right: 12.0),
+                        padding: const EdgeInsets.only(right: 12.0),
                         child: InkWell(
                           onTap: _testing,
                           child: const Text(
