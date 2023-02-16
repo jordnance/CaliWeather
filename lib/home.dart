@@ -1,5 +1,3 @@
-import 'sql_helper.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_icons/weather_icons.dart';
@@ -154,7 +152,7 @@ class MainWeather extends StatelessWidget {
                 style: const TextStyle(
                     fontSize: 110,
                     fontWeight: FontWeight.w500,
-                    color: const Color.fromARGB(255, 87, 87, 87)),
+                    color: Color.fromARGB(255, 87, 87, 87)),
               ),
             ),
             Padding(
@@ -164,7 +162,7 @@ class MainWeather extends StatelessWidget {
                 style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w500,
-                    color: const Color.fromARGB(255, 87, 87, 87)),
+                    color: Color.fromARGB(255, 87, 87, 87)),
               ),
             ),
           ],
@@ -176,7 +174,7 @@ class MainWeather extends StatelessWidget {
             style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
-                color: const Color.fromARGB(255, 87, 87, 87)),
+                color: Color.fromARGB(255, 87, 87, 87)),
           ),
         ),
         Padding(
@@ -187,7 +185,7 @@ class MainWeather extends StatelessWidget {
             style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w300,
-                color: const Color.fromARGB(255, 87, 87, 87)),
+                color: Color.fromARGB(255, 87, 87, 87)),
           ),
         ),
         Padding(
@@ -197,7 +195,7 @@ class MainWeather extends StatelessWidget {
             style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w300,
-                color: const Color.fromARGB(255, 87, 87, 87)),
+                color: Color.fromARGB(255, 87, 87, 87)),
           ),
         ),
       ],
