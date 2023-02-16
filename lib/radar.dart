@@ -80,7 +80,8 @@ class _RadarPageState extends State<RadarPage> {
   }
 
   void moveMarker() {
-    if (globals.positionLat != 36.746842 || globals.positionLong != -119.772586) {
+    if (globals.positionLat != 36.746842 ||
+        globals.positionLong != -119.772586) {
       setState(() {});
     }
   }
@@ -177,7 +178,7 @@ class _RadarPageState extends State<RadarPage> {
                   fontSize: 14,
                 ),
               ),
-              backgroundColor: Colors.orange,
+              backgroundColor: Color.fromARGB(255, 255, 177, 81),
               tooltip: 'Overlays',
               onPressed: changeOverlays,
               icon: const Icon(
@@ -190,7 +191,7 @@ class _RadarPageState extends State<RadarPage> {
             right: 15,
             bottom: 155,
             child: FloatingActionButton(
-              backgroundColor: Colors.blue,
+              backgroundColor: Color.fromARGB(255, 114, 154, 255),
               tooltip: 'Center',
               onPressed: centerBack,
               child: const Icon(
@@ -203,7 +204,7 @@ class _RadarPageState extends State<RadarPage> {
             right: 15,
             bottom: 80,
             child: FloatingActionButton(
-              backgroundColor: Colors.red,
+              backgroundColor: Color.fromARGB(255, 182, 68, 48),
               tooltip: 'Zoom Out',
               onPressed: zoomOut,
               child: const Icon(
@@ -216,7 +217,7 @@ class _RadarPageState extends State<RadarPage> {
             right: 15,
             bottom: 5,
             child: FloatingActionButton(
-              backgroundColor: Colors.green,
+              backgroundColor: Color.fromARGB(255, 174, 172, 87),
               tooltip: 'Zoom In',
               onPressed: zoomIn,
               child: const Icon(
