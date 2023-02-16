@@ -23,8 +23,8 @@ class SharedPrefUtil {
   static const String theme = 'theme';
   static const String prefalertId = 'prefalertId';
   static const String conserveEnergy = 'conserveEnergy';
-  static const String conserveWater = 'conserveEnergy';
-  static const String apiRelated = 'conserveEnergy';
+  static const String conserveWater = 'conserveWater';
+  static const String apiRelated = 'apiRelated';
 
   //AMBIGOUS SETTER FUNCTIONS
   static Future<void> setIntByKey(String key, int val) async =>
