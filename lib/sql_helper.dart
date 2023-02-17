@@ -122,56 +122,46 @@ class SQLHelper {
   }
 
   // Update language <-- NEEDS TO BE TESTED
-  static Future<int> updateLang(int userprefId, String lang) async {
+  static Future<void> updateLang(int userprefId, String lang) async {
     final db = await SQLHelper.db();
-    final data = {'lang': lang};
-    final result = await db.update('Preference', data,
-        where: "userprefId = ?", whereArgs: [userprefId]);
-    return result;
+    db.rawQuery("UPDATE Preference SET lang = ? WHERE userprefId = ?",
+        [lang, userprefId]);
   }
 
   // Update font size <-- NEEDS TO BE TESTED
-  static Future<int> updateSize(int userprefId, int fontSize) async {
+  static Future<void> updateSize(int userprefId, int fontSize) async {
     final db = await SQLHelper.db();
-    final data = {'fontSize': fontSize};
-    final result = await db.update('Preference', data,
-        where: "userprefId = ?", whereArgs: [userprefId]);
-    return result;
-  }
-
-  // Update alerts <-- NEEDS TO BE TESTED
-  static Future<int> updateAlerts(int userprefId, String alerts) async {
-    final db = await SQLHelper.db();
-    final data = {'alerts': alerts};
-    final result = await db.update('Preference', data,
-        where: "userprefId = ?", whereArgs: [userprefId]);
-    return result;
+    db.rawQuery("UPDATE Preference SET fontSize = ? WHERE userprefId = ?",
+        [fontSize, userprefId]);
   }
 
   // Update temp format <-- NEEDS TO BE TESTED
-  static Future<int> updateTemp(int userprefId, int tempFormat) async {
+  static Future<void> updateTemp(int userprefId, int tempFormat) async {
     final db = await SQLHelper.db();
-    final data = {'tempFormat': tempFormat};
-    final result = await db.update('Preference', data,
-        where: "userprefId = ?", whereArgs: [userprefId]);
-    return result;
+    db.rawQuery("UPDATE Preference SET tempFormat = ? WHERE userprefId = ?",
+        [tempFormat, userprefId]);
   }
 
   // Update location <-- NEEDS TO BE TESTED
-  static Future<int> updateCity(int userprefId, String location) async {
+  static Future<void> updateLocation(int userprefId, String location) async {
     final db = await SQLHelper.db();
-    final data = {'location': location};
-    final result = await db.update('Preference', data,
-        where: "userprefId = ?", whereArgs: [userprefId]);
-    return result;
+    db.rawQuery("UPDATE Preference SET location = ? WHERE userprefId = ?",
+        [location, userprefId]);
   }
 
   // Update theme <-- NEEDS TO BE TESTED
-  static Future<int> updateTheme(int userprefId, String theme) async {
+  static Future<void> updateTheme(int userprefId, String theme) async {
     final db = await SQLHelper.db();
-    final data = {'theme': theme};
-    final result = await db.update('Preference', data,
-        where: "userprefId = ?", whereArgs: [userprefId]);
-    return result;
+    db.rawQuery("UPDATE Preference SET theme = ? WHERE userprefId = ?",
+        [theme, userprefId]);
+  }
+
+  // Update alerts <-- NEEDS TO BE TESTED
+  static Future<void> updateAlerts(int prefalertId, String conserveEnergy,
+      String conserveWater, String apiRelated) async {
+    final db = await SQLHelper.db();
+    db.rawQuery("""UPDATE Alerts SET conserveEnergy = ?, conserveWater = ?, 
+    apiRelated = ? WHERE prefalertId = ?""",
+        [conserveEnergy, conserveWater, apiRelated, prefalertId]);
   }
 }
