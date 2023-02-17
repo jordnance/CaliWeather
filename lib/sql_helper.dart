@@ -19,9 +19,9 @@ class SQLHelper {
     )""");
     await database.execute("""CREATE TABLE IF NOT EXISTS Alerts(
     prefalertId integer PRIMARY KEY REFERENCES Preference(userprefId) ON DELETE CASCADE,
-    conserveEnergy text default NULL,
-    conserveWater text default NULL,
-    apiRelated text default NULL
+    conserveEnergy text default "Off",
+    conserveWater text default "Off",
+    apiRelated text default "Off"
     )""");
     await database.execute("PRAGMA foreign_keys = ON");
   }
@@ -52,7 +52,7 @@ class SQLHelper {
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'seven.db',
+      'eleven.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -62,12 +62,13 @@ class SQLHelper {
   }
 
   // Create new user <-- WORKS
-  static Future<int> createUser(String? username, String? password) async {
+  static Future<void> createUser(String? firstName, String? lastName,
+      String? username, String? password) async {
     final db = await SQLHelper.db();
-    final data = {'username': username, 'password': password};
-    final userId = await db.insert('User', data,
-        conflictAlgorithm: sql.ConflictAlgorithm.replace);
-    return userId;
+    db.rawQuery("""INSERT INTO User(firstName, lastName, username, password) 
+    VALUES (?, ?, ?, ?)""", [firstName, lastName, username, password]);
+    db.rawQuery("""INSERT INTO Preference DEFAULT VALUES""");
+    db.rawQuery("""INSERT INTO Alerts DEFAULT VALUES""");
   }
 
   // Read a single user by username and password <-- WORKS
