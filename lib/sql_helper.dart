@@ -31,28 +31,43 @@ class SQLHelper {
         .execute("""INSERT INTO User(firstName, lastName, username, password) 
     VALUES 
     ('Bobby', 'Hill', 'testing', '123'), 
-    ('Eric', 'Cartman', 'southpark', '456'),
-    ('Peter', 'Griffin', 'familyguy', '789')
+    ('Eric', 'Cartman', 'southpark', '456'), 
+    ('Peter', 'Griffin', 'familyguy', '789'), 
+    ('Quentin', 'Tarantino', 'pulpfiction', '321'), 
+    ('Bruce', 'Wayne', 'batman', '654'), 
+    ('Patrick', 'Star', 'spongebob', '987'), 
+    ('Dennis', 'Reynolds', 'sunny', '090'), 
+    ('Matthew', 'McConaughey', 'alright', '181')
     """);
     await database.execute(
         """INSERT INTO Preference(lang, fontSize, tempFormat, location, theme) 
     VALUES 
     ('English', 'Small', 'F', 'Bakersfield', 'Light'),
-    ('Spanish', 'Medium', 'F', 'Los Angeles', 'Dark'), 
-    ('English', 'Large', 'C', 'San Luis Obispo', 'Light')
+    ('English', 'Small', 'C', 'Modesto', 'Dark'),
+    ('Spanish', 'Small', 'F', 'Chico', 'Light'),
+    ('English', 'Medium', 'F', 'Los Angeles', 'Light'), 
+    ('English', 'Medium', 'C', 'San Diego', 'Dark'), 
+    ('Spanish', 'Medium', 'F', 'Sacramento', 'Light'), 
+    ('English', 'Large', 'F', 'San Luis Obispo', 'Light'), 
+    ('Spanish', 'Large', 'C', 'Palm Springs', 'Dark')
     """);
     await database.execute(
         """INSERT INTO Alerts(conserveEnergy, conserveWater, apiRelated) 
     VALUES 
+    ('Off', 'Off', 'Off'),
     ('On', 'Off', 'Off'),
-    ('On', 'On', 'Off'), 
+    ('Off', 'On', 'Off'),
+    ('Off', 'Off', 'On'),
+    ('On', 'On', 'Off'),
+    ('On', 'Off', 'On'),
+    ('Off', 'On', 'On'), 
     ('On', 'On', 'On')
     """);
   }
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'eleven.db',
+      'twelve.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
