@@ -80,23 +80,35 @@ class _RadarPageState extends State<RadarPage> {
   }
 
   void moveMarker() {
-    if (globals.positionLat != 36.746842 ||
-        globals.positionLong != -119.772586) {
       setState(() {});
-    }
   }
 
-  getCurrentPosition() {
-    Geolocator.requestPermission();
-    Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.best,
-            forceAndroidLocationManager: true)
+  void getCurrentPosition() async {
+    bool? serviceEnabled;
+    LocationPermission? permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permissions are permanently denied');
+    }
+    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
       setState(() {
         currentPosition = position;
       });
-    }).catchError((e) {
-      print(e);
     });
   }
 
