@@ -86,28 +86,12 @@ class SQLHelper {
     db.rawQuery("""INSERT INTO Alerts DEFAULT VALUES""");
   }
 
-  // Read a single user by username and password <-- WORKS
-  static Future<List<Map<String, dynamic>>> getUser(
-      String username, String password) async {
-    final db = await SQLHelper.db();
-    return db.query('User',
-        where: "username = ? AND password = ?",
-        whereArgs: [username, password],
-        limit: 1);
-  }
-
   // Read a single user by username <-- WORKS
   static Future<List<Map<dynamic, dynamic>>> getUserByUsername(
       String username) async {
     sql.Database db = await SQLHelper.db();
-    return db.query('User',
-        where: "username = ?", whereArgs: [username], limit: 1);
-  }
-
-  // Read a single user by userId <-- WORKS
-  static Future<List<Map<String, dynamic>>> getUserById(int userId) async {
-    final db = await SQLHelper.db();
-    return db.query('User', where: "userId = ?", whereArgs: [userId], limit: 1);
+    return db
+        .rawQuery("SELECT * FROM User WHERE username = ? LIMIT 1", [username]);
   }
 
   // Read user, preference, and alert info by userId <-- WORKS
@@ -119,6 +103,13 @@ class SQLHelper {
      INNER JOIN Alerts AS a ON p.userprefId = a.prefalertId
      WHERE u.userId = p.userprefId  
      """, [userId]);
+  }
+
+  // Update password <-- NEEDS TO BE TESTED
+  static Future<void> updatePassword(int userId, String password) async {
+    final db = await SQLHelper.db();
+    db.rawQuery(
+        "UPDATE User SET password = ? WHERE userId = ?", [password, userId]);
   }
 
   // Update language <-- NEEDS TO BE TESTED
