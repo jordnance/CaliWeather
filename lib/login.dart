@@ -56,13 +56,13 @@ class _LoginPageState extends State<LoginPage> {
 
     //CATCH ERRORS AND RETURN
     if (user.isEmpty) {
-      //showMessage("User not found");
+      showMessage("User not found");
       clearTextControllers();
       return;
     }
 
     if (user[0]['password'] != passwordValue) {
-      //showMessage("Incorrect Password");
+      showMessage("Incorrect Password");
       clearTextControllers();
       return;
     }
@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
     //NOT ERRORS FOUND, FINISH LOGIN
     var userinfo = await SQLHelper.getUserInfo(user[0]['userId']);
     SharedPrefUtil.setUserLogin(userinfo[0]);
-    //showMessage("Welcome back ${SharedPrefUtil.getUserFirstName()}!");
+    showMessage("Welcome back ${SharedPrefUtil.getUserFirstName()}!");
     clearTextControllers();
     FocusScope.of(context).unfocus();
     PersistentNavBarNavigator.pushNewScreen(
@@ -144,6 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                       });
                       await _addUser();
                       Navigator.of(context, rootNavigator: true).pop(context);
+                      showMessage("You've successfully signed up!");
                     },
                     child: const Text('Sign Up'),
                   )
@@ -155,7 +156,6 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _addUser() async {
     SQLHelper.createUser(newFirstNameValue, newLastNameValue, newUsernameValue,
         newPasswordValue);
-    //showMessage(_newUsernameController.text + " has signed up!");
     _newFirstNameController.text = '';
     _newLastNameController.text = '';
     _newUsernameController.text = '';
@@ -253,7 +253,7 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 12.0),
                         child: InkWell(
-                          onTap: _testing,
+                          onTap: _resigterForm,
                           child: const Text(
                             'Register here',
                             style: TextStyle(
