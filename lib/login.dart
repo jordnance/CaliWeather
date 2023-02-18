@@ -69,12 +69,8 @@ class _LoginPageState extends State<LoginPage> {
     showMessage("Welcome back ${SharedPrefUtil.getUserFirstName()}!");
     clearTextControllers();
     FocusScope.of(context).unfocus();
-    PersistentNavBarNavigator.pushNewScreen(
-      context,
-      screen: const UserVerify(),
-      withNavBar: true, // OPTIONAL VALUE. True by default.
-      pageTransitionAnimation: PageTransitionAnimation.cupertino,
-    );
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (BuildContext context) => const UserVerify()));
   }
 
   void _testing() async {

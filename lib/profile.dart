@@ -1,3 +1,5 @@
+import 'package:caliweather/main.dart';
+import 'package:caliweather/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:caliweather/components/header_login_profile.dart';
 import 'package:caliweather/sharedprefutil.dart';
@@ -14,12 +16,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   void _signOut() async {
     SharedPrefUtil.setLogout();
-    PersistentNavBarNavigator.pushNewScreen(
-      context,
-      screen: UserVerify(),
-      withNavBar: true, // OPTIONAL VALUE. True by default.
-      pageTransitionAnimation: PageTransitionAnimation.cupertino,
-    );
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (BuildContext context) => UserVerify()));
   }
 
   void _testing() async {
@@ -54,7 +52,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: const SettingsPage(title: 'Settings'),
+                        withNavBar: false,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                         elevation: 3,
                         minimumSize: const Size.fromHeight(60),
