@@ -4,6 +4,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:caliweather/geo_helper.dart';
+import 'package:caliweather/sharedprefutil.dart';
 
 class RadarPage extends StatefulWidget {
   const RadarPage({super.key, required this.title});
@@ -80,36 +82,23 @@ class _RadarPageState extends State<RadarPage> {
   }
 
   void moveMarker() {
-      setState(() {});
+    setState(() {});
   }
 
   void getCurrentPosition() async {
-    bool? serviceEnabled;
-    LocationPermission? permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error('Location permissions are permanently denied');
-    }
-    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() {
-        currentPosition = position;
+    var serviceEnabled = await GeoHelper.getPermissions();
+    if (serviceEnabled) {
+      Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+          .then((Position position) {
+        setState(() {
+          currentPosition = position;
+        });
       });
-    });
+    } else {
+      var location = SharedPrefUtil.getLocation();
+      GeoHelper.getManualLocation(location);
+      setState(() {});
+    }
   }
 
   @override
