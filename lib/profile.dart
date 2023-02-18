@@ -1,4 +1,3 @@
-import 'package:caliweather/main.dart';
 import 'package:caliweather/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:caliweather/components/header_login_profile.dart';
@@ -16,8 +15,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   void _signOut() async {
     SharedPrefUtil.setLogout();
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (BuildContext context) => UserVerify()));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (BuildContext context) => const UserVerify()));
   }
 
   void _testing() async {
