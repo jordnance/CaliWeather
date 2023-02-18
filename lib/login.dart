@@ -62,14 +62,16 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    //NOT ERRORS FOUND, FINISH LOGIN
+    //NO ERRORS FOUND, FINISH LOGIN
     var userinfo = await SQLHelper.getUserInfo(user[0]['userId']);
     SharedPrefUtil.setUserLogin(userinfo[0]);
     showMessage("Welcome back ${SharedPrefUtil.getUserFirstName()}!");
     clearTextControllers();
-    FocusScope.of(context).unfocus();
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (BuildContext context) => const UserVerify()));
+    if (context.mounted) {
+      FocusScope.of(context).unfocus();
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) => const UserVerify()));
+    }
   }
 
   void _testing() async {
