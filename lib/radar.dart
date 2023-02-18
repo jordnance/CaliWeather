@@ -26,7 +26,8 @@ class _RadarPageState extends State<RadarPage> {
   LatLng currentCenter = LatLng(globals.positionLat, globals.positionLong);
 
   List<String> overlayUrl = [
-    'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png',
+    'https://tilecache.rainviewer.com/v2/radar/nowcast_0f58489b0916/512/{z}/{x}/{y}/1/1_1.png',
+    'https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
     'https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
     'https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
     'https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3'
@@ -34,6 +35,7 @@ class _RadarPageState extends State<RadarPage> {
 
   List<String> overlayTitle = [
     'Radar',
+    'Clouds',
     'Precipitation',
     'Temperature',
     'Wind Speed'
