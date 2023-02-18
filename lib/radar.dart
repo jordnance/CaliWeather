@@ -4,7 +4,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:caliweather/util/radar_util.dart';
 import 'package:caliweather/geo_helper.dart';
+
 import 'package:caliweather/sharedprefutil.dart';
 
 class RadarPage extends StatefulWidget {
@@ -16,29 +18,35 @@ class RadarPage extends StatefulWidget {
 }
 
 class _RadarPageState extends State<RadarPage> {
-  int index = 0;
+  int overlayIndex = 0;
+  double radarIndex = 0;
   double minZoom = 3.5;
   double maxZoom = 10;
   double currentZoom = 5.5;
+  double currentSliderValue = 0;
   MapController mapController = MapController();
 
   Position? currentPosition;
   LatLng currentCenter = LatLng(globals.positionLat, globals.positionLong);
 
+  List<String> pastRadarUrl = [
+    'https://tilecache.rainviewer.com/v2/radar/${RadarUtil.getTimestamps(0)}/512/{z}/{x}/{y}/1/1_1.png',
+    'https://tilecache.rainviewer.com/v2/radar/${RadarUtil.getTimestamps(1)}/512/{z}/{x}/{y}/1/1_1.png',
+    'https://tilecache.rainviewer.com/v2/radar/${RadarUtil.getTimestamps(2)}/512/{z}/{x}/{y}/1/1_1.png',
+    'https://tilecache.rainviewer.com/v2/radar/${RadarUtil.getTimestamps(3)}/512/{z}/{x}/{y}/1/1_1.png',
+    'https://tilecache.rainviewer.com/v2/radar/${RadarUtil.getTimestamps(4)}/512/{z}/{x}/{y}/1/1_1.png',
+  ];
+
   List<String> overlayUrl = [
-    'https://tilecache.rainviewer.com/v2/radar/nowcast_0f58489b0916/512/{z}/{x}/{y}/1/1_1.png',
     'https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
-    'https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
     'https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
     'https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3'
   ];
 
   List<String> overlayTitle = [
-    'Radar',
     'Clouds',
-    'Precipitation',
-    'Temperature',
-    'Wind Speed'
+    'Temps',
+    'Wind'
   ];
 
   @override
@@ -75,11 +83,16 @@ class _RadarPageState extends State<RadarPage> {
   }
 
   void changeOverlays() {
-    if (index != 3) {
-      index++;
+    if (overlayIndex != 2) {
+      overlayIndex++;
     } else {
-      index = 0;
+      overlayIndex = 0;
     }
+    setState(() {});
+  }
+
+  void changeRadar(double value) {
+    radarIndex = value * 2;
     setState(() {});
   }
 
@@ -143,7 +156,13 @@ class _RadarPageState extends State<RadarPage> {
                     ),
                     TileLayer(
                       tileProvider: NetworkTileProvider(),
-                      urlTemplate: overlayUrl[index],
+                      urlTemplate: overlayUrl[overlayIndex],
+                      userAgentPackageName: 'com.example.app',
+                      backgroundColor: Colors.transparent,
+                    ),
+                    TileLayer(
+                      tileProvider: NetworkTileProvider(),
+                      urlTemplate: pastRadarUrl[radarIndex.round()],
                       userAgentPackageName: 'com.example.app',
                       backgroundColor: Colors.transparent,
                     ),
@@ -176,7 +195,7 @@ class _RadarPageState extends State<RadarPage> {
             bottom: 20,
             child: FloatingActionButton.extended(
               label: Text(
-                overlayTitle[index],
+                overlayTitle[overlayIndex],
                 style: const TextStyle(
                   fontSize: 14,
                 ),
@@ -229,6 +248,63 @@ class _RadarPageState extends State<RadarPage> {
               ),
             ),
           ),
+          Positioned(
+            right: 19,
+            bottom: 230,
+            child: RotatedBox(
+              quarterTurns: 3,
+              child: Container(
+                width: 267,
+                height: 55,
+                decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 220, 220, 220),
+                    border: Border.all(
+                        width: 4, color: Colors.black),
+                    borderRadius: BorderRadius.circular(28)),
+                child: Center(
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 15),
+                      const RotatedBox(
+                        quarterTurns: 1,
+                        child: Text(
+                          'Now',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                      ),
+                      Slider(
+                        divisions: 4,
+                        value: currentSliderValue,
+                        min: 0,
+                        max: 2,
+                        label: '$currentSliderValue',
+                        onChanged: (double value) {
+                          setState(() {
+                            currentSliderValue = value;
+                            changeRadar(currentSliderValue);
+                          });
+                        },
+                        // ),
+                      ),
+                      const RotatedBox(
+                        quarterTurns: 1,
+                        child: Text(
+                          '-2 hr',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
