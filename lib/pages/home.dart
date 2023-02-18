@@ -1,8 +1,10 @@
+import 'package:caliweather/weather_helper.dart';
+import 'package:weather/weather.dart';
+import 'package:weather_icons/weather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:weather_icons/weather_icons.dart';
-import 'util/weather_icon_util.dart';
-import 'util/home_utest_util.dart';
+import '../util/weather_icon_util.dart';
+import '../util/home_utest_util.dart';
 
 ///********************** temporary; generating weather and date values ****************************///
 import 'dart:math';
@@ -203,6 +205,196 @@ class MainWeather extends StatelessWidget {
   }
 }
 
+class MicroWeather extends StatelessWidget {
+  late String description;
+  late String areaName;
+  late String cloudiness;
+  late String country;
+  late String date;
+  late String humidity;
+  late String latitude;
+  late String longitude;
+  late String pressure;
+  late String rainLast3Hours;
+  late String rainLastHour;
+  late String snowLast3Hours;
+  late String snowLastHour;
+  late String sunrise;
+  late String sunset;
+  late String tempFeelsLike;
+  late String tempMax;
+  late String tempMin;
+  late String temperature;
+  late String weatherConditionCode;
+  late String weatherDescription;
+  late String weatherIcon;
+  late String weatherMain;
+  late String windDegree;
+  late String windGust;
+  late String windSpeed;
+
+  MicroWeather({super.key});
+
+  //MicroWeather(this.description, {super.key});
+
+  void init() async {
+    Weather weather = await WeatherHelper.getCurrent();
+    areaName = weather.areaName.toString();
+    cloudiness = weather.cloudiness.toString();
+    country = weather.country.toString();
+    date = weather.date.toString();
+    //hashCode = weather.hashCode.toString();
+    humidity = weather.humidity.toString();
+    latitude = weather.latitude.toString();
+    longitude = weather.longitude.toString();
+    pressure = weather.pressure.toString();
+    rainLast3Hours = weather.rainLast3Hours.toString();
+    rainLastHour = weather.rainLastHour.toString();
+    //runtimeType = weather.runtimeType.toString();
+    snowLast3Hours = weather.snowLast3Hours.toString();
+    snowLastHour = weather.snowLastHour.toString();
+    sunrise = weather.sunrise.toString();
+    sunset = weather.sunset.toString();
+    tempFeelsLike = weather.tempFeelsLike.toString();
+    tempMax = weather.tempMax.toString();
+    tempMin = weather.tempMin.toString();
+    temperature = weather.temperature.toString();
+    weatherConditionCode = weather.weatherConditionCode.toString();
+    weatherDescription = weather.weatherDescription.toString();
+    weatherIcon = weather.weatherIcon.toString();
+    weatherMain = weather.weatherMain.toString();
+    windDegree = weather.windDegree.toString();
+    windGust = weather.windGust.toString();
+    windSpeed = weather.windSpeed.toString();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    init();
+
+    /// ************* temporary data until API calls are brought in ********************** ///
+    ///
+    String units = "°F"; //NOTE: may need to pull from settings
+
+    ///
+    /// ***============================================================================*** ///
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Max: $tempMax',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+              //color: Color.fromARGB(255, 87, 87, 87),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Cloudiness: $cloudiness',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+              //color: Color.fromARGB(255, 87, 87, 87),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Humidity: $humidity',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+              //color: Color.fromARGB(255, 87, 87, 87),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Pressure: $pressure',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+              //color: Color.fromARGB(255, 87, 87, 87),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Feels like: $tempFeelsLike',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+              //color: Color.fromARGB(255, 87, 87, 87),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Sunrise: $sunrise',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+              //color: Color.fromARGB(255, 87, 87, 87),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Sunset: $sunset',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+              //color: Color.fromARGB(255, 87, 87, 87),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Main: $weatherMain',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+              //color: Color.fromARGB(255, 87, 87, 87),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Description: $weatherDescription',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+              //color: Color.fromARGB(255, 87, 87, 87),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
   final String title;
@@ -234,30 +426,45 @@ class _HomePageState extends State<HomePage> {
     /// ***============================================================================*** ///
 
     Color bgColor = Colors.grey.shade200;
+    final PageController pgController = PageController();
+    double currentPage = 0;
+    @override
+    void initState() {
+      pgController.addListener(() {
+        setState(() {
+          currentPage = pgController.page!;
+        });
+      });
+      super.initState();
+    }
 
     return Scaffold(
-      body: Container(
-        color: bgColor,
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: Center(
+              child: PageView(
+                controller: pgController,
                 children: <Widget>[
                   MainWeather(temp, desc, city, currDay, opwKey),
-                  IconButton(
-                    iconSize: 25,
-                    icon: const Icon(Icons.refresh),
-                    color:
-                        const Color.fromARGB(255, 87, 87, 87).withOpacity(0.6),
-                    onPressed: () {
-                      setState(() {}); //NOTE: Temporary functionality
-                    },
-                  ),
+                  MicroWeather(),
                 ],
               ),
             ),
-            SizedBox(
+          ),
+          Center(
+            child: IconButton(
+              iconSize: 25,
+              icon: const Icon(Icons.refresh),
+              color: const Color.fromARGB(255, 87, 87, 87).withOpacity(0.6),
+              onPressed: () {
+                setState(() {}); //NOTE: Temporary functionality
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.30,
               child: Container(
                 padding: const EdgeInsets.all(10.0),
@@ -280,9 +487,9 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }

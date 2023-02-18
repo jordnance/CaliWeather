@@ -1,5 +1,5 @@
 import 'userverify.dart';
-import 'home.dart';
+import 'pages/home.dart';
 import 'radar.dart';
 import 'analysis.dart';
 import 'settings.dart';
