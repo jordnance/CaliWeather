@@ -1,4 +1,4 @@
-import 'package:caliweather/weather_helper.dart';
+import '../util/weather_helper.dart';
 import 'package:weather/weather.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

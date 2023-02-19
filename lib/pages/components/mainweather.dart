@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../util/weather_icon_util.dart';
 import '../../util/home_utest_util.dart';
 import 'package:weather_icons/weather_icons.dart';
-import 'package:caliweather/weather_helper.dart';
+import '../../util/weather_helper.dart';
 import 'package:weather/weather.dart';
 import 'package:intl/intl.dart';
 
