@@ -1,9 +1,9 @@
-import 'package:caliweather/userverify.dart';
+import '../util/userverify.dart';
 import 'package:flutter/material.dart';
-import 'package:caliweather/sql_helper.dart';
-import 'package:caliweather/sharedprefutil.dart';
-import 'package:caliweather/components/textfield_login.dart';
-import 'package:caliweather/components/header_login_profile.dart';
+import '../util/sql_helper.dart';
+import '../util/sharedprefutil.dart';
+import 'components/textfield_login.dart';
+import 'components/header_login_profile.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

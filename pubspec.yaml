@@ -23,6 +23,8 @@ dependencies:
   weather_icons: ^3.0.0-nullsafety.x
   shared_preferences: ^2.0.17
   persistent_bottom_nav_bar: any
+  smooth_page_indicator: ^1.0.1
+
 
 dev_dependencies:
   flutter_test:

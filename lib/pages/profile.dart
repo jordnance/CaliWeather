@@ -1,8 +1,8 @@
-import 'package:caliweather/settings.dart';
+import 'settings.dart';
 import 'package:flutter/material.dart';
-import 'package:caliweather/components/header_login_profile.dart';
-import 'package:caliweather/sharedprefutil.dart';
-import 'package:caliweather/userverify.dart';
+import 'components/header_login_profile.dart';
+import '../util/sharedprefutil.dart';
+import '../util/userverify.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ProfilePage extends StatefulWidget {
