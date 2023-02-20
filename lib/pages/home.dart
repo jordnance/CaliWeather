@@ -251,70 +251,72 @@ class _HomePageState extends State<HomePage> {
     final PageController pgController = PageController();
 
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Center(
-              child: PageView(
-                controller: pgController,
-                children: <Widget>[
-                  MainWeather(temp, desc, city, opwKey),
-                  MicroWeather(),
-                ],
-              ),
-            ),
-          ),
-          Center(
-            child: SmoothPageIndicator(
-              controller: pgController,
-              count: 2,
-              axisDirection: Axis.horizontal,
-              effect: SlideEffect(
-                activeDotColor: Colors.blueGrey,
-                dotHeight: 10,
-                dotColor: Colors.grey.shade400,
-                dotWidth: 10,
-              ),
-            ),
-          ),
-          Center(
-            child: IconButton(
-              iconSize: 25,
-              icon: const Icon(Icons.refresh),
-              color: const Color.fromARGB(255, 87, 87, 87).withOpacity(0.6),
-              onPressed: () {
-                setState(() {}); //NOTE: Temporary functionality
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.30,
-              child: Container(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Center(
+                child: PageView(
+                  controller: pgController,
                   children: <Widget>[
-                    Expanded(
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: <Widget>[
-                          ForecastWeather(ftemp(), desc, nextDay(1), opwKey),
-                          ForecastWeather(ftemp(), desc, nextDay(2), opwKey),
-                          ForecastWeather(ftemp(), desc, nextDay(3), opwKey),
-                          ForecastWeather(ftemp(), desc, nextDay(4), opwKey),
-                          ForecastWeather(ftemp(), desc, nextDay(5), opwKey),
-                          ForecastWeather(ftemp(), desc, nextDay(6), opwKey),
-                          ForecastWeather(ftemp(), desc, nextDay(7), opwKey),
-                        ],
-                      ),
-                    ),
+                    MainWeather(temp, desc, city, opwKey),
+                    MicroWeather(),
                   ],
                 ),
               ),
             ),
-          ),
-        ],
+            Center(
+              child: SmoothPageIndicator(
+                controller: pgController,
+                count: 2,
+                axisDirection: Axis.horizontal,
+                effect: SlideEffect(
+                  activeDotColor: Colors.blueGrey,
+                  dotHeight: 10,
+                  dotColor: Colors.grey.shade400,
+                  dotWidth: 10,
+                ),
+              ),
+            ),
+            Center(
+              child: IconButton(
+                iconSize: 25,
+                icon: const Icon(Icons.refresh),
+                color: const Color.fromARGB(255, 87, 87, 87).withOpacity(0.6),
+                onPressed: () {
+                  setState(() {}); //NOTE: Temporary functionality
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.30,
+                child: Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: <Widget>[
+                            ForecastWeather(ftemp(), desc, nextDay(1), opwKey),
+                            ForecastWeather(ftemp(), desc, nextDay(2), opwKey),
+                            ForecastWeather(ftemp(), desc, nextDay(3), opwKey),
+                            ForecastWeather(ftemp(), desc, nextDay(4), opwKey),
+                            ForecastWeather(ftemp(), desc, nextDay(5), opwKey),
+                            ForecastWeather(ftemp(), desc, nextDay(6), opwKey),
+                            ForecastWeather(ftemp(), desc, nextDay(7), opwKey),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
