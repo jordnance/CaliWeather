@@ -15,12 +15,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String? usernameValue;
   String? passwordValue;
+  String? newFirstNameValue;
+  String? newLastNameValue;
   String? newUsernameValue;
   String? newPasswordValue;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  //final TextEditingController _newUsernameController = TextEditingController();
-  //final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _newFirstNameController = TextEditingController();
+  final TextEditingController _newLastNameController = TextEditingController();
+  final TextEditingController _newUsernameController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
 
   // temporary function until final ui for displaying error messages
   void showMessage(String message) {
@@ -79,6 +83,80 @@ class _LoginPageState extends State<LoginPage> {
     // print(userinfo);
     //SharedPrefUtil.setUserLogin(userinfo[0]);
     SharedPrefUtil.checkAllPrefs();
+  }
+
+  void _resigterForm() async {
+    showModalBottomSheet(
+        context: context,
+        elevation: 5,
+        isScrollControlled: true,
+        useRootNavigator: true,
+        builder: (_) => Container(
+              padding: EdgeInsets.only(
+                top: 15,
+                left: 15,
+                right: 15,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 260,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextField(
+                    controller: _newFirstNameController,
+                    decoration: const InputDecoration(hintText: 'First Name'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: _newLastNameController,
+                    decoration: const InputDecoration(hintText: 'Last Name'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: _newUsernameController,
+                    decoration: const InputDecoration(hintText: 'Username'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: _newPasswordController,
+                    decoration: const InputDecoration(hintText: 'Password'),
+                    obscureText: true,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        newFirstNameValue = _newFirstNameController.text;
+                        newLastNameValue = _newLastNameController.text;
+                        newUsernameValue = _newUsernameController.text;
+                        newPasswordValue = _newPasswordController.text;
+                      });
+                      await _addUser();
+                      Navigator.of(context, rootNavigator: true).pop(context);
+                      showMessage("You've successfully signed up!");
+                    },
+                    child: const Text('Sign Up'),
+                  )
+                ],
+              ),
+            ));
+  }
+
+  Future<void> _addUser() async {
+    SQLHelper.createUser(newFirstNameValue, newLastNameValue, newUsernameValue,
+        newPasswordValue);
+    _newFirstNameController.text = '';
+    _newLastNameController.text = '';
+    _newUsernameController.text = '';
+    _newPasswordController.text = '';
   }
 
   @override
@@ -172,7 +250,7 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 12.0),
                         child: InkWell(
-                          onTap: _testing,
+                          onTap: _resigterForm,
                           child: const Text(
                             'Register here',
                             style: TextStyle(

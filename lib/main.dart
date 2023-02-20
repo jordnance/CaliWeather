@@ -38,19 +38,19 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 1);
+      PersistentTabController(initialIndex: 2);
 
   List<Widget> _navBarPages() {
     return [
       const UserVerify(),
-      const HomePage(title: 'Home Page'),
       const RadarPage(title: 'Radar Page'),
+      const HomePage(title: 'Home Page'),
       const AnalysisPage(title: 'Analysis Page'),
       const SettingsPage(title: 'Settings Page'),
     ];
   }
 
-  List<PersistentBottomNavBarItem> _navBarsItems() {
+  List<PersistentBottomNavBarItem> _navBarItems() {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.person_2),
@@ -59,14 +59,14 @@ class _MainState extends State<Main> {
         inactiveColorPrimary: const Color.fromARGB(255, 136, 136, 136),
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.home),
-        title: ('Home'),
+        icon: const Icon(Icons.radar),
+        title: ('Radar'),
         activeColorPrimary: const Color.fromARGB(255, 0, 83, 129),
         inactiveColorPrimary: const Color.fromARGB(255, 136, 136, 136),
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.radar),
-        title: ('Radar'),
+        icon: const Icon(Icons.home),
+        title: ('Home'),
         activeColorPrimary: const Color.fromARGB(255, 0, 83, 129),
         inactiveColorPrimary: const Color.fromARGB(255, 136, 136, 136),
       ),
@@ -92,7 +92,7 @@ class _MainState extends State<Main> {
         context,
         controller: _controller,
         screens: _navBarPages(),
-        items: _navBarsItems(),
+        items: _navBarItems(),
         confineInSafeArea: true,
         backgroundColor: Colors.white,
         handleAndroidBackButtonPress: true,
