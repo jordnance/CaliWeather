@@ -1,54 +1,19 @@
 import 'package:flutter/material.dart';
 import '../../util/weather_icon_util.dart';
-import '../../util/home_utest_util.dart';
 import 'package:weather_icons/weather_icons.dart';
-import 'package:caliweather/weather_helper.dart';
-import 'package:intl/intl.dart';
 
-///********************** temporary; generating weather and date values ****************************///
-import 'dart:math';
-
-// seed random
-final rnd = Random(DateTime.now().millisecondsSinceEpoch);
-
-//random temp
-int getRndVal() => 15 + rnd.nextInt(95); //min temp: 15,  max temp: 110
-
-//temporary date values
-final String currDay = DateFormat('MMM dd').format(DateTime.now()).toString();
-String nextDay(int offset) => DateFormat('MMM dd')
-    .format(DateTime.now().add(Duration(days: offset)))
-    .toString();
-
-//generate random ID from possible OpenWeatherAPI ID's
-var testID =
-    HomeTestUtil.utest_idList[rnd.nextInt(HomeTestUtil.utest_idList.length)];
-
-///*************************************************************************************************///
-///
 class ForecastWeather extends StatelessWidget {
-  final int temperature;
-  final String description;
-  final String date;
-  final int opwKey;
+  final List<dynamic>? todos;
 
-  const ForecastWeather(
-      this.temperature, this.description, this.date, this.opwKey,
-      {super.key});
+  const ForecastWeather({
+    super.key,
+    required this.todos,
+  });
 
   @override
   Widget build(BuildContext context) {
-    /// ************* temporary data until API calls are brought in ********************** ///
-    ///
-    var opwKey = HomeTestUtil
-        .utest_idList[rnd.nextInt(HomeTestUtil.utest_idList.length)];
-    String desc = HomeTestUtil.utest_descMap[opwKey].toString();
-    String units = "°F"; //NOTE: may need to pull from settings
-    String iconKey = HomeTestUtil.utest_opwIconMap[opwKey].toString();
-    String iconName = WeatherIconsUtil.iconMap[iconKey].toString();
-
-    ///
-    /// ***============================================================================*** ///
+    String iconName = WeatherIconsUtil.iconMap[todos?[3]].toString();
+    String units = "°F"; // TODO: Pull from settings/database
 
     return Card(
       elevation: 0,
@@ -70,7 +35,7 @@ class ForecastWeather extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text(
-                    temperature.toString(),
+                    '${todos![0]}'.toString(),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontSize: 32,
@@ -93,7 +58,7 @@ class ForecastWeather extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                desc, //TODO: change back to 'description' with API call
+                '${todos![1]}',
                 style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
@@ -101,7 +66,7 @@ class ForecastWeather extends StatelessWidget {
               ),
             ),
             Text(
-              date,
+              '${todos![2]}',
               style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
