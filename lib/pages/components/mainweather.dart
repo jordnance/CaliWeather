@@ -15,8 +15,7 @@ class MainWeather extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         BoxedIcon(WeatherIcons.fromString(iconName),
-            size: 120,
-            color: const Color.fromARGB(255, 87, 87, 87)),
+            size: 110, color: const Color.fromARGB(255, 87, 87, 87)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +26,7 @@ class MainWeather extends StatelessWidget {
                 '${todos?[1]}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    fontSize: 110,
+                    fontSize: 115,
                     fontWeight: FontWeight.w500,
                     color: Color.fromARGB(255, 87, 87, 87)),
               ),

@@ -1,4 +1,4 @@
-import 'globals.dart' as globals;
+import '../util/globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';

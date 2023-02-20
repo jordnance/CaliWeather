@@ -1,8 +1,9 @@
-import 'package:caliweather/weather_helper.dart';
+import 'package:caliweather/util/weather_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:caliweather/pages/components/microweather.dart';
 import 'package:caliweather/pages/components/mainweather.dart';
 import 'package:caliweather/pages/components/forecast.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Todo {
   final String mainData;
@@ -44,6 +45,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final PageController pgController = PageController();
+
     return Scaffold(
       body: FutureBuilder<void>(
           future: getData(),
@@ -74,14 +77,27 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Center(
+                      child: SmoothPageIndicator(
+                        controller: pgController,
+                        count: 2,
+                        axisDirection: Axis.horizontal,
+                        effect: SlideEffect(
+                          activeDotColor: Colors.blueGrey,
+                          dotHeight: 10,
+                          dotColor: Colors.grey.shade400,
+                          dotWidth: 10,
+                        ),
+                      ),
+                    ),
+                    Center(
                       child: IconButton(
                         iconSize: 25,
                         icon: const Icon(Icons.refresh),
                         color: const Color.fromARGB(255, 87, 87, 87)
                             .withOpacity(0.6),
                         onPressed: () {
-                          getData();        // <-- TESTING
-                          setState(() {});  // <-- TESTING
+                          getData(); // <-- TESTING
+                          setState(() {}); // <-- TESTING
                         },
                       ),
                     ),

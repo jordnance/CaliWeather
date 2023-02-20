@@ -1,10 +1,10 @@
-import 'userverify.dart';
+import 'util/userverify.dart';
 import 'pages/home.dart';
-import 'radar.dart';
-import 'analysis.dart';
-import 'settings.dart';
+import 'pages/radar.dart';
+import 'pages/analysis.dart';
+import 'pages/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:caliweather/sharedprefutil.dart';
+import 'util/sharedprefutil.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 void main() async {
