@@ -248,18 +248,7 @@ class _HomePageState extends State<HomePage> {
     ///
     /// ***============================================================================*** ///
 
-    Color bgColor = Colors.grey.shade200;
     final PageController pgController = PageController();
-    double currentPage = 0;
-    @override
-    void initState() {
-      pgController.addListener(() {
-        setState(() {
-          currentPage = pgController.page!;
-        });
-      });
-      super.initState();
-    }
 
     return Scaffold(
       body: Column(
