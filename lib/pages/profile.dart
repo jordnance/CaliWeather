@@ -1,7 +1,8 @@
+import 'settings.dart';
 import 'package:flutter/material.dart';
-import 'package:caliweather/components/header_login_profile.dart';
-import 'package:caliweather/sharedprefutil.dart';
-import 'package:caliweather/userverify.dart';
+import 'components/header_login_profile.dart';
+import '../util/sharedprefutil.dart';
+import '../util/userverify.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -14,12 +15,10 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   void _signOut() async {
     SharedPrefUtil.setLogout();
-    PersistentNavBarNavigator.pushNewScreen(
-      context,
-      screen: UserVerify(),
-      withNavBar: true, // OPTIONAL VALUE. True by default.
-      pageTransitionAnimation: PageTransitionAnimation.cupertino,
-    );
+    if (context.mounted) {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) => const UserVerify()));
+    }
   }
 
   void _testing() async {
@@ -54,7 +53,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: const SettingsPage(title: 'Settings'),
+                        withNavBar: false,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                         elevation: 3,
                         minimumSize: const Size.fromHeight(60),

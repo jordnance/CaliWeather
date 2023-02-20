@@ -1,10 +1,9 @@
-import 'package:caliweather/userverify.dart';
+import '../util/userverify.dart';
 import 'package:flutter/material.dart';
-import 'package:caliweather/sql_helper.dart';
-import 'package:caliweather/sharedprefutil.dart';
-import 'package:caliweather/components/textfield_login.dart';
-import 'package:caliweather/components/header_login_profile.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import '../util/sql_helper.dart';
+import '../util/sharedprefutil.dart';
+import 'components/textfield_login.dart';
+import 'components/header_login_profile.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -67,18 +66,16 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    //NOT ERRORS FOUND, FINISH LOGIN
+    //NO ERRORS FOUND, FINISH LOGIN
     var userinfo = await SQLHelper.getUserInfo(user[0]['userId']);
     SharedPrefUtil.setUserLogin(userinfo[0]);
     showMessage("Welcome back ${SharedPrefUtil.getUserFirstName()}!");
     clearTextControllers();
-    FocusScope.of(context).unfocus();
-    PersistentNavBarNavigator.pushNewScreen(
-      context,
-      screen: const UserVerify(),
-      withNavBar: true, // OPTIONAL VALUE. True by default.
-      pageTransitionAnimation: PageTransitionAnimation.cupertino,
-    );
+    if (context.mounted) {
+      FocusScope.of(context).unfocus();
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) => const UserVerify()));
+    }
   }
 
   void _testing() async {

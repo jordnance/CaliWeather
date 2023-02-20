@@ -1,16 +1,16 @@
-import 'sql_helper.dart';
+import '../util/sql_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key, required this.title});
+class AnalysisPage extends StatefulWidget {
+  const AnalysisPage({super.key, required this.title});
   final String title;
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  State<AnalysisPage> createState() => _AnalysisPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _AnalysisPageState extends State<AnalysisPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

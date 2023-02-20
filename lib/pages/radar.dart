@@ -1,13 +1,13 @@
-import 'globals.dart' as globals;
+import '../util/globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:caliweather/util/radar_util.dart';
-import 'package:caliweather/geo_helper.dart';
+import 'package:caliweather/util/geo_helper.dart';
 
-import 'package:caliweather/sharedprefutil.dart';
+import '../util/sharedprefutil.dart';
 
 class RadarPage extends StatefulWidget {
   const RadarPage({super.key, required this.title});
@@ -43,11 +43,7 @@ class _RadarPageState extends State<RadarPage> {
     'https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3'
   ];
 
-  List<String> overlayTitle = [
-    'Clouds',
-    'Temps',
-    'Wind'
-  ];
+  List<String> overlayTitle = ['Clouds', 'Temps', 'Wind'];
 
   @override
   void initState() {
@@ -121,6 +117,7 @@ class _RadarPageState extends State<RadarPage> {
     return Scaffold(
       body: Center(
         child: Container(
+          padding: EdgeInsetsDirectional.only(bottom: 10),
           child: Column(
             children: [
               Flexible(
@@ -258,8 +255,7 @@ class _RadarPageState extends State<RadarPage> {
                 height: 55,
                 decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 220, 220, 220),
-                    border: Border.all(
-                        width: 4, color: Colors.black),
+                    border: Border.all(width: 4, color: Colors.black),
                     borderRadius: BorderRadius.circular(28)),
                 child: Center(
                   child: Row(
