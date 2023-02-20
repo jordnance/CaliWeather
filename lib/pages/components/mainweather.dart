@@ -1,30 +1,15 @@
 import 'package:flutter/material.dart';
 import '../../util/weather_icon_util.dart';
-import '../../util/home_utest_util.dart';
 import 'package:weather_icons/weather_icons.dart';
-import '../../util/weather_helper.dart';
-import 'package:weather/weather.dart';
-import 'package:intl/intl.dart';
 
 class MainWeather extends StatelessWidget {
-  final int temperature;
-  final String description;
-  final String city;
-  final int opwKey;
-
-  const MainWeather(this.temperature, this.description, this.city, this.opwKey,
-      {super.key});
-
+  const MainWeather({super.key, required this.todos});
+  final List<dynamic>? todos;
+  
   @override
   Widget build(BuildContext context) {
-    /// ************* temporary data until API calls are brought in ********************** ///
-    ///
-    String units = "°F"; //NOTE: may need to pull from settings
-    String iconKey = HomeTestUtil.utest_opwIconMap[opwKey].toString();
-    String iconName = WeatherIconsUtil.iconMap[iconKey].toString();
-
-    ///
-    /// ***============================================================================*** ///
+    String iconName = WeatherIconsUtil.iconMap[todos?[0]].toString();
+    String units = "°F"; // TODO: Pull from settings/database
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +23,7 @@ class MainWeather extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(4.0),
               child: Text(
-                temperature.toString(),
+                '${todos?[1]}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     fontSize: 115,
@@ -61,7 +46,7 @@ class MainWeather extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
-            description,
+            '${todos?[2]}',
             style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
@@ -71,7 +56,7 @@ class MainWeather extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
-            city,
+            '${todos?[3]}',
             textAlign: TextAlign.center,
             style: const TextStyle(
                 fontSize: 20,
@@ -82,7 +67,7 @@ class MainWeather extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
-            DateFormat('MMM dd').format(DateTime.now()).toString(),
+            '${todos?[4]}',
             style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w300,
