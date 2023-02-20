@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../util/home_utest_util.dart';
 import 'components/mainweather.dart';
 import 'components/forecast.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 ///********************** temporary; generating weather and date values ****************************///
 import 'dart:math';
@@ -271,6 +272,19 @@ class _HomePageState extends State<HomePage> {
                   MainWeather(temp, desc, city, opwKey),
                   MicroWeather(),
                 ],
+              ),
+            ),
+          ),
+          Center(
+            child: SmoothPageIndicator(
+              controller: pgController,
+              count: 2,
+              axisDirection: Axis.horizontal,
+              effect: SlideEffect(
+                activeDotColor: Colors.blueGrey,
+                dotHeight: 10,
+                dotColor: Colors.grey.shade400,
+                dotWidth: 10,
               ),
             ),
           ),
