@@ -1,9 +1,9 @@
+import 'settings.dart';
 import 'package:flutter/material.dart';
-import 'package:caliweather/components/header_login_profile.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:caliweather/userverify.dart';
-import 'package:caliweather/sql_helper.dart';
-import 'package:caliweather/globals.dart' as globals;
+import 'components/header_login_profile.dart';
+import '../util/sharedprefutil.dart';
+import '../util/userverify.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -14,14 +14,18 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   void _signOut() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    _prefs.remove('userId');
-    _prefs.setBool('isLoggedIn', false);
-    Navigator.push(
-            context, MaterialPageRoute(builder: (context) => UserVerify()))
-        .then((value) {
-      initState();
-    });
+    SharedPrefUtil.setLogout();
+    if (context.mounted) {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) => const UserVerify()));
+    }
+  }
+
+  void _testing() async {
+    // var userinfo = await SQLHelper.getUserInfo(1);
+    // print(userinfo);
+    //SharedPrefUtil.setUserLogin(userinfo[0]);
+    SharedPrefUtil.checkAllPrefs();
   }
 
   @override
@@ -39,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 // Start: Login Section
                 Text(
-                  'Welcome, ${globals.userFirstName}!',
+                  'Welcome, ${SharedPrefUtil.getUserFirstName()}!',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 14,
@@ -49,11 +53,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: const SettingsPage(title: 'Settings'),
+                        withNavBar: false,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                         elevation: 3,
                         minimumSize: const Size.fromHeight(60),
-                        backgroundColor: Color.fromARGB(255, 37, 37, 37),
+                        backgroundColor: const Color.fromARGB(255, 37, 37, 37),
                         textStyle: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -65,11 +77,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _testing,
                     style: ElevatedButton.styleFrom(
                         elevation: 3,
                         minimumSize: const Size.fromHeight(60),
-                        backgroundColor: Color.fromARGB(255, 37, 37, 37),
+                        backgroundColor: const Color.fromARGB(255, 37, 37, 37),
                         textStyle: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,

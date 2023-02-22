@@ -1,10 +1,9 @@
-import 'package:caliweather/userverify.dart';
+import '../util/userverify.dart';
 import 'package:flutter/material.dart';
-import 'package:caliweather/sql_helper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:caliweather/components/textfield_login.dart';
-import 'package:caliweather/components/header_login_profile.dart';
-import 'package:caliweather/globals.dart' as globals;
+import '../util/sql_helper.dart';
+import '../util/sharedprefutil.dart';
+import 'components/textfield_login.dart';
+import 'components/header_login_profile.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,12 +15,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String? usernameValue;
   String? passwordValue;
+  String? newFirstNameValue;
+  String? newLastNameValue;
   String? newUsernameValue;
   String? newPasswordValue;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  //final TextEditingController _newUsernameController = TextEditingController();
-  //final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _newFirstNameController = TextEditingController();
+  final TextEditingController _newLastNameController = TextEditingController();
+  final TextEditingController _newUsernameController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
 
   // temporary function until final ui for displaying error messages
   void showMessage(String message) {
@@ -41,13 +44,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _signIn() async {
+    //SAVE USER INPUT TO SAFE VAR
     setState(() {
       usernameValue = _usernameController.text;
       passwordValue = _passwordController.text;
     });
 
+    //QUERY DB FOR USER INFORMATION
     var user = await SQLHelper.getUserByUsername(usernameValue ?? "");
 
+    //CATCH ERRORS AND RETURN
     if (user.isEmpty) {
       showMessage("User not found");
       clearTextControllers();
@@ -60,26 +66,97 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    // get shrd_pref instance
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-
-    // set shrd_pref flag for login
-    _prefs.setBool("isLoggedIn", true);
-    // set user data in shrd_pref
-    _prefs.setInt("userId", user[0]['userId']);
-    _prefs.setString("userFirstName", user[0]['firstName']);
-    globals.user_id = _prefs.getInt('userId') ?? 0;
-    globals.userFirstName = user[0]['firstName'];
-
-    // show welcome message
-    showMessage("Welcome back ${usernameValue}!");
+    //NO ERRORS FOUND, FINISH LOGIN
+    var userinfo = await SQLHelper.getUserInfo(user[0]['userId']);
+    SharedPrefUtil.setUserLogin(userinfo[0]);
+    showMessage("Welcome back ${SharedPrefUtil.getUserFirstName()}!");
     clearTextControllers();
-    FocusScope.of(context).unfocus();
-    Navigator.push(
-            context, MaterialPageRoute(builder: (context) => UserVerify()))
-        .then((value) {
-      initState();
-    });
+    if (context.mounted) {
+      FocusScope.of(context).unfocus();
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) => const UserVerify()));
+    }
+  }
+
+  void _testing() async {
+    // var userinfo = await SQLHelper.getUserInfo(1);
+    // print(userinfo);
+    //SharedPrefUtil.setUserLogin(userinfo[0]);
+    SharedPrefUtil.checkAllPrefs();
+  }
+
+  void _resigterForm() async {
+    showModalBottomSheet(
+        context: context,
+        elevation: 5,
+        isScrollControlled: true,
+        useRootNavigator: true,
+        builder: (_) => Container(
+              padding: EdgeInsets.only(
+                top: 15,
+                left: 15,
+                right: 15,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 260,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextField(
+                    controller: _newFirstNameController,
+                    decoration: const InputDecoration(hintText: 'First Name'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: _newLastNameController,
+                    decoration: const InputDecoration(hintText: 'Last Name'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: _newUsernameController,
+                    decoration: const InputDecoration(hintText: 'Username'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: _newPasswordController,
+                    decoration: const InputDecoration(hintText: 'Password'),
+                    obscureText: true,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        newFirstNameValue = _newFirstNameController.text;
+                        newLastNameValue = _newLastNameController.text;
+                        newUsernameValue = _newUsernameController.text;
+                        newPasswordValue = _newPasswordController.text;
+                      });
+                      await _addUser();
+                      Navigator.of(context, rootNavigator: true).pop(context);
+                      showMessage("You've successfully signed up!");
+                    },
+                    child: const Text('Sign Up'),
+                  )
+                ],
+              ),
+            ));
+  }
+
+  Future<void> _addUser() async {
+    SQLHelper.createUser(newFirstNameValue, newLastNameValue, newUsernameValue,
+        newPasswordValue);
+    _newFirstNameController.text = '';
+    _newLastNameController.text = '';
+    _newUsernameController.text = '';
+    _newPasswordController.text = '';
   }
 
   @override
@@ -131,11 +208,14 @@ class _LoginPageState extends State<LoginPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 12,
+                      InkWell(
+                        onTap: _testing,
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                     ],
@@ -167,14 +247,17 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(width: 3),
-                      const Padding(
-                        padding: EdgeInsets.only(right: 12.0),
-                        child: Text(
-                          'Register here',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        child: InkWell(
+                          onTap: _resigterForm,
+                          child: const Text(
+                            'Register here',
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
                       Expanded(

@@ -1,14 +1,13 @@
-import 'login.dart';
-import 'profile.dart';
+import '/pages/login.dart';
+import '/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:caliweather/globals.dart' as globals;
 
 class UserVerify extends StatefulWidget {
   const UserVerify({super.key});
 
   @override
-  _UserVerifyState createState() => _UserVerifyState();
+  State<UserVerify> createState() => _UserVerifyState();
 }
 
 class _UserVerifyState extends State<UserVerify> {
@@ -38,11 +37,6 @@ class _UserVerifyState extends State<UserVerify> {
               return Text('Error: ${snapshot.error}');
             } else {
               if (snapshot.data == true) {
-                () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  globals.user_id = prefs.getInt("userId")!;
-                };
                 return const ProfilePage();
               }
               return const LoginPage();
