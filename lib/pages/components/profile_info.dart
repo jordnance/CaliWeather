@@ -121,7 +121,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
     SharedPrefUtil.setUserFirstName(firstNameValue!);
     SharedPrefUtil.setUserLastName(lastNameValue!);
     SharedPrefUtil.setUsername(usernameValue!);
-    SharedPrefUtil.setUsername(passwordValue!);
+    SharedPrefUtil.setPassword(passwordValue!);
 
     _firstNameController.text = '';
     _lastNameController.text = '';

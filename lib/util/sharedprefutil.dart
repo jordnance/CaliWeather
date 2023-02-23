@@ -59,6 +59,9 @@ class SharedPrefUtil {
   static Future<void> setUsername(String val) async =>
       await _prefs.setString(SharedPrefUtil.username, val);
 
+  static Future<void> setPassword(String val) async =>
+      await _prefs.setString(SharedPrefUtil.password, val);
+
   static Future<void> setUserPrefId(int val) async =>
       await _prefs.setInt(SharedPrefUtil.userprefId, val);
 
@@ -97,6 +100,7 @@ class SharedPrefUtil {
     setUserFirstName(user[firstName]);
     setUserLastName(user[lastName]);
     setUsername(user[username]);
+    setPassword(user[password]);
     setUserPrefId(user[userprefId]);
     setLanguage(user[lang]);
     setFontSize(user[fontSize]);
