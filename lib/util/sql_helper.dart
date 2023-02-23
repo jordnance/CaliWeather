@@ -67,7 +67,7 @@ class SQLHelper {
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'twelve.db',
+      'sixteen.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -103,6 +103,15 @@ class SQLHelper {
      INNER JOIN Alerts AS a ON p.userprefId = a.prefalertId
      WHERE u.userId = p.userprefId  
      """, [userId]);
+  }
+
+  // Update user's profile info <-- WORKS
+  static Future<List<Map<String, dynamic>>> updateUser(String? firstName,
+      String? lastName, String? username, String? password, int userId) async {
+    final db = await SQLHelper.db();
+    return db.rawQuery(
+        "UPDATE User SET firstName = ?, lastName = ?, username = ?, password = ? WHERE userId = ?",
+        [firstName, lastName, username, password, userId]);
   }
 
   // Update password <-- NEEDS TO BE TESTED

@@ -15,6 +15,7 @@ class SharedPrefUtil {
   static const String firstName = 'firstName';
   static const String lastName = 'lastName';
   static const String username = 'username';
+  static const String password = 'password';
   static const String userprefId = 'userprefId';
   static const String lang = 'lang';
   static const String fontSize = 'fontSize';
@@ -122,6 +123,9 @@ class SharedPrefUtil {
 
   static String getUsername() =>
       _prefs.getString(SharedPrefUtil.username) ?? 'err';
+
+  static String getPassword() =>
+      _prefs.getString(SharedPrefUtil.password) ?? 'err';
 
   static int getUserPrefId() => _prefs.getInt(SharedPrefUtil.userprefId) ?? 0;
 
