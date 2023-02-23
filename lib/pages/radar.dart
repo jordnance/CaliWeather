@@ -38,12 +38,13 @@ class _RadarPageState extends State<RadarPage> {
   ];
 
   List<String> overlayUrl = [
+    'https://imgflip.com/s/meme/Blank-Transparent-Square.png',
     'https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
     'https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3',
     'https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=0d8187b327e042982d4478dcbf90bae3'
   ];
 
-  List<String> overlayTitle = ['Clouds', 'Temps', 'Wind'];
+  List<String> overlayTitle = ['None', 'Clouds', 'Temps', 'Wind'];
 
   @override
   void initState() {
@@ -79,16 +80,18 @@ class _RadarPageState extends State<RadarPage> {
   }
 
   void changeOverlays() {
-    if (overlayIndex != 2) {
+    if (overlayIndex != 3) {
       overlayIndex++;
     } else {
       overlayIndex = 0;
     }
     setState(() {});
+
+
   }
 
   void changeRadar(double value) {
-    radarIndex = value * 2;
+    radarIndex = value * -2;
     setState(() {});
   }
 
@@ -117,7 +120,7 @@ class _RadarPageState extends State<RadarPage> {
     return Scaffold(
       body: Center(
         child: Container(
-          padding: EdgeInsetsDirectional.only(bottom: 10),
+          padding: const EdgeInsetsDirectional.only(bottom: 10),
           child: Column(
             children: [
               Flexible(
@@ -189,15 +192,15 @@ class _RadarPageState extends State<RadarPage> {
         children: [
           Positioned(
             left: 10,
-            bottom: 20,
+            bottom: 30,
             child: FloatingActionButton.extended(
               label: Text(
                 overlayTitle[overlayIndex],
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 15,
                 ),
               ),
-              backgroundColor: Color.fromARGB(255, 255, 177, 81),
+              backgroundColor:  Color.fromARGB(255, 255, 177, 81),
               tooltip: 'Overlays',
               onPressed: changeOverlays,
               icon: const Icon(
@@ -207,10 +210,10 @@ class _RadarPageState extends State<RadarPage> {
             ),
           ),
           Positioned(
-            right: 15,
-            bottom: 155,
+            right: 10,
+            bottom: 150,
             child: FloatingActionButton(
-              backgroundColor: Color.fromARGB(255, 114, 154, 255),
+              backgroundColor:  Color.fromARGB(255, 114, 154, 255),
               tooltip: 'Center',
               onPressed: centerBack,
               child: const Icon(
@@ -220,10 +223,10 @@ class _RadarPageState extends State<RadarPage> {
             ),
           ),
           Positioned(
-            right: 15,
+            right: 10,
             bottom: 80,
             child: FloatingActionButton(
-              backgroundColor: Color.fromARGB(255, 182, 68, 48),
+              backgroundColor:  Color.fromARGB(255, 182, 68, 48),
               tooltip: 'Zoom Out',
               onPressed: zoomOut,
               child: const Icon(
@@ -233,10 +236,10 @@ class _RadarPageState extends State<RadarPage> {
             ),
           ),
           Positioned(
-            right: 15,
-            bottom: 5,
+            right: 10,
+            bottom: 10,
             child: FloatingActionButton(
-              backgroundColor: Color.fromARGB(255, 174, 172, 87),
+              backgroundColor:  Color.fromARGB(255, 174, 172, 87),
               tooltip: 'Zoom In',
               onPressed: zoomIn,
               child: const Icon(
@@ -246,17 +249,16 @@ class _RadarPageState extends State<RadarPage> {
             ),
           ),
           Positioned(
-            right: 19,
-            bottom: 230,
+            right: 12,
+            bottom: 222,
             child: RotatedBox(
               quarterTurns: 3,
               child: Container(
-                width: 267,
-                height: 55,
+                width: 260,
+                height: 53,
                 decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 220, 220, 220),
-                    border: Border.all(width: 4, color: Colors.black),
-                    borderRadius: BorderRadius.circular(28)),
+                    color: Color.fromARGB(255, 56, 132, 186),
+                    borderRadius: BorderRadius.circular(26)),
                 child: Center(
                   child: Row(
                     children: [
@@ -264,19 +266,21 @@ class _RadarPageState extends State<RadarPage> {
                       const RotatedBox(
                         quarterTurns: 1,
                         child: Text(
-                          'Now',
+                          '-2 hr',
                           style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
                         ),
                       ),
                       Slider(
                         divisions: 4,
                         value: currentSliderValue,
-                        min: 0,
-                        max: 2,
-                        label: '$currentSliderValue',
+                        min: -2,
+                        max: 0,
+                        activeColor: Colors.white,
+                        inactiveColor:  Color.fromARGB(255, 125, 197, 255),
+                        thumbColor: Colors.amber,
                         onChanged: (double value) {
                           setState(() {
                             currentSliderValue = value;
@@ -288,11 +292,11 @@ class _RadarPageState extends State<RadarPage> {
                       const RotatedBox(
                         quarterTurns: 1,
                         child: Text(
-                          '-2 hr',
+                          'Now',
                           style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
                         ),
                       ),
                     ],
