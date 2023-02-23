@@ -4,6 +4,7 @@ import 'components/header_login_profile.dart';
 import '../util/sharedprefutil.dart';
 import '../util/userverify.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'components/profile_info.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -21,11 +22,11 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  void _testing() async {
-    // var userinfo = await SQLHelper.getUserInfo(1);
-    // print(userinfo);
-    //SharedPrefUtil.setUserLogin(userinfo[0]);
-    SharedPrefUtil.checkAllPrefs();
+  void _profileInfo() async {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const ProfileInfo()),
+    );
   }
 
   @override
@@ -77,11 +78,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ElevatedButton(
-                    onPressed: _testing,
+                    onPressed: _profileInfo,
                     style: ElevatedButton.styleFrom(
                         elevation: 3,
                         minimumSize: const Size.fromHeight(60),
-                        backgroundColor: const Color.fromARGB(255, 37, 37, 37),
+                        backgroundColor: const Color.fromARGB(255, 0, 83, 129),
                         textStyle: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
