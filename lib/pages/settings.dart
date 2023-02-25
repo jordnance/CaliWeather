@@ -1,3 +1,5 @@
+import 'package:caliweather/main.dart';
+
 import '../util/sql_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,9 @@ class _SettingsPageState extends State<SettingsPage> {
   bool isVisibleTemp = false;
   bool isVisibleTheme = false;
   bool isVisibleLocation = false;
+  bool conserveEnergy = false;
+  bool apiRelated = false;
+  bool conserveWater = false;
 
   LanguageSet? _languageSet = LanguageSet.english;
   FontSet? _fontSet = FontSet.small;
@@ -184,47 +189,83 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           Visibility(
               visible: isVisibleAlert,
-              child: Row(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Expanded(
-                      child: RadioListTile(
-                          title: const Text('Conserve Energy'),
-                          value: AlertSet.energy,
-                          groupValue: _alertSet,
-                          onChanged: (AlertSet? value) {
-                            setState(() {
-                              _alertSet = value;
-                              SharedPrefUtil.setConserveEnergy(
-                                  _alertSet.toString().split('.').last);
-                              SharedPrefUtil.checkAllPrefs();
-                            });
-                          })),
-                  Expanded(
-                      child: RadioListTile(
-                          title: const Text('Conserve Water'),
-                          value: AlertSet.water,
-                          groupValue: _alertSet,
-                          onChanged: (AlertSet? value) {
-                            setState(() {
-                              _alertSet = value;
-                              SharedPrefUtil.setConserveWater(
-                                  _alertSet.toString().split('.').last);
-                              SharedPrefUtil.checkAllPrefs();
-                            });
-                          })),
-                  Expanded(
-                      child: RadioListTile(
-                          title: const Text('API Related'),
-                          value: AlertSet.api,
-                          groupValue: _alertSet,
-                          onChanged: (AlertSet? value) {
-                            setState(() {
-                              _alertSet = value;
-                              SharedPrefUtil.setApiRelated(
-                                  _alertSet.toString().split('.').last);
-                              SharedPrefUtil.checkAllPrefs();
-                            });
-                          })),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: CheckboxListTile(
+                      title: const Text('Conserve Energy'),
+                      checkColor: Colors.white,
+                      value: conserveEnergy,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          conserveEnergy = value!;
+                        });
+                      },
+                    ),
+                    // RadioListTile(
+                    //     title: const Text('Conserve Energy'),
+                    //     value: AlertSet.energy,
+                    //     groupValue: _alertSet,
+                    //     onChanged: (AlertSet? value) {
+                    //       setState(() {
+                    //         _alertSet = value;
+                    //         SharedPrefUtil.setConserveEnergy(
+                    //             _alertSet.toString().split('.').last);
+                    //         SharedPrefUtil.checkAllPrefs();
+                    //       });
+                    //     }),
+                  ),
+                  Flexible(
+                      fit: FlexFit.loose,
+                      child: CheckboxListTile(
+                        title: const Text('Conserve Water'),
+                        checkColor: Colors.white,
+                        value: conserveWater,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            conserveWater = value!;
+                          });
+                        },
+                      )),
+                  // child: RadioListTile(
+                  //     title: const Text('Conserve Water'),
+                  //     value: AlertSet.water,
+                  //     groupValue: _alertSet,
+                  //     onChanged: (AlertSet? value) {
+                  //       setState(() {
+                  //         _alertSet = value;
+                  //         SharedPrefUtil.setConserveWater(
+                  //             _alertSet.toString().split('.').last);
+                  //         SharedPrefUtil.checkAllPrefs();
+                  //       });
+                  //     })),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: CheckboxListTile(
+                      title: const Text('API Related'),
+                      checkColor: Colors.white,
+                      value: apiRelated,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          apiRelated = value!;
+                        });
+                      },
+                    ),
+                    // child: RadioListTile(
+                    //     title: const Text('API Related'),
+                    //     value: AlertSet.api,
+                    //     groupValue: _alertSet,
+                    //     onChanged: (AlertSet? value) {
+                    //       setState(() {
+                    //         _alertSet = value;
+                    //         SharedPrefUtil.setApiRelated(
+                    //             _alertSet.toString().split('.').last);
+                    //         SharedPrefUtil.checkAllPrefs();
+                    //       });
+                    //     })),
+                  )
                 ],
               )),
           ElevatedButton(
