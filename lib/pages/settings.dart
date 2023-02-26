@@ -17,7 +17,11 @@ enum LanguageSet { english, spanish }
 
 enum FontSet { small, medium, large }
 
-enum AlertSet { water, energy, api }
+enum ConserveEnergy { on, off }
+
+enum ConserveWater { on, off }
+
+enum ApiRelated { on, off }
 
 enum TempSet { fahrenheit, celsius }
 
@@ -30,15 +34,17 @@ class _SettingsPageState extends State<SettingsPage> {
   bool isVisibleTemp = false;
   bool isVisibleTheme = false;
   bool isVisibleLocation = false;
-  bool conserveEnergy = false;
-  bool apiRelated = false;
-  bool conserveWater = false;
+  bool checkboxEnergy = false;
+  bool checkboxAPI = false;
+  bool checkboxWater = false;
 
   LanguageSet? _languageSet = LanguageSet.english;
   FontSet? _fontSet = FontSet.small;
-  AlertSet? _alertSet = AlertSet.energy;
   TempSet? _tempSet = TempSet.fahrenheit;
   ThemeSet? _themeSet = ThemeSet.light;
+  ConserveEnergy _alertEnergy = ConserveEnergy.off;
+  ConserveWater? _alertWater = ConserveWater.off;
+  ApiRelated? _alertAPI = ApiRelated.off;
 
   @override
   void initState() {
@@ -46,7 +52,9 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPrefUtil.setLanguage(_languageSet.toString().split('.').last);
     SharedPrefUtil.setFontSize(_fontSet.toString().split('.').last);
     SharedPrefUtil.setFontSize(_fontSet.toString().split('.').last);
-    //SharedPrefUtil.setConserveEnergy(_alertSet.toString().split('.').last);
+    SharedPrefUtil.setConserveEnergy(_alertEnergy.toString().split('.').last);
+    SharedPrefUtil.setConserveWater(_alertWater.toString().split('.').last);
+    SharedPrefUtil.setApiRelated(_alertAPI.toString().split('.').last);
     SharedPrefUtil.setTempFormat(_tempSet.toString().split('.').last);
     SharedPrefUtil.setTheme(_themeSet.toString().split('.').last);
     SharedPrefUtil.checkAllPrefs();
@@ -135,7 +143,10 @@ class _SettingsPageState extends State<SettingsPage> {
                           })),
                   Expanded(
                       child: RadioListTile(
-                          title: const Text('Medium'),
+                          title: const Text('Medium',
+                              style: TextStyle(
+                                fontSize: 11.5,
+                              )),
                           value: FontSet.medium,
                           groupValue: _fontSet,
                           onChanged: (FontSet? value) {
@@ -197,10 +208,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: CheckboxListTile(
                       title: const Text('Conserve Energy'),
                       checkColor: Colors.white,
-                      value: conserveEnergy,
+                      value: checkboxEnergy,
                       onChanged: (bool? value) {
                         setState(() {
-                          conserveEnergy = value!;
+                          checkboxEnergy = value!;
                         });
                       },
                     ),
@@ -222,10 +233,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       child: CheckboxListTile(
                         title: const Text('Conserve Water'),
                         checkColor: Colors.white,
-                        value: conserveWater,
+                        value: checkboxWater,
                         onChanged: (bool? value) {
                           setState(() {
-                            conserveWater = value!;
+                            checkboxWater = value!;
                           });
                         },
                       )),
@@ -246,10 +257,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: CheckboxListTile(
                       title: const Text('API Related'),
                       checkColor: Colors.white,
-                      value: apiRelated,
+                      value: checkboxAPI,
                       onChanged: (bool? value) {
                         setState(() {
-                          apiRelated = value!;
+                          checkboxAPI = value!;
                         });
                       },
                     ),
