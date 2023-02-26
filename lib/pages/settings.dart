@@ -1,5 +1,3 @@
-import 'package:caliweather/main.dart';
-
 import '../util/sql_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
   FontSet? _fontSet = FontSet.small;
   TempSet? _tempSet = TempSet.fahrenheit;
   ThemeSet? _themeSet = ThemeSet.light;
-  ConserveEnergy _alertEnergy = ConserveEnergy.off;
+  ConserveEnergy? _alertEnergy = ConserveEnergy.off;
   ConserveWater? _alertWater = ConserveWater.off;
   ApiRelated? _alertAPI = ApiRelated.off;
 
@@ -212,21 +210,18 @@ class _SettingsPageState extends State<SettingsPage> {
                       onChanged: (bool? value) {
                         setState(() {
                           checkboxEnergy = value!;
+                          if (checkboxEnergy == true) {
+                            _alertEnergy = ConserveEnergy.on;
+                            SharedPrefUtil.setConserveEnergy(
+                                _alertEnergy.toString().split('.').last);
+                          } else {
+                            _alertEnergy = ConserveEnergy.off;
+                            SharedPrefUtil.setConserveEnergy(
+                                _alertEnergy.toString().split('.').last);
+                          }
                         });
                       },
                     ),
-                    // RadioListTile(
-                    //     title: const Text('Conserve Energy'),
-                    //     value: AlertSet.energy,
-                    //     groupValue: _alertSet,
-                    //     onChanged: (AlertSet? value) {
-                    //       setState(() {
-                    //         _alertSet = value;
-                    //         SharedPrefUtil.setConserveEnergy(
-                    //             _alertSet.toString().split('.').last);
-                    //         SharedPrefUtil.checkAllPrefs();
-                    //       });
-                    //     }),
                   ),
                   Flexible(
                       fit: FlexFit.loose,
@@ -237,21 +232,18 @@ class _SettingsPageState extends State<SettingsPage> {
                         onChanged: (bool? value) {
                           setState(() {
                             checkboxWater = value!;
+                            if (checkboxWater == true) {
+                              _alertWater = ConserveWater.on;
+                              SharedPrefUtil.setConserveWater(
+                                  _alertWater.toString().split('.').last);
+                            } else {
+                              _alertWater = ConserveWater.off;
+                              SharedPrefUtil.setConserveWater(
+                                  _alertWater.toString().split('.').last);
+                            }
                           });
                         },
                       )),
-                  // child: RadioListTile(
-                  //     title: const Text('Conserve Water'),
-                  //     value: AlertSet.water,
-                  //     groupValue: _alertSet,
-                  //     onChanged: (AlertSet? value) {
-                  //       setState(() {
-                  //         _alertSet = value;
-                  //         SharedPrefUtil.setConserveWater(
-                  //             _alertSet.toString().split('.').last);
-                  //         SharedPrefUtil.checkAllPrefs();
-                  //       });
-                  //     })),
                   Flexible(
                     fit: FlexFit.loose,
                     child: CheckboxListTile(
@@ -261,21 +253,18 @@ class _SettingsPageState extends State<SettingsPage> {
                       onChanged: (bool? value) {
                         setState(() {
                           checkboxAPI = value!;
+                          if (checkboxAPI == true) {
+                            _alertAPI = ApiRelated.on;
+                            SharedPrefUtil.setApiRelated(
+                                _alertAPI.toString().split('.').last);
+                          } else {
+                            _alertAPI = ApiRelated.off;
+                            SharedPrefUtil.setApiRelated(
+                                _alertAPI.toString().split('.').last);
+                          }
                         });
                       },
                     ),
-                    // child: RadioListTile(
-                    //     title: const Text('API Related'),
-                    //     value: AlertSet.api,
-                    //     groupValue: _alertSet,
-                    //     onChanged: (AlertSet? value) {
-                    //       setState(() {
-                    //         _alertSet = value;
-                    //         SharedPrefUtil.setApiRelated(
-                    //             _alertSet.toString().split('.').last);
-                    //         SharedPrefUtil.checkAllPrefs();
-                    //       });
-                    //     })),
                   )
                 ],
               )),
