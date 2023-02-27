@@ -97,8 +97,7 @@ class SQLHelper {
   // Read user, preference, and alert info by userId <-- WORKS
   static Future<List<Map<String, dynamic>>> getUserInfo(int userId) async {
     final db = await SQLHelper.db();
-    return db.rawQuery(
-        """SELECT u.userId, u.firstName, u.lastName, u.username, p.*, a.* FROM User AS u
+    return db.rawQuery("""SELECT u.*, p.*, a.* FROM User AS u
      INNER JOIN Preference AS p ON u.userId = ? 
      INNER JOIN Alerts AS a ON p.userprefId = a.prefalertId
      WHERE u.userId = p.userprefId  
