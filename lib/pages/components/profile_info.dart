@@ -27,7 +27,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
         ScaffoldMessenger.of(context)
           ..removeCurrentSnackBar()
           ..showSnackBar(SnackBar(
-              behavior: SnackBarBehavior.floating, content: Text(message)));
+              behavior: SnackBarBehavior.fixed, 
+              padding: const EdgeInsets.only(left: 24, top: 14, right: 0, bottom: 24),
+              content: Text(message)));
       });
     }
   }
