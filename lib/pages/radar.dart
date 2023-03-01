@@ -85,9 +85,9 @@ class _RadarPageState extends State<RadarPage> {
     } else {
       overlayIndex = 0;
     }
+    currentSliderValue = 0;
+    radarIndex = 0;
     setState(() {});
-
-
   }
 
   void changeRadar(double value) {
