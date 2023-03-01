@@ -12,11 +12,11 @@ class RadarUtil {
       } else {
         lastTimeStamp = placeholder;
         timeStamps = [
-          lastTimeStamp - 7200,
-          lastTimeStamp - 5400,
-          lastTimeStamp - 3600,
+          lastTimeStamp - 600,
           lastTimeStamp - 1800,
-          lastTimeStamp
+          lastTimeStamp - 3600,
+          lastTimeStamp - 5400,
+          lastTimeStamp - 7200
         ];
         placeholder = placeholder + 600;
       }
