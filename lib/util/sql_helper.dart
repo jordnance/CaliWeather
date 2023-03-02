@@ -88,7 +88,7 @@ class SQLHelper {
 
   // Read a single user by username <-- WORKS
   static Future<List<Map<dynamic, dynamic>>> getUserByUsername(
-      String username) async {
+      String? username) async {
     sql.Database db = await SQLHelper.db();
     return db
         .rawQuery("SELECT * FROM User WHERE username = ? LIMIT 1", [username]);

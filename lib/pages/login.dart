@@ -139,8 +139,13 @@ class _LoginPageState extends State<LoginPage> {
     if (forgotUsernameValue == '' || forgotPasswordValue == '') {
       showMessage('Fields cannot be empty');
     } else {
-      SQLHelper.updatePassword(forgotUsernameValue, forgotPasswordValue);
-      showMessage("You've successfully updated your password!");
+      var check = await SQLHelper.getUserByUsername(forgotUsernameValue);
+      if (check.isNotEmpty) {
+        SQLHelper.updatePassword(forgotUsernameValue, forgotPasswordValue);
+        showMessage("You've successfully updated your password!");
+      } else {
+        showMessage("Username was not found");
+      }
     }
 
     _forgotUsernameController.text = '';
