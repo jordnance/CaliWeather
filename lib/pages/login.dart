@@ -278,10 +278,10 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       InkWell(
                         onTap: _forgotPassword,
-                        child: Text(
+                        child: const Text(
                           'Forgot Password?',
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: Colors.blue,
                             fontSize: 12,
                           ),
                         ),
