@@ -19,12 +19,18 @@ class _LoginPageState extends State<LoginPage> {
   String? newLastNameValue;
   String? newUsernameValue;
   String? newPasswordValue;
+  String? forgotUsernameValue;
+  String? forgotPasswordValue;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _newFirstNameController = TextEditingController();
   final TextEditingController _newLastNameController = TextEditingController();
   final TextEditingController _newUsernameController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _forgotUsernameController =
+      TextEditingController();
+  final TextEditingController _forgotPasswordController =
+      TextEditingController();
 
   // temporary function until final ui for displaying error messages
   void showMessage(String message) {
@@ -33,8 +39,9 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context)
           ..removeCurrentSnackBar()
           ..showSnackBar(SnackBar(
-              behavior: SnackBarBehavior.fixed, 
-              padding: const EdgeInsets.only(left: 24, top: 14, right: 0, bottom: 24),
+              behavior: SnackBarBehavior.fixed,
+              padding: const EdgeInsets.only(
+                  left: 24, top: 14, right: 0, bottom: 24),
               content: Text(message)));
       });
     }
@@ -80,11 +87,65 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _testing() async {
-    // var userinfo = await SQLHelper.getUserInfo(1);
-    // print(userinfo);
-    //SharedPrefUtil.setUserLogin(userinfo[0]);
-    SharedPrefUtil.checkAllPrefs();
+  void _forgotPassword() async {
+    showModalBottomSheet(
+        context: context,
+        elevation: 5,
+        isScrollControlled: true,
+        useRootNavigator: true,
+        builder: (_) => Container(
+              padding: EdgeInsets.only(
+                top: 15,
+                left: 15,
+                right: 15,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 260,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextField(
+                    controller: _forgotUsernameController,
+                    decoration: const InputDecoration(hintText: 'Username'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: _forgotPasswordController,
+                    decoration: const InputDecoration(hintText: 'Password'),
+                    obscureText: true,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        forgotUsernameValue = _forgotUsernameController.text;
+                        forgotPasswordValue = _forgotPasswordController.text;
+                      });
+                      await _updatePassword();
+                      Navigator.of(context, rootNavigator: true).pop(context);
+                    },
+                    child: const Text('Confirm'),
+                  )
+                ],
+              ),
+            ));
+  }
+
+  Future<void> _updatePassword() async {
+    if (forgotUsernameValue == '' || forgotPasswordValue == '') {
+      showMessage('Fields cannot be empty');
+    } else {
+      SQLHelper.updatePassword(forgotUsernameValue, forgotPasswordValue);
+      showMessage("You've successfully updated your password!");
+    }
+
+    _forgotUsernameController.text = '';
+    _forgotPasswordController.text = '';
+    setState(() {});
   }
 
   void _resigterForm() async {
@@ -211,7 +272,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                        onTap: _testing,
+                        onTap: _forgotPassword,
                         child: Text(
                           'Forgot Password?',
                           style: TextStyle(
