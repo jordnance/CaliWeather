@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class TempGraph extends StatelessWidget {
-  const TempGraph({super.key});
+  const TempGraph({super.key, required this.todos});
+  final List<FlSpot>? todos;
 
   @override
   Widget build(BuildContext context) {
@@ -32,25 +33,25 @@ class TempGraph extends StatelessWidget {
     );
     String text;
     switch (value.toInt()) {
-      case 1:
+      case -25:
         text = '-25';
         break;
-      case 2:
+      case 0:
         text = '0';
         break;
-      case 3:
+      case 25:
         text = '25';
         break;
-      case 4:
+      case 50:
         text = '50';
         break;
-      case 5:
+      case 75:
         text = '75';
         break;
-      case 6:
+      case 100:
         text = '100';
         break;
-      case 7:
+      case 125:
         text = '125';
         break;
       default:
@@ -122,30 +123,11 @@ class TempGraph extends StatelessWidget {
       Color.fromARGB(255, 226, 105, 0),
     ];
 
-    // TODO: Update with data pulled from database
-    List<FlSpot> testData = [
-      FlSpot(0, 0),
-      FlSpot(1, 1),
-      FlSpot(2, 4.5),
-      FlSpot(3, 3),
-      FlSpot(4, 4),
-      FlSpot(5, 2),
-      FlSpot(6, 2),
-      FlSpot(7, 1),
-      FlSpot(8, 2),
-      FlSpot(9, 1),
-      FlSpot(10, 2),
-      FlSpot(11, 4.5),
-      FlSpot(12, 2),
-      FlSpot(13, 4),
-      FlSpot(14, 2),
-    ];
-
     return LineChartData(
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: 1,
+        horizontalInterval: 25,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
@@ -205,11 +187,11 @@ class TempGraph extends StatelessWidget {
       ),
       minX: 0,
       maxX: 14,
-      minY: 0,
-      maxY: 8,
+      minY: -50,
+      maxY: 150,
       lineBarsData: [
         LineChartBarData(
-          spots: testData,
+          spots: todos,
           isCurved: true,
           gradient: LinearGradient(
             colors: tempColors,
@@ -217,7 +199,7 @@ class TempGraph extends StatelessWidget {
           barWidth: 6,
           isStrokeCapRound: true,
           dotData: FlDotData(
-            show: false,
+            show: true,
           ),
           belowBarData: BarAreaData(
             show: true,

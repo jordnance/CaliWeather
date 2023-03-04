@@ -23,6 +23,17 @@ class SQLHelper {
     conserveWater text default "Off",
     apiRelated text default "Off"
     )""");
+    await database.execute("""CREATE TABLE IF NOT EXISTS WeatherData(
+    apiResponseId integer PRIMARY KEY AUTOINCREMENT,
+    userId integer NOT NULL,
+    apiCallDate text NOT NULL,
+    location text NOT NULL,
+    rain real default NULL,
+    temp real NOT NULL,
+    humidity real NOT NULL,
+    snow real default NULL,
+    FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE
+    )""");
     await database.execute("PRAGMA foreign_keys = ON");
   }
 
@@ -67,7 +78,7 @@ class SQLHelper {
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'sixteen.db',
+      'fortythree.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -86,6 +97,30 @@ class SQLHelper {
     db.rawQuery("""INSERT INTO Alerts DEFAULT VALUES""");
   }
 
+  // Create new weather data points <-- WORKS
+  static Future<void> createWeatherData(
+      int? userId,
+      String? apiCallDate,
+      String? location,
+      double? rain,
+      double? temp,
+      double? humidity,
+      double? snow) async {
+    final db = await SQLHelper.db();
+    db.rawQuery(
+        """INSERT INTO WeatherData(userId, apiCallDate, location, rain, temp, humidity, snow) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)""",
+        [
+          userId,
+          apiCallDate,
+          location,
+          rain,
+          temp,
+          humidity,
+          snow
+        ]);
+  }
+
   // Read a single user by username <-- WORKS
   static Future<List<Map<dynamic, dynamic>>> getUserByUsername(
       String username) async {
@@ -101,6 +136,15 @@ class SQLHelper {
      INNER JOIN Preference AS p ON u.userId = ? 
      INNER JOIN Alerts AS a ON p.userprefId = a.prefalertId
      WHERE u.userId = p.userprefId  
+     """, [userId]);
+  }
+
+  // Read weather data stored by userid <-- WORKS
+  static Future<List<Map<String, dynamic>>> getUserData(int userId) async {
+    final db = await SQLHelper.db();
+    return db.rawQuery("""SELECT w.* FROM User AS u
+     INNER JOIN WeatherData AS w ON u.userId = ?
+     WHERE u.userId = w.userId  
      """, [userId]);
   }
 

@@ -28,12 +28,6 @@ class _HomePageState extends State<HomePage> {
   List<dynamic>? main;
   Color bgColor = Colors.grey.shade200;
 
-  @override
-  void initState() {
-    super.initState();
-    getData();
-  }
-
   Future<void> getData() async {
     List microData = await WeatherHelper.getMicroweather();
     List forecastData = await WeatherHelper.getForecast();
@@ -58,7 +52,10 @@ class _HomePageState extends State<HomePage> {
                 );
               case ConnectionState.waiting:
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator()),
                 );
               case ConnectionState.active:
                 return const Center(child: Text("Active")); // <-- TESTING
@@ -96,8 +93,7 @@ class _HomePageState extends State<HomePage> {
                         color: const Color.fromARGB(255, 87, 87, 87)
                             .withOpacity(0.6),
                         onPressed: () {
-                          getData(); // <-- TESTING
-                          setState(() {}); // <-- TESTING
+                          setState(() {});
                         },
                       ),
                     ),

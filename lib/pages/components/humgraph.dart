@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class HumGraph extends StatelessWidget {
-  const HumGraph({super.key});
+  const HumGraph({super.key, required this.todos});
+  final List<FlSpot>? todos;
 
   @override
   Widget build(BuildContext context) {
@@ -32,23 +33,33 @@ class HumGraph extends StatelessWidget {
     );
     String text;
     switch (value.toInt()) {
-      
-      case 1:
-        text = '20';
+      case 10:
+        text = '10';
         break;
-    
-      case 2:
-        text = '40';
+      case 20:
+        text = '';
         break;
-    
-      case 3:
-        text = '60';
+      case 30:
+        text = '30';
         break;
-      
-      case 4:
-        text = '80';
+      case 40:
+        text = '';
         break;
-      
+      case 50:
+        text = '50';
+        break;
+      case 60:
+        text = '';
+        break;
+      case 70:
+        text = '70';
+        break;
+      case 80:
+        text = '';
+        break;
+      case 90:
+        text = '90';
+        break;
       default:
         return Container();
     }
@@ -118,30 +129,11 @@ class HumGraph extends StatelessWidget {
       Color.fromARGB(255, 0, 102, 19),
     ];
 
-    // TODO: Update with data pulled from database
-    List<FlSpot> testData = [
-      FlSpot(0, 0),
-      FlSpot(1, 1),
-      FlSpot(2, 4.5),
-      FlSpot(3, 3),
-      FlSpot(4, 4),
-      FlSpot(5, 2),
-      FlSpot(6, 2),
-      FlSpot(7, 1),
-      FlSpot(8, 2),
-      FlSpot(9, 1),
-      FlSpot(10, 2),
-      FlSpot(11, 4.5),
-      FlSpot(12, 2),
-      FlSpot(13, 4),
-      FlSpot(14, 2),
-    ];
-
     return LineChartData(
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: 1,
+        horizontalInterval: 10,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
@@ -202,10 +194,10 @@ class HumGraph extends StatelessWidget {
       minX: 0,
       maxX: 14,
       minY: 0,
-      maxY: 5,
+      maxY: 100,
       lineBarsData: [
         LineChartBarData(
-          spots: testData,
+          spots: todos,
           isCurved: true,
           gradient: LinearGradient(
             colors: humColors,
@@ -213,7 +205,7 @@ class HumGraph extends StatelessWidget {
           barWidth: 6,
           isStrokeCapRound: true,
           dotData: FlDotData(
-            show: false,
+            show: true,
           ),
           belowBarData: BarAreaData(
             show: true,

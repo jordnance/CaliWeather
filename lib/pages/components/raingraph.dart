@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class RainGraph extends StatelessWidget {
-  const RainGraph({super.key});
+  const RainGraph({
+    super.key,
+    required this.todos,
+  });
+  final List<FlSpot>? todos;
 
   @override
   Widget build(BuildContext context) {
@@ -33,20 +37,32 @@ class RainGraph extends StatelessWidget {
     String text;
     switch (value.toInt()) {
       case 1:
-        text = '2';
+        text = '1';
         break;
       case 2:
-        text = '4';
+        text = '';
         break;
       case 3:
-        text = '6';
+        text = '3';
         break;
       case 4:
-        text = '8';
+        text = '';
         break;
       case 5:
-        text = '10';
-        break;  
+        text = '5';
+        break;
+      case 6:
+        text = '';
+        break;
+      case 7:
+        text = '7';
+        break;
+      case 8:
+        text = '';
+        break;
+      case 9:
+        text = '9';
+        break;
       default:
         return Container();
     }
@@ -116,25 +132,6 @@ class RainGraph extends StatelessWidget {
       Color.fromARGB(255, 68, 0, 255),
     ];
 
-    // TODO: Update with data pulled from database
-    List<FlSpot> testData = [
-      FlSpot(0, 0),
-      FlSpot(1, 1),
-      FlSpot(2, 4.5),
-      FlSpot(3, 3),
-      FlSpot(4, 4),
-      FlSpot(5, 2),
-      FlSpot(6, 2),
-      FlSpot(7, 1),
-      FlSpot(8, 2),
-      FlSpot(9, 1),
-      FlSpot(10, 2),
-      FlSpot(11, 4.5),
-      FlSpot(12, 2),
-      FlSpot(13, 4),
-      FlSpot(14, 2),
-    ];
-
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -200,10 +197,10 @@ class RainGraph extends StatelessWidget {
       minX: 0,
       maxX: 14,
       minY: 0,
-      maxY: 6,
+      maxY: 10,
       lineBarsData: [
         LineChartBarData(
-          spots: testData,
+          spots: todos,
           isCurved: true,
           gradient: LinearGradient(
             colors: rainColors,
@@ -211,7 +208,7 @@ class RainGraph extends StatelessWidget {
           barWidth: 6,
           isStrokeCapRound: true,
           dotData: FlDotData(
-            show: false,
+            show: true,
           ),
           belowBarData: BarAreaData(
             show: true,

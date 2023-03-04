@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class SnowGraph extends StatelessWidget {
-  const SnowGraph({super.key});
+  const SnowGraph({super.key, required this.todos});
+  final List<FlSpot>? todos;
 
   @override
   Widget build(BuildContext context) {
@@ -116,25 +117,6 @@ class SnowGraph extends StatelessWidget {
       Color.fromARGB(255, 123, 123, 123),
     ];
 
-    // TODO: Update with data pulled from database
-    List<FlSpot> testData = [
-      FlSpot(0, 0),
-      FlSpot(1, 1),
-      FlSpot(2, 4.5),
-      FlSpot(3, 3),
-      FlSpot(4, 4),
-      FlSpot(5, 2),
-      FlSpot(6, 2),
-      FlSpot(7, 1),
-      FlSpot(8, 2),
-      FlSpot(9, 1),
-      FlSpot(10, 2),
-      FlSpot(11, 4.5),
-      FlSpot(12, 2),
-      FlSpot(13, 4),
-      FlSpot(14, 2),
-    ];
-
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -203,7 +185,7 @@ class SnowGraph extends StatelessWidget {
       maxY: 6,
       lineBarsData: [
         LineChartBarData(
-          spots: testData,
+          spots: todos,
           isCurved: true,
           gradient: LinearGradient(
             colors: snowColors,
@@ -211,7 +193,7 @@ class SnowGraph extends StatelessWidget {
           barWidth: 6,
           isStrokeCapRound: true,
           dotData: FlDotData(
-            show: false,
+            show: true,
           ),
           belowBarData: BarAreaData(
             show: true,
