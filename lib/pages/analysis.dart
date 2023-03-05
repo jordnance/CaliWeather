@@ -86,6 +86,27 @@ class _AnalysisPageState extends State<AnalysisPage> {
                 );
             }
           }),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned(
+            right: 10,
+            bottom: 10,
+            child: FloatingActionButton(
+              backgroundColor: Colors.green,
+              tooltip: 'Refresh',
+              onPressed: () {
+                setState(() {});
+              },
+              child: const Icon(
+                Icons.refresh_rounded,
+                size: 30,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

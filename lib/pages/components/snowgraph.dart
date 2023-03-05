@@ -196,7 +196,7 @@ class SnowGraph extends StatelessWidget {
             show: true,
           ),
           belowBarData: BarAreaData(
-            show: true,
+            show: false,
             gradient: LinearGradient(
               colors:
                   snowColors.map((color) => color.withOpacity(0.3)).toList(),

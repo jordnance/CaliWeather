@@ -6,8 +6,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:caliweather/util/radar_util.dart';
 import 'package:caliweather/util/geo_helper.dart';
-import '../util/sharedprefutil.dart';
-import '../util/graph_helper.dart';
 
 class RadarPage extends StatefulWidget {
   const RadarPage({super.key, required this.title});
@@ -77,11 +75,6 @@ class _RadarPageState extends State<RadarPage> {
       currentCenter = LatLng(globals.positionLat, globals.positionLong);
       mapController.move(currentCenter, currentZoom);
     }
-    test();
-  }
-
-  void test() async {
-    GraphHelper.newCoords();
   }
 
   void changeOverlays() {
@@ -113,10 +106,6 @@ class _RadarPageState extends State<RadarPage> {
           currentPosition = position;
         });
       });
-    } else {
-      var location = SharedPrefUtil.getLocation();
-      GeoHelper.getManualLocation(location);
-      setState(() {});
     }
   }
 

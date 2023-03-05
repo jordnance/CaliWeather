@@ -3,28 +3,31 @@ import '../util/sharedprefutil.dart';
 import 'globals.dart' as globals;
 import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
+import 'package:geocoding/geocoding.dart';
 
 class WeatherHelper {
-  // Current Weather
   static Future<Weather> getCurrent() async {
+    List<Location> location =
+        await locationFromAddress(SharedPrefUtil.getLocation());
     WeatherFactory wf = WeatherFactory(globals.apiKey);
     Weather weather = await wf.currentWeatherByLocation(
-        globals.positionLat, globals.positionLong);
+        location[0].latitude, location[0].longitude);
     return weather;
   }
 
-  // 5-Day Forecast
   static Future<List<dynamic>> setForecast() async {
     WeatherFactory wf = WeatherFactory(globals.apiKey);
     List<dynamic> setData = [];
+     List<Location> location =
+        await locationFromAddress(SharedPrefUtil.getLocation());
     List<dynamic> forecast = await wf.fiveDayForecastByLocation(
-        globals.positionLat, globals.positionLong);
+        location[0].latitude, location[0].longitude);
     setData = [
-      forecast[7], // <-- Day 1
+      forecast[7],  // <-- Day 1
       forecast[15], // <-- Day 2
       forecast[23], // <-- Day 3
       forecast[31], // <-- Day 4
-      forecast[39] // <-- Day 5
+      forecast[39]  // <-- Day 5
     ];
     return setData;
   }
@@ -134,7 +137,7 @@ class WeatherHelper {
     ];
 
     int? userId = SharedPrefUtil.getUserId();
-    
+
     String? temp = weather.temperature?.fahrenheit.toString();
     String formatTemp = temp!.replaceAll('Fahrenheit', '');
     double? doubleTemp = double.parse(formatTemp);

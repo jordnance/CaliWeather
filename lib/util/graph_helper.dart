@@ -16,7 +16,7 @@ class GraphHelper {
       parsedLeastCurrent = DateTime.parse(leastCurrent);
       difference = parsedThisTime.difference(parsedLeastCurrent);
       seconds = difference.inSeconds.toDouble();
-      newX = seconds / 240000;
+      newX = seconds / 86400;
 
       xCoords.add(newX);
     }
@@ -50,7 +50,6 @@ class GraphHelper {
   }
 
   static Future<List<List<FlSpot>>> newCoords() async {
-    var test = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
     var xCoords = await getXCoords();
     var yCoords = await getYCoords();
     List<List<FlSpot>> newCoords = [];
