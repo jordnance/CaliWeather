@@ -63,68 +63,81 @@ class _HomePageState extends State<HomePage> {
               case ConnectionState.active:
                 return const Center(child: Text("Active")); // <-- TESTING
               case ConnectionState.done:
-                return Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Center(
-                        child: PageView(
-                          controller: pgController,
-                          children: <Widget>[
-                            MainWeather(todos: main),
-                            MicroWeather(todos: micro),
-                          ],
-                        ),
+                return Stack(
+                  children: [
+                    Container(
+                      alignment: Alignment.topRight,
+                      padding:
+                          EdgeInsets.only(top: 55.0, right: 15.0, left: 15.0),
+                      child: Image.asset(
+                        'assets/logo_alert_nobg.png',
+                        height: 55,
                       ),
                     ),
-                    Center(
-                      child: SmoothPageIndicator(
-                        controller: pgController,
-                        count: 2,
-                        axisDirection: Axis.horizontal,
-                        effect: SlideEffect(
-                          activeDotColor: Colors.blueGrey,
-                          dotHeight: 10,
-                          dotColor: Colors.grey.shade400,
-                          dotWidth: 10,
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: IconButton(
-                        iconSize: 25,
-                        icon: const Icon(Icons.refresh),
-                        color: const Color.fromARGB(255, 87, 87, 87)
-                            .withOpacity(0.6),
-                        onPressed: () {
-                          getData(); // <-- TESTING
-                          setState(() {}); // <-- TESTING
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.30,
-                        child: Container(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  children: <Widget>[
-                                    ForecastWeather(todos: forecast?[0]),
-                                    ForecastWeather(todos: forecast?[1]),
-                                    ForecastWeather(todos: forecast?[2]),
-                                    ForecastWeather(todos: forecast?[3]),
-                                    ForecastWeather(todos: forecast?[4]),
-                                  ],
-                                ),
-                              ),
-                            ],
+                    Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: Center(
+                            child: PageView(
+                              controller: pgController,
+                              children: <Widget>[
+                                MainWeather(todos: main),
+                                MicroWeather(todos: micro),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
+                        Center(
+                          child: SmoothPageIndicator(
+                            controller: pgController,
+                            count: 2,
+                            axisDirection: Axis.horizontal,
+                            effect: SlideEffect(
+                              activeDotColor: Colors.blueGrey,
+                              dotHeight: 10,
+                              dotColor: Colors.grey.shade400,
+                              dotWidth: 10,
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: IconButton(
+                            iconSize: 25,
+                            icon: const Icon(Icons.refresh),
+                            color: const Color.fromARGB(255, 87, 87, 87)
+                                .withOpacity(0.6),
+                            onPressed: () {
+                              getData(); // <-- TESTING
+                              setState(() {}); // <-- TESTING
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.30,
+                            child: Container(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      children: <Widget>[
+                                        ForecastWeather(todos: forecast?[0]),
+                                        ForecastWeather(todos: forecast?[1]),
+                                        ForecastWeather(todos: forecast?[2]),
+                                        ForecastWeather(todos: forecast?[3]),
+                                        ForecastWeather(todos: forecast?[4]),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 );
