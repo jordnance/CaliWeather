@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
                 return const Center(
-                  child: Text("None"), // <-- TESTING
+                  child: Text("None"),
                 );
               case ConnectionState.waiting:
                 return const Center(
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                       child: CircularProgressIndicator()),
                 );
               case ConnectionState.active:
-                return const Center(child: Text("Active")); // <-- TESTING
+                return const Center(child: Text("Active"));
               case ConnectionState.done:
                 return Column(
                   children: <Widget>[

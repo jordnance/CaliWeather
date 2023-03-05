@@ -17,10 +17,8 @@ class GraphHelper {
       difference = parsedThisTime.difference(parsedLeastCurrent);
       seconds = difference.inSeconds.toDouble();
       newX = seconds / 86400;
-
       xCoords.add(newX);
     }
-
     return xCoords;
   }
 
@@ -37,7 +35,6 @@ class GraphHelper {
       yHum = test[i]['humidity'];
       ySnow = test[i]['snow'];
       ySnow ??= 0;
-
       values.add(yRain);
       values.add(yTemp!);
       values.add(yHum!);
@@ -45,27 +42,30 @@ class GraphHelper {
       yCoords.add(values);
       values = [];
     }
-
     return yCoords;
   }
 
   static Future<List<List<FlSpot>>> newCoords() async {
-    var xCoords = await getXCoords();
-    var yCoords = await getYCoords();
-    List<List<FlSpot>> newCoords = [];
-    List<FlSpot> rainData = [];
-    List<FlSpot> tempData = [];
-    List<FlSpot> humData = [];
-    List<FlSpot> snowData = [];
+    if (SharedPrefUtil.getUserId() != 0) {
+      var xCoords = await getXCoords();
+      var yCoords = await getYCoords();
+      List<List<FlSpot>> newCoords = [];
+      List<FlSpot> rainData = [];
+      List<FlSpot> tempData = [];
+      List<FlSpot> humData = [];
+      List<FlSpot> snowData = [];
 
-    for (int i = 0; i < xCoords.length; i++) {
-      rainData.add(FlSpot(xCoords[i], yCoords[i][0]));
-      tempData.add(FlSpot(xCoords[i], yCoords[i][1]));
-      humData.add(FlSpot(xCoords[i], yCoords[i][2]));
-      snowData.add(FlSpot(xCoords[i], yCoords[i][3]));
+      for (int i = 0; i < xCoords.length; i++) {
+        rainData.add(FlSpot(xCoords[i], yCoords[i][0]));
+        tempData.add(FlSpot(xCoords[i], yCoords[i][1]));
+        humData.add(FlSpot(xCoords[i], yCoords[i][2]));
+        snowData.add(FlSpot(xCoords[i], yCoords[i][3]));
+      }
+
+      newCoords = [rainData, tempData, humData, snowData];
+      return newCoords;
+    } else {
+      return Future.error('User is not logged in');
     }
-
-    newCoords = [rainData, tempData, humData, snowData];
-    return newCoords;
   }
 }

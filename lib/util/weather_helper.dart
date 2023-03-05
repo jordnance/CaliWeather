@@ -7,21 +7,37 @@ import 'package:geocoding/geocoding.dart';
 
 class WeatherHelper {
   static Future<Weather> getCurrent() async {
-    List<Location> location =
-        await locationFromAddress(SharedPrefUtil.getLocation());
     WeatherFactory wf = WeatherFactory(globals.apiKey);
-    Weather weather = await wf.currentWeatherByLocation(
-        location[0].latitude, location[0].longitude);
+    Weather weather;
+
+    if (SharedPrefUtil.getIsLoggedIn() == false) {
+      weather = await wf.currentWeatherByLocation(
+          globals.positionLat, globals.positionLong);
+    } else {
+      List<Location> location =
+          await locationFromAddress(SharedPrefUtil.getLocation());
+      weather = await wf.currentWeatherByLocation(
+          location[0].latitude, location[0].longitude);
+    }
+
     return weather;
   }
 
   static Future<List<dynamic>> setForecast() async {
     WeatherFactory wf = WeatherFactory(globals.apiKey);
     List<dynamic> setData = [];
-     List<Location> location =
-        await locationFromAddress(SharedPrefUtil.getLocation());
-    List<dynamic> forecast = await wf.fiveDayForecastByLocation(
-        location[0].latitude, location[0].longitude);
+    List<dynamic> forecast;
+
+    if (SharedPrefUtil.getIsLoggedIn() == false) {
+      forecast = await wf.fiveDayForecastByLocation(
+          globals.positionLat, globals.positionLong);
+    } else {
+      List<Location> location =
+          await locationFromAddress(SharedPrefUtil.getLocation());
+      forecast = await wf.fiveDayForecastByLocation(
+          location[0].latitude, location[0].longitude);
+    }
+
     setData = [
       forecast[7],  // <-- Day 1
       forecast[15], // <-- Day 2

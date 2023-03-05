@@ -1,3 +1,4 @@
+import '../util/sharedprefutil.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:caliweather/util/graph_helper.dart';
@@ -35,11 +36,13 @@ class _AnalysisPageState extends State<AnalysisPage> {
   List<FlSpot>? snow;
 
   Future<void> getData() async {
-    List<List<FlSpot>> data = await GraphHelper.newCoords();
-    rain = data[0];
-    temp = data[1];
-    hum = data[2];
-    snow = data[3];
+    if (SharedPrefUtil.getIsLoggedIn() == true) {
+      List<List<FlSpot>> data = await GraphHelper.newCoords();
+      rain = data[0];
+      temp = data[1];
+      hum = data[2];
+      snow = data[3];
+    }
   }
 
   @override
@@ -52,7 +55,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
                 return const Center(
-                  child: Text("None"), // <-- TESTING
+                  child: Text("None"),
                 );
               case ConnectionState.waiting:
                 return const Center(
@@ -62,7 +65,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                       child: CircularProgressIndicator()),
                 );
               case ConnectionState.active:
-                return const Center(child: Text("Active")); // <-- TESTING
+                return const Center(child: Text("Active"));
               case ConnectionState.done:
                 return SingleChildScrollView(
                   child: Column(

@@ -12,7 +12,7 @@ class RainGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: AspectRatio(
-        aspectRatio: 1.50,
+        aspectRatio: 1.4,
         child: Padding(
           padding: const EdgeInsets.only(
             right: 18,
@@ -162,7 +162,7 @@ class RainGraph extends StatelessWidget {
           axisNameWidget: const Text(
             'Rainfall',
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w900, fontSize: 17),
+                color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
           ),
         ),
         bottomTitles: AxisTitles(
@@ -182,7 +182,7 @@ class RainGraph extends StatelessWidget {
             showTitles: true,
             interval: 1,
             getTitlesWidget: rainLeftTitleWidgets,
-            reservedSize: 34,
+            reservedSize: 28,
           ),
           axisNameWidget: const Text(
             'Rate (mm/hr)',
