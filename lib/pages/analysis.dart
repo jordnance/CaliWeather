@@ -34,12 +34,6 @@ class _AnalysisPageState extends State<AnalysisPage> {
   List<FlSpot>? hum;
   List<FlSpot>? snow;
 
-  @override
-  void initState() {
-    super.initState();
-    getData();
-  }
-
   Future<void> getData() async {
     List<List<FlSpot>> data = await GraphHelper.newCoords();
     rain = data[0];

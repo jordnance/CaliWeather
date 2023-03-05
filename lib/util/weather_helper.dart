@@ -81,7 +81,7 @@ class WeatherHelper {
     String humidity = "${weather.humidity}%";
     String latitude = weather.latitude.toString();
     String longitude = weather.longitude.toString();
-    String pressure = "${weather.pressure} hPa";
+    String pressure = "${weather.pressure?.toStringAsFixed(0)} hPa";
     String rainLast3Hours = "${weather.rainLast3Hours} mm";
     String rainLastHour = "${weather.rainLastHour} mm";
     String snowLast3Hours = "${weather.snowLast3Hours} mm";

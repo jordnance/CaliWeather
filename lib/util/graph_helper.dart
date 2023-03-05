@@ -43,6 +43,7 @@ class GraphHelper {
       values.add(yHum!);
       values.add(ySnow);
       yCoords.add(values);
+      values = [];
     }
 
     return yCoords;
@@ -64,13 +65,8 @@ class GraphHelper {
       humData.add(FlSpot(xCoords[i], yCoords[i][2]));
       snowData.add(FlSpot(xCoords[i], yCoords[i][3]));
     }
-    //print(rainData);
-    //print(tempData);
-    //print(humData);
-    //print(snowData);
 
     newCoords = [rainData, tempData, humData, snowData];
-
     return newCoords;
   }
 }

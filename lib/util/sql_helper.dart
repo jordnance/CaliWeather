@@ -78,7 +78,7 @@ class SQLHelper {
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'fortythree.db',
+      'fortyfive.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
