@@ -12,13 +12,10 @@ class Todo {
   final String tempData;
   final String humData;
   final String snowData;
+  final String duration;
 
   const Todo(
-    this.rainData,
-    this.tempData,
-    this.humData,
-    this.snowData,
-  );
+      this.rainData, this.tempData, this.humData, this.snowData, this.duration);
 }
 
 class AnalysisPage extends StatefulWidget {
@@ -34,6 +31,9 @@ class _AnalysisPageState extends State<AnalysisPage> {
   List<FlSpot>? temp;
   List<FlSpot>? hum;
   List<FlSpot>? snow;
+  double? length = 14;
+  bool? isPressed = false;
+  int durationIndex = 1;
 
   Future<void> getData() async {
     if (SharedPrefUtil.getIsLoggedIn() == true) {
@@ -75,10 +75,10 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           height: 20,
                         ),
                       ),
-                      RainGraph(todos: rain),
-                      TempGraph(todos: temp),
-                      HumGraph(todos: hum),
-                      SnowGraph(todos: snow),
+                      RainGraph(todos: rain, duration: length),
+                      TempGraph(todos: temp, duration: length),
+                      HumGraph(todos: hum, duration: length),
+                      SnowGraph(todos: snow, duration: length),
                       const Center(
                         child: SizedBox(
                           height: 70,
@@ -99,8 +99,33 @@ class _AnalysisPageState extends State<AnalysisPage> {
             child: FloatingActionButton(
               backgroundColor: Colors.blue,
               tooltip: 'Duration',
-              // TODO: Change duration of x-axis (1 day, 7 days, and 14 days)
-              onPressed: () { 
+              onPressed: () {
+                //if (isPressed == false) {
+                //  length = 7;
+                //  isPressed = true;
+                //} else {
+                //  length = 14;
+                //  isPressed = false;
+                //}
+
+                if (durationIndex == 3) {
+                  durationIndex = 1;
+                } else {
+                  durationIndex++;
+                }
+
+                switch (durationIndex) {
+                  case 1:
+                    length = 14;
+                    break;
+                  case 2:
+                    length = 7;
+                    break;
+                  case 3:
+                    length = 3;
+                    break;
+                }
+
                 setState(() {});
               },
               child: const Icon(

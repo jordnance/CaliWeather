@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class TempGraph extends StatelessWidget {
-  const TempGraph({super.key, required this.todos});
+  const TempGraph({super.key, required this.todos, required this.duration});
   final List<FlSpot>? todos;
+  final double? duration;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class TempGraph extends StatelessWidget {
             bottom: 12,
           ),
           child: LineChart(
-            graphData(),
+            graphData(duration),
           ),
         ),
       ),
@@ -68,6 +69,9 @@ class TempGraph extends StatelessWidget {
     );
     Widget text;
     switch (value.toInt()) {
+      case 0:
+        text = const Text('0', style: style);
+        break;
       case 1:
         text = const Text('1', style: style);
         break;
@@ -107,6 +111,9 @@ class TempGraph extends StatelessWidget {
       case 13:
         text = const Text('13', style: style);
         break;
+      case 14:
+        text = const Text('14', style: style);
+        break;
       default:
         text = const Text('', style: style);
         break;
@@ -117,7 +124,7 @@ class TempGraph extends StatelessWidget {
     );
   }
 
-  LineChartData graphData() {
+  LineChartData graphData(double? maxX) {
     List<Color> tempColors = [
       Color.fromARGB(255, 255, 255, 0),
       Color.fromARGB(255, 226, 105, 0),
@@ -186,7 +193,7 @@ class TempGraph extends StatelessWidget {
         border: Border.all(color: const Color(0xff37434d), width: 4),
       ),
       minX: 0,
-      maxX: 14,
+      maxX: maxX,
       minY: -50,
       maxY: 150,
       lineBarsData: [
