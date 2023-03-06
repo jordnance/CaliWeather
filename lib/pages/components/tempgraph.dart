@@ -29,7 +29,7 @@ class TempGraph extends StatelessWidget {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
       color: Colors.white,
-      fontSize: 10,
+      fontSize: 12,
     );
     String text;
     switch (value.toInt()) {

@@ -29,7 +29,7 @@ class SnowGraph extends StatelessWidget {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
       color: Colors.white,
-      fontSize: 13,
+      fontSize: 14,
     );
     String text;
     switch (value.toInt()) {
@@ -58,7 +58,7 @@ class SnowGraph extends StatelessWidget {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
       color: Colors.white,
-      fontSize: 13,
+      fontSize: 14,
     );
     Widget text;
     switch (value.toInt()) {

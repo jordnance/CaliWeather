@@ -37,6 +37,20 @@ class SQLHelper {
     await database.execute("PRAGMA foreign_keys = ON");
   }
 
+  static Future<void> createTriggers(sql.Database database) async {
+    await database.execute("""
+    CREATE TRIGGER IF NOT EXISTS purgeWeatherData
+    BEFORE INSERT ON WeatherData
+    BEGIN
+    	DELETE FROM WeatherData WHERE apiCallDate IN 
+    	(
+    		SELECT apiCallDate FROM WeatherData 
+        WHERE apiCallDate < (SELECT datetime('now','-14 days','localtime'))
+    	);
+    END
+    """);
+  }
+
   static Future<void> insertData(sql.Database database) async {
     await database
         .execute("""INSERT INTO User(firstName, lastName, username, password) 
@@ -78,10 +92,11 @@ class SQLHelper {
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'fortynine.db',
+      'fiftytwo.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
+        await createTriggers(database);
         await insertData(database);
       },
     );
@@ -110,15 +125,7 @@ class SQLHelper {
     db.rawQuery(
         """INSERT INTO WeatherData(userId, apiCallDate, location, rain, temp, humidity, snow) 
     VALUES (?, ?, ?, ?, ?, ?, ?)""",
-        [
-          userId,
-          apiCallDate,
-          location,
-          rain,
-          temp,
-          humidity,
-          snow
-        ]);
+        [userId, apiCallDate, location, rain, temp, humidity, snow]);
   }
 
   // Read a single user by username <-- WORKS

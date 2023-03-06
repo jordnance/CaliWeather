@@ -81,7 +81,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                       SnowGraph(todos: snow),
                       const Center(
                         child: SizedBox(
-                          height: 20,
+                          height: 70,
                         ),
                       ),
                     ],
@@ -97,13 +97,14 @@ class _AnalysisPageState extends State<AnalysisPage> {
             right: 10,
             bottom: 10,
             child: FloatingActionButton(
-              backgroundColor: Colors.green,
-              tooltip: 'Refresh',
-              onPressed: () {
+              backgroundColor: Colors.blue,
+              tooltip: 'Duration',
+              // TODO: Change duration of x-axis (1 day, 7 days, and 14 days)
+              onPressed: () { 
                 setState(() {});
               },
               child: const Icon(
-                Icons.refresh_rounded,
+                Icons.timelapse_rounded,
                 size: 30,
               ),
             ),
