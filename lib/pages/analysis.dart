@@ -100,20 +100,11 @@ class _AnalysisPageState extends State<AnalysisPage> {
               backgroundColor: Colors.blue,
               tooltip: 'Duration',
               onPressed: () {
-                //if (isPressed == false) {
-                //  length = 7;
-                //  isPressed = true;
-                //} else {
-                //  length = 14;
-                //  isPressed = false;
-                //}
-
                 if (durationIndex == 3) {
                   durationIndex = 1;
                 } else {
                   durationIndex++;
                 }
-
                 switch (durationIndex) {
                   case 1:
                     length = 14;
@@ -125,7 +116,6 @@ class _AnalysisPageState extends State<AnalysisPage> {
                     length = 3;
                     break;
                 }
-
                 setState(() {});
               },
               child: const Icon(

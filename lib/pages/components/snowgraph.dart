@@ -200,10 +200,10 @@ class SnowGraph extends StatelessWidget {
           barWidth: 6,
           isStrokeCapRound: true,
           dotData: FlDotData(
-            show: true,
+            show: false,
           ),
           belowBarData: BarAreaData(
-            show: false,
+            show: true,
             gradient: LinearGradient(
               colors:
                   snowColors.map((color) => color.withOpacity(0.3)).toList(),
