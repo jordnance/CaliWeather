@@ -209,7 +209,7 @@ class RainGraph extends StatelessWidget {
           gradient: LinearGradient(
             colors: rainColors,
           ),
-          barWidth: 6,
+          barWidth: 3,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,

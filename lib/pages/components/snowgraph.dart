@@ -197,7 +197,7 @@ class SnowGraph extends StatelessWidget {
           gradient: LinearGradient(
             colors: snowColors,
           ),
-          barWidth: 6,
+          barWidth: 3,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,

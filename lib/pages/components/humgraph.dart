@@ -209,7 +209,7 @@ class HumGraph extends StatelessWidget {
           gradient: LinearGradient(
             colors: humColors,
           ),
-          barWidth: 6,
+          barWidth: 3,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,

@@ -3,7 +3,6 @@ import '../util/sharedprefutil.dart';
 import 'globals.dart' as globals;
 import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
-import 'package:geocoding/geocoding.dart';
 
 class WeatherHelper {
   static Future<Weather> getCurrent() async {
@@ -14,10 +13,7 @@ class WeatherHelper {
       weather = await wf.currentWeatherByLocation(
           globals.positionLat, globals.positionLong);
     } else {
-      List<Location> location =
-          await locationFromAddress(SharedPrefUtil.getLocation());
-      weather = await wf.currentWeatherByLocation(
-          location[0].latitude, location[0].longitude);
+      weather = await wf.currentWeatherByCityName(SharedPrefUtil.getLocation());
     }
 
     return weather;
@@ -32,18 +28,16 @@ class WeatherHelper {
       forecast = await wf.fiveDayForecastByLocation(
           globals.positionLat, globals.positionLong);
     } else {
-      List<Location> location =
-          await locationFromAddress(SharedPrefUtil.getLocation());
-      forecast = await wf.fiveDayForecastByLocation(
-          location[0].latitude, location[0].longitude);
+      forecast =
+          await wf.fiveDayForecastByCityName(SharedPrefUtil.getLocation());
     }
 
     setData = [
-      forecast[7],  // <-- Day 1
+      forecast[7], // <-- Day 1
       forecast[15], // <-- Day 2
       forecast[23], // <-- Day 3
       forecast[31], // <-- Day 4
-      forecast[39]  // <-- Day 5
+      forecast[39] // <-- Day 5
     ];
     return setData;
   }
