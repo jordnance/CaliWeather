@@ -205,7 +205,7 @@ class RainGraph extends StatelessWidget {
       lineBarsData: [
         LineChartBarData(
           spots: todos,
-          isCurved: true,
+          isCurved: false,
           gradient: LinearGradient(
             colors: rainColors,
           ),

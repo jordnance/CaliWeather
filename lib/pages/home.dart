@@ -22,11 +22,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   double currentPage = 0;
-  final PageController pgController = PageController();
   List<dynamic>? micro;
   List<dynamic>? forecast;
   List<dynamic>? main;
   Color bgColor = Colors.grey.shade200;
+  final PageController pgController = PageController();
 
   Future<void> getData() async {
     List microData = await WeatherHelper.getMicroweather();
@@ -39,8 +39,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final PageController pgController = PageController();
-
     return Scaffold(
       body: FutureBuilder<void>(
           future: getData(),

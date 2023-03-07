@@ -193,7 +193,7 @@ class SnowGraph extends StatelessWidget {
       lineBarsData: [
         LineChartBarData(
           spots: todos,
-          isCurved: true,
+          isCurved: false,
           gradient: LinearGradient(
             colors: snowColors,
           ),

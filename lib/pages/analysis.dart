@@ -6,6 +6,7 @@ import 'package:caliweather/pages/components/raingraph.dart';
 import 'package:caliweather/pages/components/tempgraph.dart';
 import 'package:caliweather/pages/components/humgraph.dart';
 import 'package:caliweather/pages/components/snowgraph.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Todo {
   final String rainData;
@@ -34,6 +35,8 @@ class _AnalysisPageState extends State<AnalysisPage> {
   double? length = 14;
   bool? isPressed = false;
   int durationIndex = 1;
+  int titleIndex = 0;
+  List<String> durationTitle = ['2 Weeks', '1 Week', '3 Days'];
 
   Future<void> getData() async {
     if (SharedPrefUtil.getIsLoggedIn() == true) {
@@ -45,8 +48,20 @@ class _AnalysisPageState extends State<AnalysisPage> {
     }
   }
 
+  void changeDuration() {
+    if (titleIndex != 2) {
+      titleIndex++;
+    } else {
+      titleIndex = 0;
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    final PageController pgController = PageController();
+    final PageController pg2Controller = PageController();
+
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
       body: FutureBuilder<void>(
@@ -67,25 +82,68 @@ class _AnalysisPageState extends State<AnalysisPage> {
               case ConnectionState.active:
                 return const Center(child: Text("Active"));
               case ConnectionState.done:
-                return SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      const Center(
-                        child: SizedBox(
-                          height: 20,
+                return Column(
+                  children: <Widget>[
+                    const Center(
+                      child: SizedBox(
+                        height: 30,
+                      ),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: PageView(
+                          controller: pgController,
+                          children: <Widget>[
+                            TempGraph(todos: temp, duration: length),
+                            HumGraph(todos: hum, duration: length),
+                          ],
                         ),
                       ),
-                      RainGraph(todos: rain, duration: length),
-                      TempGraph(todos: temp, duration: length),
-                      HumGraph(todos: hum, duration: length),
-                      SnowGraph(todos: snow, duration: length),
-                      const Center(
-                        child: SizedBox(
-                          height: 70,
+                    ),
+                    Center(
+                      child: SmoothPageIndicator(
+                        controller: pgController,
+                        count: 2,
+                        axisDirection: Axis.horizontal,
+                        effect: SlideEffect(
+                          activeDotColor: Colors.blueGrey,
+                          dotHeight: 10,
+                          dotColor: Colors.grey.shade400,
+                          dotWidth: 10,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: PageView(
+                          controller: pg2Controller,
+                          children: <Widget>[
+                            RainGraph(todos: rain, duration: length),
+                            SnowGraph(todos: snow, duration: length),
+                            //TempGraph(todos: temp, duration: length),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: SmoothPageIndicator(
+                        controller: pg2Controller,
+                        count: 2,
+                        axisDirection: Axis.horizontal,
+                        effect: SlideEffect(
+                          activeDotColor: Colors.blueGrey,
+                          dotHeight: 10,
+                          dotColor: Colors.grey.shade400,
+                          dotWidth: 10,
+                        ),
+                      ),
+                    ),
+                    const Center(
+                      child: SizedBox(
+                        height: 70,
+                      ),
+                    ),
+                  ],
                 );
             }
           }),
@@ -96,7 +154,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
           Positioned(
             right: 10,
             bottom: 10,
-            child: FloatingActionButton(
+            child: FloatingActionButton.extended(
               backgroundColor: Colors.blue,
               tooltip: 'Duration',
               onPressed: () {
@@ -116,9 +174,15 @@ class _AnalysisPageState extends State<AnalysisPage> {
                     length = 3;
                     break;
                 }
-                setState(() {});
+                changeDuration();
               },
-              child: const Icon(
+              label: Text(
+                durationTitle[titleIndex],
+                style: const TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+              icon: const Icon(
                 Icons.timelapse_rounded,
                 size: 30,
               ),

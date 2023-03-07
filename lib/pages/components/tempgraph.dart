@@ -199,7 +199,7 @@ class TempGraph extends StatelessWidget {
       lineBarsData: [
         LineChartBarData(
           spots: todos,
-          isCurved: true,
+          isCurved: false,
           gradient: LinearGradient(
             colors: tempColors,
           ),
