@@ -130,7 +130,7 @@ class SQLHelper {
 
   // Read a single user by username <-- WORKS
   static Future<List<Map<dynamic, dynamic>>> getUserByUsername(
-      String username) async {
+      String? username) async {
     sql.Database db = await SQLHelper.db();
     return db
         .rawQuery("SELECT * FROM User WHERE username = ? LIMIT 1", [username]);
@@ -164,11 +164,11 @@ class SQLHelper {
         [firstName, lastName, username, password, userId]);
   }
 
-  // Update password <-- NEEDS TO BE TESTED
-  static Future<void> updatePassword(int userId, String password) async {
+  // Update password <-- WORKS
+  static Future<void> updatePassword(String? username, String? password) async {
     final db = await SQLHelper.db();
     db.rawQuery(
-        "UPDATE User SET password = ? WHERE userId = ?", [password, userId]);
+        "UPDATE User SET password = ? WHERE username = ?", [password, username]);
   }
 
   // Update language <-- NEEDS TO BE TESTED
