@@ -22,17 +22,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   double currentPage = 0;
-  final PageController pgController = PageController();
   List<dynamic>? micro;
   List<dynamic>? forecast;
   List<dynamic>? main;
   Color bgColor = Colors.grey.shade200;
-
-  @override
-  void initState() {
-    super.initState();
-    getData();
-  }
+  final PageController pgController = PageController();
 
   Future<void> getData() async {
     List microData = await WeatherHelper.getMicroweather();
@@ -45,8 +39,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final PageController pgController = PageController();
-
     return Scaffold(
       body: FutureBuilder<void>(
           future: getData(),
@@ -54,14 +46,17 @@ class _HomePageState extends State<HomePage> {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
                 return const Center(
-                  child: Text("None"), // <-- TESTING
+                  child: Text("None"),
                 );
               case ConnectionState.waiting:
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator()),
                 );
               case ConnectionState.active:
-                return const Center(child: Text("Active")); // <-- TESTING
+                return const Center(child: Text("Active"));
               case ConnectionState.done:
                 return Column(
                   children: <Widget>[
@@ -96,8 +91,7 @@ class _HomePageState extends State<HomePage> {
                         color: const Color.fromARGB(255, 87, 87, 87)
                             .withOpacity(0.6),
                         onPressed: () {
-                          getData(); // <-- TESTING
-                          setState(() {}); // <-- TESTING
+                          setState(() {});
                         },
                       ),
                     ),

@@ -23,7 +23,32 @@ class SQLHelper {
     conserveWater text default "Off",
     apiRelated text default "Off"
     )""");
+    await database.execute("""CREATE TABLE IF NOT EXISTS WeatherData(
+    apiResponseId integer PRIMARY KEY AUTOINCREMENT,
+    userId integer NOT NULL,
+    apiCallDate text NOT NULL,
+    location text NOT NULL,
+    rain real default NULL,
+    temp real NOT NULL,
+    humidity real NOT NULL,
+    snow real default NULL,
+    FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE
+    )""");
     await database.execute("PRAGMA foreign_keys = ON");
+  }
+
+  static Future<void> createTriggers(sql.Database database) async {
+    await database.execute("""
+    CREATE TRIGGER IF NOT EXISTS purgeWeatherData
+    BEFORE INSERT ON WeatherData
+    BEGIN
+    	DELETE FROM WeatherData WHERE apiCallDate IN 
+    	(
+    		SELECT apiCallDate FROM WeatherData 
+        WHERE apiCallDate < (SELECT datetime('now','-14 days','localtime'))
+    	);
+    END
+    """);
   }
 
   static Future<void> insertData(sql.Database database) async {
@@ -67,10 +92,11 @@ class SQLHelper {
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'sixteen.db',
+      'fiftytwo.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
+        await createTriggers(database);
         await insertData(database);
       },
     );
@@ -86,9 +112,25 @@ class SQLHelper {
     db.rawQuery("""INSERT INTO Alerts DEFAULT VALUES""");
   }
 
+  // Create new weather data points <-- WORKS
+  static Future<void> createWeatherData(
+      int? userId,
+      String? apiCallDate,
+      String? location,
+      double? rain,
+      double? temp,
+      double? humidity,
+      double? snow) async {
+    final db = await SQLHelper.db();
+    db.rawQuery(
+        """INSERT INTO WeatherData(userId, apiCallDate, location, rain, temp, humidity, snow) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)""",
+        [userId, apiCallDate, location, rain, temp, humidity, snow]);
+  }
+
   // Read a single user by username <-- WORKS
   static Future<List<Map<dynamic, dynamic>>> getUserByUsername(
-      String username) async {
+      String? username) async {
     sql.Database db = await SQLHelper.db();
     return db
         .rawQuery("SELECT * FROM User WHERE username = ? LIMIT 1", [username]);
@@ -104,6 +146,15 @@ class SQLHelper {
      """, [userId]);
   }
 
+  // Read weather data stored by userid <-- WORKS
+  static Future<List<Map<String, dynamic>>> getUserData(int userId) async {
+    final db = await SQLHelper.db();
+    return db.rawQuery("""SELECT w.* FROM User AS u
+     INNER JOIN WeatherData AS w ON u.userId = ?
+     WHERE u.userId = w.userId  
+     """, [userId]);
+  }
+
   // Update user's profile info <-- WORKS
   static Future<List<Map<String, dynamic>>> updateUser(String? firstName,
       String? lastName, String? username, String? password, int userId) async {
@@ -113,11 +164,11 @@ class SQLHelper {
         [firstName, lastName, username, password, userId]);
   }
 
-  // Update password <-- NEEDS TO BE TESTED
-  static Future<void> updatePassword(int userId, String password) async {
+  // Update password <-- WORKS
+  static Future<void> updatePassword(String? username, String? password) async {
     final db = await SQLHelper.db();
     db.rawQuery(
-        "UPDATE User SET password = ? WHERE userId = ?", [password, userId]);
+        "UPDATE User SET password = ? WHERE username = ?", [password, username]);
   }
 
   // Update language <-- NEEDS TO BE TESTED
