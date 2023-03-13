@@ -35,6 +35,8 @@ class _SettingsPageState extends State<SettingsPage> {
   bool checkboxEnergy = false;
   bool checkboxAPI = false;
   bool checkboxWater = false;
+  bool isSaved = false;
+  String? usernameValue;
 
   LanguageSet? _languageSet = LanguageSet.english;
   FontSet? _fontSet = FontSet.small;
@@ -47,6 +49,9 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
+    if (SharedPrefUtil.getUsername() != '') {
+      usernameValue = SharedPrefUtil.getUsername();
+    }
     SharedPrefUtil.setLanguage(_languageSet.toString().split('.').last);
     SharedPrefUtil.setFontSize(_fontSet.toString().split('.').last);
     SharedPrefUtil.setFontSize(_fontSet.toString().split('.').last);
@@ -56,6 +61,58 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPrefUtil.setTempFormat(_tempSet.toString().split('.').last);
     SharedPrefUtil.setTheme(_themeSet.toString().split('.').last);
     SharedPrefUtil.checkAllPrefs();
+  }
+
+  Future<void> _showSaveAlert() async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Save Confirmation'),
+            content: SingleChildScrollView(
+                child: Column(
+              children: const <Widget>[
+                Text('Are you sure you want to save?'),
+              ],
+            )),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () async {
+                  saveSettings();
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Confirm'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel'),
+              )
+            ],
+          );
+        });
+  }
+
+  void saveSettings() async {
+    var user = await SQLHelper.getUserByUsername(usernameValue);
+    var prefUserId = user[0]['userId'];
+    var lang = _languageSet.toString().split('.').last;
+    var fSize = _fontSet.toString().split('.').last;
+    var conEnergy = _alertEnergy.toString().split('.').last;
+    var conWater = _alertWater.toString().split('.').last;
+    var apiRel = _alertAPI.toString().split('.').last;
+    var temp = _tempSet.toString().split('.').last;
+    var theme = _themeSet.toString().split('.').last;
+
+    if (isSaved) {
+      await SQLHelper.updateLang(prefUserId, lang);
+      await SQLHelper.updateSize(prefUserId, fSize);
+      await SQLHelper.updateAlerts(prefUserId, conEnergy, conWater, apiRel);
+      await SQLHelper.updateTemp(prefUserId, temp);
+      await SQLHelper.updateTheme(prefUserId, theme);
+    }
   }
 
   @override
@@ -358,6 +415,19 @@ class _SettingsPageState extends State<SettingsPage> {
                           })),
                 ],
               )),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.blue,
+                minimumSize: const Size(280, 40),
+              ),
+              child: const Text('Save'),
+              onPressed: () async {
+                setState(() {
+                  isSaved = !isSaved;
+                });
+                _showSaveAlert();
+              })
         ],
       ),
     ));
