@@ -44,12 +44,13 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     initBackgroundState();
+    startBackgroundService();
   }
 
   Future<void> initBackgroundState() async {
     await BackgroundFetch.configure(
         BackgroundFetchConfig(
-            minimumFetchInterval: 15,
+            minimumFetchInterval: 15,   // TODO: Change to 720 after testing is complete
             startOnBoot: true,
             stopOnTerminate: false,
             enableHeadless: true,
@@ -75,7 +76,6 @@ class _HomePageState extends State<HomePage> {
     micro = microData;
     forecast = forecastData;
     main = mainData;
-    startBackgroundService();
   }
 
   @override
