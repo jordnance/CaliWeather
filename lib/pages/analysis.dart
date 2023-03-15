@@ -38,9 +38,9 @@ class _AnalysisPageState extends State<AnalysisPage> {
   int titleIndex = 0;
   List<String> durationTitle = ['2 Weeks', '1 Week', '3 Days'];
 
-  Future<void> getData() async {
+  Future<void> getData(double? durationLength) async {
     if (SharedPrefUtil.getIsLoggedIn() == true) {
-      List<List<FlSpot>> data = await GraphHelper.newCoords();
+      List<List<FlSpot>> data = await GraphHelper.newCoords(durationLength);
       rain = data[0];
       temp = data[1];
       hum = data[2];
@@ -65,7 +65,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
       body: FutureBuilder<void>(
-          future: getData(),
+          future: getData(length),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -120,7 +120,6 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           children: <Widget>[
                             RainGraph(todos: rain, duration: length),
                             SnowGraph(todos: snow, duration: length),
-                            //TempGraph(todos: temp, duration: length),
                           ],
                         ),
                       ),

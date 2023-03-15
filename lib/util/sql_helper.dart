@@ -92,7 +92,7 @@ class SQLHelper {
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'fiftytwo.db',
+      'fiftythree.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -155,6 +155,12 @@ class SQLHelper {
      """, [userId]);
   }
 
+  static Future<List<Map<String, dynamic>>> getTempPref(int userId) async {
+    final db = await SQLHelper.db();
+    return db
+        .rawQuery("SELECT tempFormat FROM Preference WHERE userprefId = ?");
+  }
+
   // Update user's profile info <-- WORKS
   static Future<List<Map<String, dynamic>>> updateUser(String? firstName,
       String? lastName, String? username, String? password, int userId) async {
@@ -167,8 +173,8 @@ class SQLHelper {
   // Update password <-- WORKS
   static Future<void> updatePassword(String? username, String? password) async {
     final db = await SQLHelper.db();
-    db.rawQuery(
-        "UPDATE User SET password = ? WHERE username = ?", [password, username]);
+    db.rawQuery("UPDATE User SET password = ? WHERE username = ?",
+        [password, username]);
   }
 
   // Update language <-- NEEDS TO BE TESTED
@@ -179,14 +185,14 @@ class SQLHelper {
   }
 
   // Update font size <-- NEEDS TO BE TESTED
-  static Future<void> updateSize(int userprefId, int fontSize) async {
+  static Future<void> updateSize(int userprefId, String fontSize) async {
     final db = await SQLHelper.db();
     db.rawQuery("UPDATE Preference SET fontSize = ? WHERE userprefId = ?",
         [fontSize, userprefId]);
   }
 
   // Update temp format <-- NEEDS TO BE TESTED
-  static Future<void> updateTemp(int userprefId, int tempFormat) async {
+  static Future<void> updateTemp(int userprefId, String tempFormat) async {
     final db = await SQLHelper.db();
     db.rawQuery("UPDATE Preference SET tempFormat = ? WHERE userprefId = ?",
         [tempFormat, userprefId]);
