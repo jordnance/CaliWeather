@@ -1,9 +1,21 @@
 import 'package:caliweather/util/weather_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:background_fetch/background_fetch.dart';
 import 'package:caliweather/pages/components/microweather.dart';
 import 'package:caliweather/pages/components/mainweather.dart';
 import 'package:caliweather/pages/components/forecast.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+@pragma('vm:entry-point')
+void backgroundFetchHeadlessTask(HeadlessTask task) async {
+  String taskId = task.taskId;
+  bool isTimeout = task.timeout;
+  if (isTimeout) {
+    BackgroundFetch.finish(taskId);
+    return;
+  }
+  BackgroundFetch.finish(taskId);
+}
 
 class Todo {
   final String mainData;
@@ -27,6 +39,35 @@ class _HomePageState extends State<HomePage> {
   List<dynamic>? main;
   Color bgColor = Colors.grey.shade200;
   final PageController pgController = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+    initBackgroundState();
+    startBackgroundService();
+  }
+
+  Future<void> initBackgroundState() async {
+    await BackgroundFetch.configure(
+        BackgroundFetchConfig(
+            minimumFetchInterval: 15,   // TODO: Change to 720 after testing is complete
+            startOnBoot: true,
+            stopOnTerminate: false,
+            enableHeadless: true,
+            requiresBatteryNotLow: false,
+            requiresStorageNotLow: false,
+            requiresDeviceIdle: false,
+            requiredNetworkType: NetworkType.NONE
+    ), (String taskId) async {
+      setState(() {});
+      BackgroundFetch.finish(taskId);
+    });
+    if (!mounted) return;
+  }
+
+  void startBackgroundService() {
+    BackgroundFetch.start();
+  }
 
   Future<void> getData() async {
     List microData = await WeatherHelper.getMicroweather();

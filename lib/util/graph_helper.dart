@@ -3,9 +3,10 @@ import '../util/sharedprefutil.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class GraphHelper {
-  static Future<List<double>> getXCoords() async {
+  static Future<List<double>> getXCoords(double? durationLength) async {
     var test = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
     var leastCurrent = test[0]['apiCallDate'];
+
     var thisTime, difference, parsedLeastCurrent, parsedThisTime;
     double seconds, newX = 0;
     List<double> xCoords = [];
@@ -17,7 +18,9 @@ class GraphHelper {
       difference = parsedThisTime.difference(parsedLeastCurrent);
       seconds = difference.inSeconds.toDouble();
       newX = seconds / 86400;
-      xCoords.add(newX);
+      if (newX <= durationLength!) {
+        xCoords.add(newX);
+      }
     }
     return xCoords;
   }
@@ -45,27 +48,32 @@ class GraphHelper {
     return yCoords;
   }
 
-  static Future<List<List<FlSpot>>> newCoords() async {
+  static Future<List<List<FlSpot>>> newCoords(double? durationLength) async {
     if (SharedPrefUtil.getUserId() != 0) {
-      var xCoords = await getXCoords();
-      var yCoords = await getYCoords();
-      List<List<FlSpot>> newCoords = [];
-      List<FlSpot> rainData = [];
-      List<FlSpot> tempData = [];
-      List<FlSpot> humData = [];
-      List<FlSpot> snowData = [];
+      var test = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
 
-      for (int i = 0; i < xCoords.length; i++) {
-        rainData.add(FlSpot(xCoords[i], yCoords[i][0]));
-        tempData.add(FlSpot(xCoords[i], yCoords[i][1]));
-        humData.add(FlSpot(xCoords[i], yCoords[i][2]));
-        snowData.add(FlSpot(xCoords[i], yCoords[i][3]));
+      if (test[0]['apiCallDate'] != Null) {
+        var xCoords = await getXCoords(durationLength);
+        var yCoords = await getYCoords();
+        List<List<FlSpot>> newCoords = [];
+        List<FlSpot> rainData = [];
+        List<FlSpot> tempData = [];
+        List<FlSpot> humData = [];
+        List<FlSpot> snowData = [];
+
+        for (int i = 0; i < xCoords.length; i++) {
+          rainData.add(FlSpot(xCoords[i], yCoords[i][0]));
+          tempData.add(FlSpot(xCoords[i], yCoords[i][1]));
+          humData.add(FlSpot(xCoords[i], yCoords[i][2]));
+          snowData.add(FlSpot(xCoords[i], yCoords[i][3]));
+        }
+
+        newCoords = [rainData, tempData, humData, snowData];
+        return newCoords;
+      } else {
+        return Future.error('No weather data has been stored');
       }
-
-      newCoords = [rainData, tempData, humData, snowData];
-      return newCoords;
-    } else {
-      return Future.error('User is not logged in');
     }
+    return Future.error('User is not logged in');
   }
 }
