@@ -3,7 +3,7 @@ import '../util/sharedprefutil.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class GraphHelper {
-  static Future<List<double>> getXCoords() async {
+  static Future<List<double>> getXCoords(double? durationLength) async {
     var test = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
     var leastCurrent = test[0]['apiCallDate'];
     var thisTime, difference, parsedLeastCurrent, parsedThisTime;
@@ -17,7 +17,9 @@ class GraphHelper {
       difference = parsedThisTime.difference(parsedLeastCurrent);
       seconds = difference.inSeconds.toDouble();
       newX = seconds / 86400;
-      xCoords.add(newX);
+      if (newX <= durationLength!) {
+        xCoords.add(newX);
+      }
     }
     return xCoords;
   }
@@ -45,9 +47,9 @@ class GraphHelper {
     return yCoords;
   }
 
-  static Future<List<List<FlSpot>>> newCoords() async {
+  static Future<List<List<FlSpot>>> newCoords(double? durationLength) async {
     if (SharedPrefUtil.getUserId() != 0) {
-      var xCoords = await getXCoords();
+      var xCoords = await getXCoords(durationLength);
       var yCoords = await getYCoords();
       List<List<FlSpot>> newCoords = [];
       List<FlSpot> rainData = [];

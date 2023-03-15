@@ -203,7 +203,7 @@ class TempGraph extends StatelessWidget {
           gradient: LinearGradient(
             colors: tempColors,
           ),
-          barWidth: 3,
+          barWidth: 5,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
