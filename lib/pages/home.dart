@@ -25,10 +25,11 @@ class Todo {
   final String forecastData;
   final String ambientTemp;
   final String ambientHum;
-  final String ambeintPress;
+  final String ambientLight;
+  final String ambientPress;
 
   const Todo(this.mainData, this.microData, this.forecastData, this.ambientTemp,
-      this.ambientHum, this.ambeintPress);
+      this.ambientHum, this.ambientLight, this.ambientPress);
 }
 
 class HomePage extends StatefulWidget {
@@ -46,6 +47,7 @@ class _HomePageState extends State<HomePage> {
   List<dynamic>? main;
   bool _tempAvailable = false;
   bool _humidityAvailable = false;
+  bool _lightAvailable = false;
   bool _pressureAvailable = false;
   Color bgColor = Colors.grey.shade200;
   final environmentSensors = EnvironmentSensors();
@@ -62,18 +64,22 @@ class _HomePageState extends State<HomePage> {
   Future<void> initSensorState() async {
     bool tempAvailable;
     bool humidityAvailable;
+    bool lightAvailable;
     bool pressureAvailable;
 
     tempAvailable = await environmentSensors
         .getSensorAvailable(SensorType.AmbientTemperature);
     humidityAvailable =
         await environmentSensors.getSensorAvailable(SensorType.Humidity);
+    lightAvailable =
+        await environmentSensors.getSensorAvailable(SensorType.Light);
     pressureAvailable =
         await environmentSensors.getSensorAvailable(SensorType.Pressure);
 
     setState(() {
       _tempAvailable = tempAvailable;
       _humidityAvailable = humidityAvailable;
+      _lightAvailable = lightAvailable;
       _pressureAvailable = pressureAvailable;
     });
   }
@@ -141,6 +147,7 @@ class _HomePageState extends State<HomePage> {
                             AmbientWeather(
                                 ambientTemp: _tempAvailable,
                                 ambientHum: _humidityAvailable,
+                                ambientLight: _lightAvailable,
                                 ambientPress: _pressureAvailable)
                           ],
                         ),
