@@ -4,7 +4,9 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:caliweather/pages/components/microweather.dart';
 import 'package:caliweather/pages/components/mainweather.dart';
 import 'package:caliweather/pages/components/forecast.dart';
+import 'package:caliweather/pages/components/ambientweather.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:environment_sensors/environment_sensors.dart';
 
 @pragma('vm:entry-point')
 void backgroundFetchHeadlessTask(HeadlessTask task) async {
@@ -21,7 +23,12 @@ class Todo {
   final String mainData;
   final String microData;
   final String forecastData;
-  const Todo(this.mainData, this.microData, this.forecastData);
+  final String ambientTemp;
+  final String ambientHum;
+  final String ambeintPress;
+
+  const Todo(this.mainData, this.microData, this.forecastData, this.ambientTemp,
+      this.ambientHum, this.ambeintPress);
 }
 
 class HomePage extends StatefulWidget {
@@ -37,28 +44,51 @@ class _HomePageState extends State<HomePage> {
   List<dynamic>? micro;
   List<dynamic>? forecast;
   List<dynamic>? main;
+  bool _tempAvailable = false;
+  bool _humidityAvailable = false;
+  bool _pressureAvailable = false;
   Color bgColor = Colors.grey.shade200;
+  final environmentSensors = EnvironmentSensors();
   final PageController pgController = PageController();
 
   @override
   void initState() {
     super.initState();
+    initSensorState();
     initBackgroundState();
     startBackgroundService();
+  }
+
+  Future<void> initSensorState() async {
+    bool tempAvailable;
+    bool humidityAvailable;
+    bool pressureAvailable;
+
+    tempAvailable = await environmentSensors
+        .getSensorAvailable(SensorType.AmbientTemperature);
+    humidityAvailable =
+        await environmentSensors.getSensorAvailable(SensorType.Humidity);
+    pressureAvailable =
+        await environmentSensors.getSensorAvailable(SensorType.Pressure);
+
+    setState(() {
+      _tempAvailable = tempAvailable;
+      _humidityAvailable = humidityAvailable;
+      _pressureAvailable = pressureAvailable;
+    });
   }
 
   Future<void> initBackgroundState() async {
     await BackgroundFetch.configure(
         BackgroundFetchConfig(
-            minimumFetchInterval: 15,   // TODO: Change to 720 after testing is complete
+            minimumFetchInterval: 360,
             startOnBoot: true,
             stopOnTerminate: false,
             enableHeadless: true,
             requiresBatteryNotLow: false,
             requiresStorageNotLow: false,
             requiresDeviceIdle: false,
-            requiredNetworkType: NetworkType.NONE
-    ), (String taskId) async {
+            requiredNetworkType: NetworkType.NONE), (String taskId) async {
       setState(() {});
       BackgroundFetch.finish(taskId);
     });
@@ -108,6 +138,10 @@ class _HomePageState extends State<HomePage> {
                           children: <Widget>[
                             MainWeather(todos: main),
                             MicroWeather(todos: micro),
+                            AmbientWeather(
+                                ambientTemp: _tempAvailable,
+                                ambientHum: _humidityAvailable,
+                                ambientPress: _pressureAvailable)
                           ],
                         ),
                       ),
@@ -115,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                     Center(
                       child: SmoothPageIndicator(
                         controller: pgController,
-                        count: 2,
+                        count: 3,
                         axisDirection: Axis.horizontal,
                         effect: SlideEffect(
                           activeDotColor: Colors.blueGrey,

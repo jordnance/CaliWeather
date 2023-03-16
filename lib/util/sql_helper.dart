@@ -92,7 +92,7 @@ class SQLHelper {
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'fiftythree.db',
+      'fiftyfive.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -184,14 +184,14 @@ class SQLHelper {
         [lang, userprefId]);
   }
 
-  // Update font size <-- NEEDS TO BE TESTED
+  // Update font size <-- WORKS
   static Future<void> updateSize(int userprefId, String fontSize) async {
     final db = await SQLHelper.db();
     db.rawQuery("UPDATE Preference SET fontSize = ? WHERE userprefId = ?",
         [fontSize, userprefId]);
   }
 
-  // Update temp format <-- NEEDS TO BE TESTED
+  // Update temp format <-- WORKS
   static Future<void> updateTemp(int userprefId, String tempFormat) async {
     final db = await SQLHelper.db();
     db.rawQuery("UPDATE Preference SET tempFormat = ? WHERE userprefId = ?",

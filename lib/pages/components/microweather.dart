@@ -6,7 +6,6 @@ class MicroWeather extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String units = "°F"; // TODO: Pull from settings/database
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
