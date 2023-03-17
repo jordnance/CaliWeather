@@ -4,6 +4,7 @@ import 'pages/radar.dart';
 import 'pages/analysis.dart';
 import 'pages/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'util/sharedprefutil.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -11,6 +12,8 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefUtil.init();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const MyApp());
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }

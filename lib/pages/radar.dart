@@ -125,6 +125,8 @@ class _RadarPageState extends State<RadarPage> {
                       zoom: currentZoom,
                       minZoom: minZoom,
                       maxZoom: maxZoom,
+                      interactiveFlags:
+                          InteractiveFlag.pinchZoom | InteractiveFlag.drag,
                       maxBounds: LatLngBounds(
                         LatLng(63.00, -148.00),
                         LatLng(3.200, -95.75),

@@ -18,7 +18,6 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
@@ -30,7 +29,6 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
@@ -42,7 +40,6 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
@@ -54,7 +51,6 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
@@ -66,7 +62,6 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
@@ -78,7 +73,6 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
@@ -90,31 +84,17 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
-            'Main: ${todos?[21]}',
+            'Detail: ${todos?[19]}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Text(
-            'Description: ${todos?[19]}',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
