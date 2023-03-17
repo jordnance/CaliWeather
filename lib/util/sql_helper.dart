@@ -127,7 +127,7 @@ class SQLHelper {
       double? windSpeed) async {
     final db = await SQLHelper.db();
     db.rawQuery(
-        """INSERT INTO WeatherData(userId, apiCallDate, location, rain, temp, humidity, snow) 
+        """INSERT INTO WeatherData(userId, apiCallDate, location, rain, temp, humidity, snow, pressure, windSpeed) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         [
           userId,
