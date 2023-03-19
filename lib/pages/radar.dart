@@ -6,6 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:caliweather/util/radar_util.dart';
 import 'package:caliweather/util/geo_helper.dart';
+import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 
 class RadarPage extends StatefulWidget {
   const RadarPage({super.key, required this.title});
@@ -26,6 +27,8 @@ class _RadarPageState extends State<RadarPage> {
 
   Position? currentPosition;
   LatLng currentCenter = LatLng(globals.positionLat, globals.positionLong);
+
+  final store = FlutterMapTileCaching.instance('RadarStore');
 
   List<String> pastRadarUrl = [
     'https://tilecache.rainviewer.com/v2/radar/${RadarUtil.getTimestamps(0)}/512/{z}/{x}/{y}/1/1_1.png',
@@ -48,6 +51,7 @@ class _RadarPageState extends State<RadarPage> {
   void initState() {
     super.initState();
     getCurrentPosition();
+    store.manage.create();
   }
 
   void zoomOut() {
@@ -145,19 +149,22 @@ class _RadarPageState extends State<RadarPage> {
                   ],
                   children: [
                     TileLayer(
-                      tileProvider: NetworkTileProvider(),
+                      tileProvider:
+                          FMTC.instance('RadarStore').getTileProvider(),
                       urlTemplate:
                           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                       userAgentPackageName: 'com.example.app',
                     ),
                     TileLayer(
-                      tileProvider: NetworkTileProvider(),
+                      tileProvider:
+                          FMTC.instance('RadarStore').getTileProvider(),
                       urlTemplate: overlayUrl[overlayIndex],
                       userAgentPackageName: 'com.example.app',
                       backgroundColor: Colors.transparent,
                     ),
                     TileLayer(
-                      tileProvider: NetworkTileProvider(),
+                      tileProvider:
+                          FMTC.instance('RadarStore').getTileProvider(),
                       urlTemplate: pastRadarUrl[radarIndex.round()],
                       userAgentPackageName: 'com.example.app',
                       backgroundColor: Colors.transparent,
@@ -169,10 +176,8 @@ class _RadarPageState extends State<RadarPage> {
                                 globals.positionLat, globals.positionLong),
                             width: 80,
                             height: 80,
-                            builder: (context) => Container(
-                                  child: const Icon(Icons.location_on,
-                                      color: Colors.deepPurple, size: 45),
-                                )),
+                            builder: (context) => const Icon(Icons.location_on,
+                                color: Colors.deepPurple, size: 45)),
                       ],
                     ),
                   ],

@@ -8,10 +8,13 @@ import 'package:flutter/services.dart';
 import 'util/sharedprefutil.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefUtil.init();
+  FMTCSettings setter = FMTCSettings(databaseMaxSize: 256);
+  await FlutterMapTileCaching.initialise(settings: setter);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const MyApp());
