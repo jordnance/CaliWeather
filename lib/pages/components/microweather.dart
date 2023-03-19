@@ -6,14 +6,24 @@ class MicroWeather extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
-            'Max: ${todos?[15]}',
+            'High: ${todos?[15]}',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Low: ${todos?[16]}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,

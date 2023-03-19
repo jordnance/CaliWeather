@@ -13,7 +13,7 @@ import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefUtil.init();
-  FMTCSettings setter = FMTCSettings(databaseMaxSize: 256);
+  FMTCSettings setter = FMTCSettings(databaseMaxSize: 512);
   await FlutterMapTileCaching.initialise(settings: setter);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
