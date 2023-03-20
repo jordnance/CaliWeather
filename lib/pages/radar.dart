@@ -1,3 +1,4 @@
+import 'dart:async';
 import '../util/globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -18,11 +19,12 @@ class RadarPage extends StatefulWidget {
 
 class _RadarPageState extends State<RadarPage> {
   int overlayIndex = 0;
-  double radarIndex = 0;
+  int playStopIndex = 0;
+  double radarIndex = 4;
   double minZoom = 3.5;
   double maxZoom = 10;
   double currentZoom = 5.5;
-  double currentSliderValue = 0;
+  double currentSliderValue = -2;
   MapController mapController = MapController();
 
   Position? currentPosition;
@@ -46,12 +48,19 @@ class _RadarPageState extends State<RadarPage> {
   ];
 
   List<String> overlayTitle = ['None', 'Clouds', 'Temps', 'Wind'];
+  List<IconData> playStop = [Icons.play_arrow_rounded, Icons.stop_rounded];
 
   @override
   void initState() {
     super.initState();
     getCurrentPosition();
     store.manage.create();
+  }
+
+  @override
+  void dispose() {
+    store.manage.delete();
+    super.dispose();
   }
 
   void zoomOut() {
@@ -87,8 +96,8 @@ class _RadarPageState extends State<RadarPage> {
     } else {
       overlayIndex = 0;
     }
-    currentSliderValue = 0;
-    radarIndex = 0;
+    currentSliderValue = -2;
+    radarIndex = 4;
     setState(() {});
   }
 
@@ -99,6 +108,39 @@ class _RadarPageState extends State<RadarPage> {
 
   void moveMarker() {
     setState(() {});
+  }
+
+  void changeIcon() {
+    if (playStopIndex == 0) {
+      playStopIndex++;
+      currentSliderValue = -2;
+      radarIndex = 4;
+    } else {
+      playStopIndex = 0;
+    }
+    setState(() {});
+  }
+
+  void play() {
+    changeIcon();
+    if (playStopIndex == 1) {
+      Timer.periodic(const Duration(milliseconds: 1250), (timer) {
+        if (currentSliderValue == 0 || radarIndex == 0) {
+          changeIcon();
+          timer.cancel();
+        } else if (playStopIndex == 0) {
+          timer.cancel();
+        } else {
+          currentSliderValue += 0.5;
+          radarIndex--;
+          setState(() {});
+        }
+      });
+    } else {
+      currentSliderValue = -2;
+      radarIndex = 4;
+      setState(() {});
+    }
   }
 
   void getCurrentPosition() async {
@@ -255,7 +297,7 @@ class _RadarPageState extends State<RadarPage> {
             child: RotatedBox(
               quarterTurns: 3,
               child: Container(
-                width: 260,
+                width: 265,
                 height: 53,
                 decoration: BoxDecoration(
                     color: Color.fromARGB(255, 56, 132, 186),
@@ -263,15 +305,18 @@ class _RadarPageState extends State<RadarPage> {
                 child: Center(
                   child: Row(
                     children: [
-                      const SizedBox(width: 15),
-                      const RotatedBox(
+                      const SizedBox(width: 5),
+                      RotatedBox(
                         quarterTurns: 1,
-                        child: Text(
-                          '-2 hr',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white),
+                        child: FloatingActionButton(
+                          backgroundColor: Colors.transparent,
+                          onPressed: play,
+                          elevation: 0,
+                          child: Icon(
+                            playStop[playStopIndex],
+                            size: 40,
+                            color: Colors.amber,
+                          ),
                         ),
                       ),
                       Slider(
@@ -279,8 +324,8 @@ class _RadarPageState extends State<RadarPage> {
                         value: currentSliderValue,
                         min: -2,
                         max: 0,
-                        activeColor: Colors.white,
-                        inactiveColor: Color.fromARGB(255, 125, 197, 255),
+                        activeColor: Color.fromARGB(255, 125, 197, 255),
+                        inactiveColor: Colors.white,
                         thumbColor: Colors.amber,
                         onChanged: (double value) {
                           setState(() {
@@ -288,17 +333,6 @@ class _RadarPageState extends State<RadarPage> {
                             changeRadar(currentSliderValue);
                           });
                         },
-                        // ),
-                      ),
-                      const RotatedBox(
-                        quarterTurns: 1,
-                        child: Text(
-                          'Now',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white),
-                        ),
                       ),
                     ],
                   ),
