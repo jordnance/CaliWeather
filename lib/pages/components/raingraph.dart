@@ -164,7 +164,7 @@ class RainGraph extends StatelessWidget {
           sideTitles: SideTitles(showTitles: true, reservedSize: 7),
           axisNameSize: 20,
           axisNameWidget: const Text(
-            'Rainfall',
+            'Rain',
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
           ),

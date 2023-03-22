@@ -34,23 +34,20 @@ class WindGraph extends StatelessWidget {
     );
     String text;
     switch (value.toInt()) {
+      case 5:
+        text = '5';
+        break;
       case 10:
         text = '10';
+        break;
+      case 15:
+        text = '15';
         break;
       case 20:
         text = '20';
         break;
-      case 30:
-        text = '30';
-        break;
-      case 40:
-        text = '40';
-        break;
-      case 50:
-        text = '50';
-        break;
-      case 60:
-        text = '60';
+      case 25:
+        text = '25';
         break;
       default:
         return Container();
@@ -121,7 +118,7 @@ class WindGraph extends StatelessWidget {
     );
   }
 
-  LineChartData graphData(double? maxX) {            
+  LineChartData graphData(double? maxX) {
     List<Color> windColors = [
       Color.fromARGB(255, 253, 175, 223),
       Color.fromARGB(255, 250, 13, 160),
@@ -131,7 +128,7 @@ class WindGraph extends StatelessWidget {
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: 10,
+        horizontalInterval: 5,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
@@ -153,9 +150,8 @@ class WindGraph extends StatelessWidget {
         ),
         topTitles: AxisTitles(
           sideTitles: SideTitles(showTitles: true, reservedSize: 7),
-          axisNameSize: 20,            
-          axisNameWidget:
-            const Text(
+          axisNameSize: 20,
+          axisNameWidget: const Text(
             'Wind',
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
@@ -193,7 +189,7 @@ class WindGraph extends StatelessWidget {
       minX: 0,
       maxX: maxX,
       minY: 0,
-      maxY: 70,
+      maxY: 30,
       lineBarsData: [
         LineChartBarData(
           spots: todos,
@@ -210,7 +206,7 @@ class WindGraph extends StatelessWidget {
             show: true,
             gradient: LinearGradient(
               colors:
-                windColors.map((color) => color.withOpacity(0.3)).toList(),
+                  windColors.map((color) => color.withOpacity(0.3)).toList(),
             ),
           ),
         ),
