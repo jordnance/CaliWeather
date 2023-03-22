@@ -21,6 +21,7 @@ class Todo {
   final String mainData;
   final String microData;
   final String forecastData;
+
   const Todo(this.mainData, this.microData, this.forecastData);
 }
 
@@ -50,14 +51,14 @@ class _HomePageState extends State<HomePage> {
   Future<void> initBackgroundState() async {
     await BackgroundFetch.configure(
         BackgroundFetchConfig(
-            minimumFetchInterval:
-                15, // TODO: Change to 720 after testing is complete
+            minimumFetchInterval: 180,
             startOnBoot: true,
             stopOnTerminate: false,
             enableHeadless: true,
             requiresBatteryNotLow: false,
             requiresStorageNotLow: false,
             requiresDeviceIdle: false,
+            forceAlarmManager: true,
             requiredNetworkType: NetworkType.NONE), (String taskId) async {
       setState(() {});
       BackgroundFetch.finish(taskId);
