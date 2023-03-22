@@ -7,8 +7,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:caliweather/util/radar_util.dart';
 import 'package:caliweather/util/geo_helper.dart';
 
-import '../util/sharedprefutil.dart';
-
 class RadarPage extends StatefulWidget {
   const RadarPage({super.key, required this.title});
   final String title;
@@ -108,10 +106,6 @@ class _RadarPageState extends State<RadarPage> {
           currentPosition = position;
         });
       });
-    } else {
-      var location = SharedPrefUtil.getLocation();
-      GeoHelper.getManualLocation(location);
-      setState(() {});
     }
   }
 
@@ -200,7 +194,7 @@ class _RadarPageState extends State<RadarPage> {
                   fontSize: 15,
                 ),
               ),
-              backgroundColor:  Color.fromARGB(255, 255, 177, 81),
+              backgroundColor: Color.fromARGB(255, 255, 177, 81),
               tooltip: 'Overlays',
               onPressed: changeOverlays,
               icon: const Icon(
@@ -213,7 +207,7 @@ class _RadarPageState extends State<RadarPage> {
             right: 10,
             bottom: 150,
             child: FloatingActionButton(
-              backgroundColor:  Color.fromARGB(255, 114, 154, 255),
+              backgroundColor: Color.fromARGB(255, 114, 154, 255),
               tooltip: 'Center',
               onPressed: centerBack,
               child: const Icon(
@@ -226,7 +220,7 @@ class _RadarPageState extends State<RadarPage> {
             right: 10,
             bottom: 80,
             child: FloatingActionButton(
-              backgroundColor:  Color.fromARGB(255, 182, 68, 48),
+              backgroundColor: Color.fromARGB(255, 182, 68, 48),
               tooltip: 'Zoom Out',
               onPressed: zoomOut,
               child: const Icon(
@@ -239,7 +233,7 @@ class _RadarPageState extends State<RadarPage> {
             right: 10,
             bottom: 10,
             child: FloatingActionButton(
-              backgroundColor:  Color.fromARGB(255, 174, 172, 87),
+              backgroundColor: Color.fromARGB(255, 174, 172, 87),
               tooltip: 'Zoom In',
               onPressed: zoomIn,
               child: const Icon(
@@ -279,7 +273,7 @@ class _RadarPageState extends State<RadarPage> {
                         min: -2,
                         max: 0,
                         activeColor: Colors.white,
-                        inactiveColor:  Color.fromARGB(255, 125, 197, 255),
+                        inactiveColor: Color.fromARGB(255, 125, 197, 255),
                         thumbColor: Colors.amber,
                         onChanged: (double value) {
                           setState(() {

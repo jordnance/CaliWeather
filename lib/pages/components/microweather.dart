@@ -62,7 +62,7 @@ class MicroWeather extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
-            'Feels like: ${todos?[14]}',
+            'Feels Like: ${todos?[14]}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,

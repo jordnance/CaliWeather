@@ -1,22 +1,37 @@
+import 'package:caliweather/util/sql_helper.dart';
+import '../util/sharedprefutil.dart';
 import 'globals.dart' as globals;
 import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
 
 class WeatherHelper {
-  // Current Weather
   static Future<Weather> getCurrent() async {
     WeatherFactory wf = WeatherFactory(globals.apiKey);
-    Weather weather = await wf.currentWeatherByLocation(
-        globals.positionLat, globals.positionLong);
+    Weather weather;
+
+    if (SharedPrefUtil.getIsLoggedIn() == false) {
+      weather = await wf.currentWeatherByLocation(
+          globals.positionLat, globals.positionLong);
+    } else {
+      weather = await wf.currentWeatherByCityName(SharedPrefUtil.getLocation());
+    }
+
     return weather;
   }
 
-  // 5-Day Forecast
   static Future<List<dynamic>> setForecast() async {
     WeatherFactory wf = WeatherFactory(globals.apiKey);
     List<dynamic> setData = [];
-    List<dynamic> forecast = await wf.fiveDayForecastByLocation(
-        globals.positionLat, globals.positionLong);
+    List<dynamic> forecast;
+
+    if (SharedPrefUtil.getIsLoggedIn() == false) {
+      forecast = await wf.fiveDayForecastByLocation(
+          globals.positionLat, globals.positionLong);
+    } else {
+      forecast =
+          await wf.fiveDayForecastByCityName(SharedPrefUtil.getLocation());
+    }
+
     setData = [
       forecast[7], // <-- Day 1
       forecast[15], // <-- Day 2
@@ -73,27 +88,27 @@ class WeatherHelper {
     String sunset = DateFormat.jm().format(formatSunset!);
 
     String areaName = weather.areaName.toString();
-    String? cloudiness = (weather.cloudiness.toString()) + "%";
+    String cloudiness = "${weather.cloudiness}%";
     String country = weather.country.toString();
-    String date = weather.date.toString(); // DateFormat('MMM dd')
-    String humidity = (weather.humidity.toString()) + "%";
+    String date = weather.date.toString();
+    String humidity = "${weather.humidity}%";
     String latitude = weather.latitude.toString();
     String longitude = weather.longitude.toString();
-    String pressure = (weather.pressure.toString()) + " hPa";
-    String rainLast3Hours = (weather.rainLast3Hours.toString()) + " mm";
-    String rainLastHour = (weather.rainLastHour.toString()) + " mm";
-    String snowLast3Hours = (weather.snowLast3Hours.toString()) + " mm";
-    String snowLastHour = (weather.snowLastHour.toString()) + " mm";
+    String pressure = "${weather.pressure?.toStringAsFixed(0)} hPa";
+    String rainLast3Hours = "${weather.rainLast3Hours} mm";
+    String rainLastHour = "${weather.rainLastHour} mm";
+    String snowLast3Hours = "${weather.snowLast3Hours} mm";
+    String snowLastHour = "${weather.snowLastHour} mm";
 
     // TODO: Pull temp units from settings/database.
     String? tempFeelsLike =
-        (weather.tempFeelsLike?.fahrenheit?.toStringAsFixed(1))! + " °F";
+        "${(weather.tempFeelsLike?.fahrenheit?.toStringAsFixed(1))!} °F";
     String? tempMax =
-        (weather.tempMax?.fahrenheit?.toStringAsFixed(1))! + " °F";
+        "${(weather.tempMax?.fahrenheit?.toStringAsFixed(1))!} °F";
     String? tempMin =
-        (weather.tempMin?.fahrenheit?.toStringAsFixed(1))! + " °F";
+        "${(weather.tempMin?.fahrenheit?.toStringAsFixed(1))!} °F";
     String? temperature =
-        (weather.temperature?.fahrenheit?.toStringAsFixed(1))! + " °F";
+        "${(weather.temperature?.fahrenheit?.toStringAsFixed(1))!} °F";
 
     String weatherConditionCode = weather.weatherConditionCode.toString();
     String weatherDescription = weather.weatherDescription.toString();
@@ -130,6 +145,19 @@ class WeatherHelper {
       windGust,
       windSpeed
     ];
+
+    int? userId = SharedPrefUtil.getUserId();
+
+    String? temp = weather.temperature?.fahrenheit.toString();
+    String formatTemp = temp!.replaceAll('Fahrenheit', '');
+    double? doubleTemp = double.parse(formatTemp);
+    double newTemp = double.parse(doubleTemp.toStringAsFixed(1));
+
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+    String apiCallDate = dateFormat.format(DateTime.now());
+
+    SQLHelper.createWeatherData(userId, apiCallDate, weather.areaName,
+        weather.rainLastHour, newTemp, weather.humidity, weather.snowLastHour);
 
     return microData;
   }
