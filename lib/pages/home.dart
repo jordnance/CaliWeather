@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
           controller: controller,
           backgroundColor: Colors.white,
           brightness: Brightness.light,
-          boxShadows: [BoxShadow(blurRadius: 4)],
+          boxShadows: const [BoxShadow(blurRadius: 4)],
           barrierBlur: 3.0,
           barrierColor: Colors.black38,
           barrierDismissible: true,
@@ -101,12 +101,13 @@ class _HomePageState extends State<HomePage> {
             //getData() will return List alertData
             //--> if alertData is not null, then set alert Icon visibility true
             title: const Text('Alert'),
-            content: Text(
+            content: const Text(
                 'Extreme Heat Predicted! Please refere to [link] for reccommended safety precautions.'),
             showProgressIndicator: true,
             primaryAction: TextButton(
               onPressed: () => controller.dismiss(),
-              child: Text('DISMISS', style: TextStyle(color: Colors.amber)),
+              child:
+                  const Text('DISMISS', style: TextStyle(color: Colors.amber)),
             ),
           ),
         );
