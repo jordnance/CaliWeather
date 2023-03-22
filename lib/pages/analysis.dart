@@ -7,16 +7,20 @@ import 'package:caliweather/pages/components/tempgraph.dart';
 import 'package:caliweather/pages/components/humgraph.dart';
 import 'package:caliweather/pages/components/snowgraph.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:caliweather/pages/components/windgraph.dart';
+import 'package:caliweather/pages/components/pressgraph.dart';
 
 class Todo {
   final String rainData;
   final String tempData;
   final String humData;
   final String snowData;
+  final String pressData;
+  final String windData;
   final String duration;
 
-  const Todo(
-      this.rainData, this.tempData, this.humData, this.snowData, this.duration);
+  const Todo(this.rainData, this.tempData, this.humData, this.snowData,
+      this.pressData, this.windData, this.duration);
 }
 
 class AnalysisPage extends StatefulWidget {
@@ -32,6 +36,8 @@ class _AnalysisPageState extends State<AnalysisPage> {
   List<FlSpot>? temp;
   List<FlSpot>? hum;
   List<FlSpot>? snow;
+  List<FlSpot>? wind;
+  List<FlSpot>? press;
   double? length = 14;
   bool? isPressed = false;
   int durationIndex = 1;
@@ -45,6 +51,8 @@ class _AnalysisPageState extends State<AnalysisPage> {
       temp = data[1];
       hum = data[2];
       snow = data[3];
+      wind = data[4];
+      press = data[5];
     }
   }
 
@@ -96,6 +104,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           children: <Widget>[
                             TempGraph(todos: temp, duration: length),
                             HumGraph(todos: hum, duration: length),
+                            PressGraph(todos: press, duration: length)
                           ],
                         ),
                       ),
@@ -103,7 +112,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                     Center(
                       child: SmoothPageIndicator(
                         controller: pgController,
-                        count: 2,
+                        count: 3,
                         axisDirection: Axis.horizontal,
                         effect: SlideEffect(
                           activeDotColor: Colors.blueGrey,
@@ -118,6 +127,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                         child: PageView(
                           controller: pg2Controller,
                           children: <Widget>[
+                            WindGraph(todos: wind, duration: length),
                             RainGraph(todos: rain, duration: length),
                             SnowGraph(todos: snow, duration: length),
                           ],
@@ -127,7 +137,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                     Center(
                       child: SmoothPageIndicator(
                         controller: pg2Controller,
-                        count: 2,
+                        count: 3,
                         axisDirection: Axis.horizontal,
                         effect: SlideEffect(
                           activeDotColor: Colors.blueGrey,

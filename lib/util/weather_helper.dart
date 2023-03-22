@@ -9,11 +9,13 @@ class WeatherHelper {
     WeatherFactory wf = WeatherFactory(globals.apiKey);
     Weather weather;
 
-    if (SharedPrefUtil.getIsLoggedIn() == false) {
-      weather = await wf.currentWeatherByLocation(
-          globals.positionLat, globals.positionLong);
-    } else {
-      weather = await wf.currentWeatherByCityName(SharedPrefUtil.getLocation());
+    weather = await wf.currentWeatherByLocation(
+        globals.positionLat, globals.positionLong);
+
+    if (SharedPrefUtil.getIsLoggedIn() == true) {
+      SQLHelper.updateLocation(
+          SharedPrefUtil.getUserPrefId(), weather.areaName!);
+      SharedPrefUtil.setLocation(weather.areaName!);
     }
 
     return weather;
@@ -112,6 +114,8 @@ class WeatherHelper {
 
     String weatherConditionCode = weather.weatherConditionCode.toString();
     String weatherDescription = weather.weatherDescription.toString();
+    weatherDescription = weatherDescription.replaceFirst(
+        weatherDescription[0], weatherDescription[0].toUpperCase());
     String weatherIcon = weather.weatherIcon.toString();
     String weatherMain = weather.weatherMain.toString();
     String windDegree = weather.windDegree.toString();
@@ -156,8 +160,16 @@ class WeatherHelper {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String apiCallDate = dateFormat.format(DateTime.now());
 
-    SQLHelper.createWeatherData(userId, apiCallDate, weather.areaName,
-        weather.rainLastHour, newTemp, weather.humidity, weather.snowLastHour);
+    SQLHelper.createWeatherData(
+        userId,
+        apiCallDate,
+        weather.areaName,
+        weather.rainLastHour,
+        newTemp,
+        weather.humidity,
+        weather.snowLastHour,
+        weather.pressure,
+        weather.windSpeed);
 
     return microData;
   }

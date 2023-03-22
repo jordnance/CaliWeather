@@ -14,7 +14,7 @@ class SQLHelper {
     lang text default "English",
     fontSize text default "Medium",
     tempFormat text default "F",
-    location text default "Fresno",
+    location text default "Bakersfield",
     theme text default "Light"
     )""");
     await database.execute("""CREATE TABLE IF NOT EXISTS Alerts(
@@ -32,6 +32,8 @@ class SQLHelper {
     temp real NOT NULL,
     humidity real NOT NULL,
     snow real default NULL,
+    pressure real default NULL,
+    windSpeed real default NULL,
     FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE
     )""");
     await database.execute("PRAGMA foreign_keys = ON");
@@ -92,7 +94,7 @@ class SQLHelper {
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'fiftythree.db',
+      'fiftysix.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -120,12 +122,24 @@ class SQLHelper {
       double? rain,
       double? temp,
       double? humidity,
-      double? snow) async {
+      double? snow,
+      double? pressure,
+      double? windSpeed) async {
     final db = await SQLHelper.db();
     db.rawQuery(
-        """INSERT INTO WeatherData(userId, apiCallDate, location, rain, temp, humidity, snow) 
-    VALUES (?, ?, ?, ?, ?, ?, ?)""",
-        [userId, apiCallDate, location, rain, temp, humidity, snow]);
+        """INSERT INTO WeatherData(userId, apiCallDate, location, rain, temp, humidity, snow, pressure, windSpeed) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        [
+          userId,
+          apiCallDate,
+          location,
+          rain,
+          temp,
+          humidity,
+          snow,
+          pressure,
+          windSpeed
+        ]);
   }
 
   // Read a single user by username <-- WORKS
@@ -184,14 +198,14 @@ class SQLHelper {
         [lang, userprefId]);
   }
 
-  // Update font size <-- NEEDS TO BE TESTED
+  // Update font size <-- WORKS
   static Future<void> updateSize(int userprefId, String fontSize) async {
     final db = await SQLHelper.db();
     db.rawQuery("UPDATE Preference SET fontSize = ? WHERE userprefId = ?",
         [fontSize, userprefId]);
   }
 
-  // Update temp format <-- NEEDS TO BE TESTED
+  // Update temp format <-- WORKS
   static Future<void> updateTemp(int userprefId, String tempFormat) async {
     final db = await SQLHelper.db();
     db.rawQuery("UPDATE Preference SET tempFormat = ? WHERE userprefId = ?",

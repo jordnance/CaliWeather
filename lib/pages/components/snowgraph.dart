@@ -152,7 +152,7 @@ class SnowGraph extends StatelessWidget {
           sideTitles: SideTitles(showTitles: true, reservedSize: 7),
           axisNameSize: 20,
           axisNameWidget: const Text(
-            'Snowfall',
+            'Snow',
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
           ),

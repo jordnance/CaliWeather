@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-class RainGraph extends StatelessWidget {
-  const RainGraph({super.key, required this.todos, required this.duration});
+class WindGraph extends StatelessWidget {
+  const WindGraph({super.key, required this.todos, required this.duration});
   final List<FlSpot>? todos;
   final double? duration;
 
@@ -26,40 +26,28 @@ class RainGraph extends StatelessWidget {
     );
   }
 
-  Widget rainLeftTitleWidgets(double value, TitleMeta meta) {
+  Widget windLeftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
       color: Colors.white,
-      fontSize: 14,
+      fontSize: 12,
     );
     String text;
     switch (value.toInt()) {
-      case 1:
-        text = '1';
-        break;
-      case 2:
-        text = '';
-        break;
-      case 3:
-        text = '3';
-        break;
-      case 4:
-        text = '';
-        break;
       case 5:
         text = '5';
         break;
-      case 6:
-        text = '';
+      case 10:
+        text = '10';
         break;
-      case 7:
-        text = '7';
+      case 15:
+        text = '15';
         break;
-      case 8:
-        text = '';
+      case 20:
+        text = '20';
         break;
-      case 9:
-        text = '9';
+      case 25:
+        text = '25';
         break;
       default:
         return Container();
@@ -131,16 +119,16 @@ class RainGraph extends StatelessWidget {
   }
 
   LineChartData graphData(double? maxX) {
-    List<Color> rainColors = [
-      Color.fromARGB(255, 60, 154, 255),
-      Color.fromARGB(255, 68, 0, 255),
+    List<Color> windColors = [
+      Color.fromARGB(255, 253, 175, 223),
+      Color.fromARGB(255, 250, 13, 160),
     ];
 
     return LineChartData(
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: 1,
+        horizontalInterval: 5,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
@@ -164,7 +152,7 @@ class RainGraph extends StatelessWidget {
           sideTitles: SideTitles(showTitles: true, reservedSize: 7),
           axisNameSize: 20,
           axisNameWidget: const Text(
-            'Rain',
+            'Wind',
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
           ),
@@ -185,11 +173,11 @@ class RainGraph extends StatelessWidget {
           sideTitles: SideTitles(
             showTitles: true,
             interval: 1,
-            getTitlesWidget: rainLeftTitleWidgets,
+            getTitlesWidget: windLeftTitleWidgets,
             reservedSize: 28,
           ),
           axisNameWidget: const Text(
-            'Rate (mm/hr)',
+            'Speed (m/s)',
             style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
           ),
         ),
@@ -201,13 +189,13 @@ class RainGraph extends StatelessWidget {
       minX: 0,
       maxX: maxX,
       minY: 0,
-      maxY: 10,
+      maxY: 30,
       lineBarsData: [
         LineChartBarData(
           spots: todos,
           isCurved: false,
           gradient: LinearGradient(
-            colors: rainColors,
+            colors: windColors,
           ),
           barWidth: 5,
           isStrokeCapRound: true,
@@ -218,7 +206,7 @@ class RainGraph extends StatelessWidget {
             show: true,
             gradient: LinearGradient(
               colors:
-                  rainColors.map((color) => color.withOpacity(0.3)).toList(),
+                  windColors.map((color) => color.withOpacity(0.3)).toList(),
             ),
           ),
         ),

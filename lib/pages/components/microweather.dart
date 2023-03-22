@@ -6,20 +6,28 @@ class MicroWeather extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String units = "°F"; // TODO: Pull from settings/database
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
-            'Max: ${todos?[15]}',
+            'High: ${todos?[15]}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Low: ${todos?[16]}',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
             ),
           ),
         ),
@@ -31,7 +39,6 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
@@ -43,7 +50,6 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
@@ -55,7 +61,6 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
@@ -67,7 +72,6 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
@@ -79,7 +83,6 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
@@ -91,31 +94,17 @@ class MicroWeather extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
-            'Main: ${todos?[21]}',
+            'Detail: ${todos?[19]}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Text(
-            'Description: ${todos?[19]}',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w300,
-              //color: Color.fromARGB(255, 87, 87, 87),
             ),
           ),
         ),
