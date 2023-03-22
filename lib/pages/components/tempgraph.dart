@@ -180,7 +180,7 @@ class TempGraph extends StatelessWidget {
             showTitles: true,
             interval: 1,
             getTitlesWidget: tempLeftTitleWidgets,
-            reservedSize: 28,
+            reservedSize: 32,
           ),
           axisNameWidget: const Text(
             'Degrees (°F)',

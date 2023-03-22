@@ -14,7 +14,7 @@ class SQLHelper {
     lang text default "English",
     fontSize text default "Medium",
     tempFormat text default "F",
-    location text default "Fresno",
+    location text default "Bakersfield",
     theme text default "Light"
     )""");
     await database.execute("""CREATE TABLE IF NOT EXISTS Alerts(

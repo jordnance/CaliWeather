@@ -27,7 +27,7 @@ class GraphHelper {
 
   static Future<List<List<double>>> getYCoords() async {
     var test = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
-    double? yRain, yTemp, yHum, ySnow;
+    double? yRain, yTemp, yHum, ySnow, yWind, yPress;
     List<double> values = [];
     List<List<double>> yCoords = [];
 
@@ -38,10 +38,14 @@ class GraphHelper {
       yHum = test[i]['humidity'];
       ySnow = test[i]['snow'];
       ySnow ??= 0;
+      yWind = test[i]['windSpeed'];
+      yPress = test[i]['pressure'];
       values.add(yRain);
       values.add(yTemp!);
       values.add(yHum!);
       values.add(ySnow);
+      values.add(yWind!);
+      values.add(yPress!);
       yCoords.add(values);
       values = [];
     }
@@ -49,10 +53,10 @@ class GraphHelper {
   }
 
   static Future<List<List<FlSpot>>> newCoords(double? durationLength) async {
-    if (SharedPrefUtil.getUserId() != 0) {
+    if (SharedPrefUtil.getIsLoggedIn()) {
       var test = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
 
-      if (test[0]['apiCallDate'] != Null) {
+      if (test.isNotEmpty) {
         var xCoords = await getXCoords(durationLength);
         var yCoords = await getYCoords();
         List<List<FlSpot>> newCoords = [];
@@ -60,20 +64,25 @@ class GraphHelper {
         List<FlSpot> tempData = [];
         List<FlSpot> humData = [];
         List<FlSpot> snowData = [];
+        List<FlSpot> windData = [];
+        List<FlSpot> pressData = [];
 
         for (int i = 0; i < xCoords.length; i++) {
           rainData.add(FlSpot(xCoords[i], yCoords[i][0]));
           tempData.add(FlSpot(xCoords[i], yCoords[i][1]));
           humData.add(FlSpot(xCoords[i], yCoords[i][2]));
           snowData.add(FlSpot(xCoords[i], yCoords[i][3]));
+          windData.add(FlSpot(xCoords[i], yCoords[i][4]));
+          pressData.add(FlSpot(xCoords[i], yCoords[i][5]));
         }
 
-        newCoords = [rainData, tempData, humData, snowData];
+        newCoords = [rainData, tempData, humData, snowData, windData, pressData];
         return newCoords;
       } else {
         return Future.error('No weather data has been stored');
       }
+    } else {
+      return Future.error('User is not logged in');
     }
-    return Future.error('User is not logged in');
   }
 }
