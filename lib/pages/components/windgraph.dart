@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/widgets.dart';
-import 'package:weather/weather.dart';
 
 class WindGraph extends StatelessWidget {
   const WindGraph({super.key, required this.todos, required this.duration});
@@ -32,7 +30,7 @@ class WindGraph extends StatelessWidget {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
       color: Colors.white,
-      fontSize: 10,
+      fontSize: 12,
     );
     String text;
     switch (value.toInt()) {
@@ -133,7 +131,7 @@ class WindGraph extends StatelessWidget {
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: 5,
+        horizontalInterval: 10,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
@@ -158,7 +156,7 @@ class WindGraph extends StatelessWidget {
           axisNameSize: 20,            
           axisNameWidget:
             const Text(
-            'Wind Speeds',
+            'Wind',
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
           ),
@@ -183,7 +181,7 @@ class WindGraph extends StatelessWidget {
             reservedSize: 28,
           ),
           axisNameWidget: const Text(
-            'Rate (mph)',
+            'Speed (m/s)',
             style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
           ),
         ),
@@ -195,7 +193,7 @@ class WindGraph extends StatelessWidget {
       minX: 0,
       maxX: maxX,
       minY: 0,
-      maxY: 65,
+      maxY: 70,
       lineBarsData: [
         LineChartBarData(
           spots: todos,

@@ -34,20 +34,20 @@ class PressGraph extends StatelessWidget {
     );
     String text;
     switch (value.toInt()) {
-      case 28:
-        text = '28';
+      case 990:
+        text = '990';
         break;
-      case 29:
-        text = '29';
+      case 1000:
+        text = '1000';
         break;
-      case 30:
-        text = '30';
+      case 1010:
+        text = '1010';
         break;
-      case 31:
-        text = '31';
+      case 1020:
+        text = '1020';
         break;
-      case 32:
-        text = '32';
+      case 1030:
+        text = '1030';
         break;
       default:
         return Container();
@@ -128,7 +128,7 @@ class PressGraph extends StatelessWidget {
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: .5,
+        horizontalInterval: 10,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
@@ -174,10 +174,10 @@ class PressGraph extends StatelessWidget {
             showTitles: true,
             interval: 1,
             getTitlesWidget: pressLeftTitleWidgets,
-            reservedSize: 28,
+            reservedSize: 36,
           ),
           axisNameWidget: const Text(
-            'Inches of Mercury (inHg)',
+            'Pascals (hPa)',
             style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
           ),
         ),
@@ -188,8 +188,8 @@ class PressGraph extends StatelessWidget {
       ),
       minX: 0,
       maxX: maxX,
-      minY: 27,
-      maxY: 33,
+      minY: 980,
+      maxY: 1040,
       lineBarsData: [
         LineChartBarData(
           spots: todos,
@@ -206,7 +206,7 @@ class PressGraph extends StatelessWidget {
             show: true,
             gradient: LinearGradient(
               colors:
-                pressColors.map((color) => color.withOpacity(0.3)).toList(),
+                  pressColors.map((color) => color.withOpacity(0.3)).toList(),
             ),
           ),
         ),

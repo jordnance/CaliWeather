@@ -1,5 +1,6 @@
 import 'dart:async';
 import '../util/globals.dart' as globals;
+import '../util/sharedprefutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -7,6 +8,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:caliweather/util/radar_util.dart';
 import 'package:caliweather/util/geo_helper.dart';
+import 'package:caliweather/util/sql_helper.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 
 class RadarPage extends StatefulWidget {
@@ -32,6 +34,9 @@ class _RadarPageState extends State<RadarPage> {
 
   final store = FlutterMapTileCaching.instance('RadarStore');
 
+  bool timerCancel = false;
+  late Timer timerClearCache;
+
   List<String> pastRadarUrl = [
     'https://tilecache.rainviewer.com/v2/radar/${RadarUtil.getTimestamps(0)}/512/{z}/{x}/{y}/1/1_1.png',
     'https://tilecache.rainviewer.com/v2/radar/${RadarUtil.getTimestamps(1)}/512/{z}/{x}/{y}/1/1_1.png',
@@ -55,11 +60,12 @@ class _RadarPageState extends State<RadarPage> {
     super.initState();
     getCurrentPosition();
     store.manage.create();
+    clearCache();
   }
 
   @override
   void dispose() {
-    store.manage.delete();
+    timerCancel = true;
     super.dispose();
   }
 
@@ -143,6 +149,15 @@ class _RadarPageState extends State<RadarPage> {
     }
   }
 
+  void clearCache() {
+    Timer.periodic(const Duration(minutes: 10), (timer) {
+      store.manage.reset();
+      if (timerCancel) {
+        timer.cancel();
+      }
+    });
+  }
+
   void getCurrentPosition() async {
     var serviceEnabled = await GeoHelper.getPermissions();
     if (serviceEnabled) {
@@ -150,6 +165,9 @@ class _RadarPageState extends State<RadarPage> {
           .then((Position position) {
         setState(() {
           currentPosition = position;
+          globals.positionLat = position.latitude;
+          globals.positionLong = position.longitude;
+          centerBack();
         });
       });
     }
