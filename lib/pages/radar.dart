@@ -1,6 +1,5 @@
 import 'dart:async';
 import '../util/globals.dart' as globals;
-import '../util/sharedprefutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -8,7 +7,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:caliweather/util/radar_util.dart';
 import 'package:caliweather/util/geo_helper.dart';
-import 'package:caliweather/util/sql_helper.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 
 class RadarPage extends StatefulWidget {
@@ -150,7 +148,7 @@ class _RadarPageState extends State<RadarPage> {
   }
 
   void clearCache() {
-    Timer.periodic(const Duration(minutes: 10), (timer) {
+    Timer.periodic(const Duration(minutes: 30), (timer) {
       store.manage.reset();
       if (timerCancel) {
         timer.cancel();
