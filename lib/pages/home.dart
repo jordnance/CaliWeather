@@ -4,6 +4,10 @@ import 'package:caliweather/pages/components/microweather.dart';
 import 'package:caliweather/pages/components/mainweather.dart';
 import 'package:caliweather/pages/components/forecast.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flash/flash.dart';
+
+import 'package:weather/weather.dart';
+import '../util/globals.dart' as globals;
 
 class Todo {
   final String mainData;
@@ -41,6 +45,47 @@ class _HomePageState extends State<HomePage> {
     micro = microData;
     forecast = forecastData;
     main = mainData;
+    WeatherFactory wf = WeatherFactory(globals.apiKey);
+    Weather weather = await wf.currentWeatherByLocation(
+        globals.positionLat, globals.positionLong);
+  }
+
+  void _showTopFlash({FlashBehavior style = FlashBehavior.floating}) {
+    showFlash(
+      context: context,
+      duration: const Duration(seconds: 9),
+      persistent: true,
+      builder: (_, controller) {
+        return Flash(
+          controller: controller,
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
+          boxShadows: [BoxShadow(blurRadius: 4)],
+          barrierBlur: 3.0,
+          barrierColor: Colors.black38,
+          barrierDismissible: true,
+          behavior: style,
+          position: FlashPosition.top,
+          child: FlashBar(
+            title: const Text('Alert'),
+            content: Text(
+                'Extreme Heat Predicted! Please refere to [link] for reccommended safety precautions.'),
+            showProgressIndicator: true,
+            primaryAction: TextButton(
+              onPressed: () => controller.dismiss(),
+              child: Text('DISMISS', style: TextStyle(color: Colors.amber)),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _test() async {
+    WeatherFactory wf = WeatherFactory(globals.apiKey);
+    Weather weather = await wf.currentWeatherByLocation(
+        globals.positionLat, globals.positionLong);
+    print(weather);
   }
 
   @override
@@ -64,16 +109,8 @@ class _HomePageState extends State<HomePage> {
                 return const Center(child: Text("Active")); // <-- TESTING
               case ConnectionState.done:
                 return Stack(
+                  clipBehavior: Clip.none,
                   children: [
-                    Container(
-                      alignment: Alignment.topRight,
-                      padding:
-                          EdgeInsets.only(top: 55.0, right: 15.0, left: 15.0),
-                      child: Image.asset(
-                        'assets/logo_alert_nobg.png',
-                        height: 55,
-                      ),
-                    ),
                     Column(
                       children: <Widget>[
                         Expanded(
@@ -138,6 +175,26 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ],
+                    ),
+                    Visibility(
+                      visible: true,
+                      child: Positioned(
+                        child: Container(
+                          alignment: Alignment.topRight,
+                          padding: const EdgeInsets.only(
+                              top: 25.0, right: 0, left: 0),
+                          child: IconButton(
+                            icon: const ImageIcon(
+                                AssetImage('assets/logo_alert_nobg.png')),
+                            color: const Color.fromARGB(255, 0, 83, 129),
+                            iconSize: 55,
+                            onPressed: () {
+                              //_showTopFlash();
+                              _test();
+                            },
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 );
