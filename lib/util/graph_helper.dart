@@ -19,6 +19,7 @@ class GraphHelper {
       difference = parsedThisTime.difference(parsedLeastCurrent);
       seconds = difference.inSeconds.toDouble();
       newX = seconds / 86400;
+
       if (newX < durationLength!) {
         xCoords.add(newX);
       } else if (newX == durationLength) {
@@ -26,8 +27,10 @@ class GraphHelper {
         equalDuration = true;
       } else if (!equalDuration) {
         newX = durationLength;
+        xCoords.add(newX);
       }
     }
+
     return xCoords;
   }
 
@@ -36,7 +39,7 @@ class GraphHelper {
     var leastCurrent = test[0]['apiCallDate'];
 
     var thisTime, difference, parsedLeastCurrent, parsedThisTime;
-    double xValue, seconds, lastX, overX = 0;
+    double xValue, seconds, xFactor, lastX = 0;
     double? yRain,
         yTemp,
         yHum,
@@ -96,21 +99,23 @@ class GraphHelper {
         values.add(yWind!);
         values.add(yPress!);
         lastX = xValue;
-      } else if (!equalDuration && (xValue > durationLength)) {
-        avgYRain = ((yRain + lastYRain!) / 2);
-        avgYTemp = ((yTemp! + lastYTemp!) / 2);
-        avgYHum = ((yHum! + lastYHum!) / 2);
-        avgYSnow = ((ySnow + lastYSnow!) / 2);
-        avgYWind = ((yWind! + lastYWind!) / 2);
-        avgYPress = ((yPress! + lastYPress!) / 2);
+      } else if (!equalDuration && (xValue > durationLength) && !graphFix) {
+        xFactor = (xValue + lastX) / durationLength;
+        avgYRain = ((yRain + lastYRain!) / xFactor);
+        avgYTemp = ((yTemp! + lastYTemp!) / xFactor);
+        avgYHum = ((yHum! + lastYHum!) / xFactor);
+        avgYSnow = ((ySnow + lastYSnow!) / xFactor);
+        avgYWind = ((yWind! + lastYWind!) / xFactor);
+        avgYPress = ((yPress! + lastYPress!) / xFactor);
+        values.add(avgYRain);
+        values.add(avgYTemp);
+        values.add(avgYHum);
+        values.add(avgYSnow);
+        values.add(avgYWind);
+        values.add(avgYPress);
+        graphFix = true;
       }
 
-      values.add(yRain);
-      values.add(yTemp!);
-      values.add(yHum!);
-      values.add(ySnow);
-      values.add(yWind!);
-      values.add(yPress!);
       yCoords.add(values);
       values = [];
     }
