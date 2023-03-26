@@ -4,6 +4,8 @@ import 'package:caliweather/pages/components/microweather.dart';
 import 'package:caliweather/pages/components/mainweather.dart';
 import 'package:caliweather/pages/components/forecast.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:weather/weather.dart';
+import '../util/globals.dart' as globals;
 
 class Todo {
   final String mainData;
@@ -28,16 +30,17 @@ class _HomePageState extends State<HomePage> {
   List<dynamic>? main;
   Color bgColor = Colors.grey.shade200;
   final PageController pgController = PageController();
+  WeatherFactory wf = WeatherFactory(globals.apiKey);
 
   @override
   void initState() {
     super.initState();
   }
 
-  Future<void> getData() async {
-    List microData = await WeatherHelper.getMicroweather();
-    List forecastData = await WeatherHelper.getForecast();
-    List mainData = await WeatherHelper.getMainweather();
+  Future<void> getData(WeatherFactory wf) async {
+    List microData = await WeatherHelper.getMicroweather(wf);
+    List forecastData = await WeatherHelper.getForecast(wf);
+    List mainData = await WeatherHelper.getMainweather(wf);
     micro = microData;
     forecast = forecastData;
     main = mainData;
@@ -47,7 +50,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<void>(
-          future: getData(),
+          future: getData(wf),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:

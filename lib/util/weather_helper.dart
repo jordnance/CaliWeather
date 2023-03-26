@@ -5,10 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
 
 class WeatherHelper {
-  static Future<Weather> getCurrent() async {
-    WeatherFactory wf = WeatherFactory(globals.apiKey);
+  static Future<Weather> getCurrent(WeatherFactory wf) async {
     Weather weather;
-
     weather = await wf.currentWeatherByLocation(
         globals.positionLat, globals.positionLong);
 
@@ -21,8 +19,7 @@ class WeatherHelper {
     return weather;
   }
 
-  static Future<List<dynamic>> setForecast() async {
-    WeatherFactory wf = WeatherFactory(globals.apiKey);
+  static Future<List<dynamic>> setForecast(WeatherFactory wf) async {
     List<dynamic> setData = [];
     List<dynamic> forecast;
 
@@ -44,9 +41,9 @@ class WeatherHelper {
     return setData;
   }
 
-  static Future<List> getForecast() async {
+  static Future<List> getForecast(WeatherFactory wf) async {
     List<dynamic> formatData = [[], [], [], [], []];
-    List<dynamic> forecastData = await setForecast();
+    List<dynamic> forecastData = await setForecast(wf);
     for (int i = 0; i < 5; i++) {
       DateTime? formatDate = forecastData[i].date;
       String? temp =
@@ -59,8 +56,8 @@ class WeatherHelper {
     return formatData;
   }
 
-  static Future<List> getMainweather() async {
-    Weather weather = await WeatherHelper.getCurrent();
+  static Future<List> getMainweather(WeatherFactory wf) async {
+    Weather weather = await WeatherHelper.getCurrent(wf);
     DateTime? formatDate = weather.date;
 
     String weatherIcon = weather.weatherIcon.toString();
@@ -81,8 +78,8 @@ class WeatherHelper {
     return mainData;
   }
 
-  static Future<List> getMicroweather() async {
-    Weather weather = await WeatherHelper.getCurrent();
+  static Future<List> getMicroweather(WeatherFactory wf) async {
+    Weather weather = await WeatherHelper.getCurrent(wf);
 
     DateTime? formatSunrise = weather.sunrise;
     DateTime? formatSunset = weather.sunset;
