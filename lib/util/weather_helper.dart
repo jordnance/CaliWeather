@@ -65,8 +65,8 @@ class WeatherHelper {
   static Future<List?> getAlerts() async {
     http.Response response = await http.get(
       Uri.https('api.openweathermap.org', '/data/3.0/onecall', {
-        'lat': globals.alertlat.toString(),
-        'lon': globals.alertlong.toString(),
+        'lat': globals.positionLat.toString(),
+        'lon': globals.positionLong.toString(),
         'exclude': 'daily,hourly,minutely',
         'appid': '0d8187b327e042982d4478dcbf90bae3'
       }),
