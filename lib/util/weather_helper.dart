@@ -2,6 +2,7 @@ import 'package:caliweather/util/sql_helper.dart';
 import '../util/sharedprefutil.dart';
 import 'globals.dart' as globals;
 import 'package:intl/intl.dart';
+import '../models/weather_alerts.dart';
 import 'package:weather/weather.dart';
 
 class WeatherHelper {
@@ -57,6 +58,12 @@ class WeatherHelper {
       formatData[i] = [temp, desc, date, icon];
     }
     return formatData;
+  }
+
+  static Future<bool> checkAlerts() async {
+    bool result = false;
+
+    return result;
   }
 
   static Future<List> getMainweather() async {
