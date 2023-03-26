@@ -21,6 +21,7 @@ dependencies:
   isar_flutter_libs: ^3.0.5
   path:
   persistent_bottom_nav_bar: any
+  settings_ui: ^2.0.2
   shared_preferences: ^2.0.17
   smooth_page_indicator: ^1.0.1
   sqflite:
