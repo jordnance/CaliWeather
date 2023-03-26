@@ -17,6 +17,7 @@ dependencies:
   flutter_native_splash: ^2.2.17
   geolocator: ^9.0.2
   http: ^0.13.5
+  intl: ^0.18.0
   isar_flutter_libs: ^3.0.5
   path:
   persistent_bottom_nav_bar: any
