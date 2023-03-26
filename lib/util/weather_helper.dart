@@ -1,8 +1,10 @@
 import 'package:caliweather/util/sql_helper.dart';
-import '../util/sharedprefutil.dart';
-import 'globals.dart' as globals;
-import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'globals.dart' as globals;
+import '../util/sharedprefutil.dart';
 
 class WeatherHelper {
   static Future<Weather> getCurrent(WeatherFactory wf) async {
@@ -54,6 +56,25 @@ class WeatherHelper {
       formatData[i] = [temp, desc, date, icon];
     }
     return formatData;
+  }
+
+  static Future<List?> getAlerts() async {
+    http.Response response = await http.get(
+      Uri.https('api.openweathermap.org', '/data/3.0/onecall', {
+        'lat': globals.positionLat.toString(),
+        'lon': globals.positionLong.toString(),
+        'exclude': 'daily,hourly,minutely',
+        'appid': '0d8187b327e042982d4478dcbf90bae3'
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      //print(response.statusCode);
+      return null;
+    }
+
+    Map<String, dynamic> w = jsonDecode(response.body);
+    return w['alerts'];
   }
 
   static Future<List> getMainweather(WeatherFactory wf) async {
