@@ -80,15 +80,6 @@ class _HomePageState extends State<HomePage> {
     alerts = await WeatherHelper.getAlerts();
     if (alerts != null) {
       showAlertIndicator = true;
-
-      print('${alerts![0]['sender_name']}');
-      print('${alerts![0]['event']}');
-      print('${alerts![0]['start']}');
-      print('${alerts![0]['end']}');
-      print('${alerts![0]['tags']}');
-      print('${alerts![0]['description']}');
-
-      // parse alert dynamic list to list of Alert objects
     } else {
       showAlertIndicator = false;
     }
@@ -115,12 +106,8 @@ class _HomePageState extends State<HomePage> {
           behavior: style,
           position: FlashPosition.top,
           child: FlashBar(
-            //TODO: Update below text to shared prefs getter
-            //getData() will return List alertData
-            //--> if alertData is not null, then set alert Icon visibility true
-            title: const Text('Alert'),
-            content: const Text(
-                'Extreme Heat Predicted! Please refere to [link] for reccommended safety precautions.'),
+            title: Text('${alerts![0]['event']}'),
+            content: Text('${alerts![0]['description']}'),
             showProgressIndicator: true,
             primaryAction: TextButton(
               onPressed: () => controller.dismiss(),
