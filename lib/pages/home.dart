@@ -35,10 +35,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  double currentPage = 0;
   List<dynamic>? micro;
   List<dynamic>? forecast;
   List<dynamic>? main;
+  List<dynamic>? alerts;
+  bool showAlertIndicator = false;
+
   Color bgColor = Colors.grey.shade200;
   final PageController pgController = PageController();
 
@@ -75,6 +77,13 @@ class _HomePageState extends State<HomePage> {
     List microData = await WeatherHelper.getMicroweather();
     List forecastData = await WeatherHelper.getForecast();
     List mainData = await WeatherHelper.getMainweather();
+    alerts = await WeatherHelper.getAlerts();
+    if (alerts != null) {
+      showAlertIndicator = true;
+    } else {
+      showAlertIndicator = false;
+    }
+
     micro = microData;
     forecast = forecastData;
     main = mainData;
@@ -97,12 +106,8 @@ class _HomePageState extends State<HomePage> {
           behavior: style,
           position: FlashPosition.top,
           child: FlashBar(
-            //TODO: Update below text to shared prefs getter
-            //getData() will return List alertData
-            //--> if alertData is not null, then set alert Icon visibility true
-            title: const Text('Alert'),
-            content: const Text(
-                'Extreme Heat Predicted! Please refere to [link] for reccommended safety precautions.'),
+            title: Text('${alerts![0]['event']}'),
+            content: Text('${alerts![0]['description']}'),
             showProgressIndicator: true,
             primaryAction: TextButton(
               onPressed: () => controller.dismiss(),
@@ -204,7 +209,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       Visibility(
-                        visible: true,
+                        visible: showAlertIndicator,
                         child: Positioned(
                           child: Container(
                             alignment: Alignment.topRight,
