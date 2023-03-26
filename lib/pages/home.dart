@@ -39,6 +39,7 @@ class _HomePageState extends State<HomePage> {
   List<dynamic>? forecast;
   List<dynamic>? main;
   List<dynamic>? alerts;
+  bool showAlertIndicator = false;
 
   Color bgColor = Colors.grey.shade200;
   final PageController pgController = PageController();
@@ -76,11 +77,20 @@ class _HomePageState extends State<HomePage> {
     List microData = await WeatherHelper.getMicroweather();
     List forecastData = await WeatherHelper.getForecast();
     List mainData = await WeatherHelper.getMainweather();
-    if (await WeatherHelper.checkAlerts()) {
-      // get alerts
-      // set alert icon flag to true
+    alerts = await WeatherHelper.getAlerts();
+    if (alerts != null) {
+      showAlertIndicator = true;
+
+      print('${alerts![0]['sender_name']}');
+      print('${alerts![0]['event']}');
+      print('${alerts![0]['start']}');
+      print('${alerts![0]['end']}');
+      print('${alerts![0]['tags']}');
+      print('${alerts![0]['description']}');
+
+      // parse alert dynamic list to list of Alert objects
     } else {
-      //set alert icon flag to false
+      showAlertIndicator = false;
     }
 
     micro = microData;
@@ -212,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       Visibility(
-                        visible: true,
+                        visible: showAlertIndicator,
                         child: Positioned(
                           child: Container(
                             alignment: Alignment.topRight,
