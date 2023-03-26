@@ -1,7 +1,8 @@
 import '../util/sql_helper.dart';
+import '../util/sharedprefutil.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
-import '../util/sharedprefutil.dart';
+import 'package:settings_ui/settings_ui.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key, required this.title});
