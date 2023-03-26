@@ -24,13 +24,13 @@ class Alerts {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['sender_name'] = this.senderName;
-    data['event'] = this.event;
-    data['start'] = this.start;
-    data['end'] = this.end;
-    data['description'] = this.description;
-    data['tags'] = this.tags;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['sender_name'] = senderName;
+    data['event'] = event;
+    data['start'] = start;
+    data['end'] = end;
+    data['description'] = description;
+    data['tags'] = tags;
     return data;
   }
 }
