@@ -35,10 +35,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  double currentPage = 0;
   List<dynamic>? micro;
   List<dynamic>? forecast;
   List<dynamic>? main;
+  List<dynamic>? alerts;
+
   Color bgColor = Colors.grey.shade200;
   final PageController pgController = PageController();
 
@@ -75,6 +76,13 @@ class _HomePageState extends State<HomePage> {
     List microData = await WeatherHelper.getMicroweather();
     List forecastData = await WeatherHelper.getForecast();
     List mainData = await WeatherHelper.getMainweather();
+    if (await WeatherHelper.checkAlerts()) {
+      // get alerts
+      // set alert icon flag to true
+    } else {
+      //set alert icon flag to false
+    }
+
     micro = microData;
     forecast = forecastData;
     main = mainData;
