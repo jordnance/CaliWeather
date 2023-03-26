@@ -1,0 +1,42 @@
+{
+    "lat":35.3935,
+    "lon":-119.0437,
+    "timezone":"America/Los_Angeles",
+    "timezone_offset":-25200,
+    "current":{
+       "dt":1679518327,
+       "sunrise":1679493429,
+       "sunset":1679537336,
+       "temp":288.01,
+       "feels_like":286.86,
+       "pressure":1013,
+       "humidity":50,
+       "dew_point":277.69,
+       "uvi":2.08,
+       "clouds":100,
+       "visibility":10000,
+       "wind_speed":1.79,
+       "wind_deg":323,
+       "wind_gust":3.58,
+       "weather":[
+          {
+             "id":804,
+             "main":"Clouds",
+             "description":"overcast clouds",
+             "icon":"04d"
+          }
+       ]
+    },
+    "alerts":[
+       {
+          "sender_name":"NWS Hanford (South Central California)",
+          "event":"Flood Watch",
+          "start":1679652000,
+          "end":1679673600,
+          "description":"...FLOOD WATCH REMAINS IN EFFECT THROUGH THIS EVENING...\n* WHAT...Flooding caused by excessive rainfall continues to be\npossible.\n* WHERE...A portion of central California, including the following\nareas, Bakersfield, Buena Vista, Buttonwillow - Lost Hills - I5,\nCaruthers - San Joaquin - Selma, Coalinga - Avenal,\nDelano-Wasco-Shafter, Fresno-Clovis, Fresno-Tulare Foothills,\nFresno-Tulare Lower Sierra, Hanford - Corcoran - Lemoore, Kern\nRiver Valley, Los Banos - Dos Palos, Mariposa Madera Foothills,\nMariposa-Madera Lower Sierra, Merced - Madera - Mendota, Planada -\nLe Grand - Snelling, South End San Joaquin Valley, South End\nSierra Foothills, South End of the Lower Sierra, Southeast San\nJoaquin Valley, Visalia - Porterville - Reedley, West Side\nMountains South of 198, West Side Mountains north of 198 and West\nSide of Fresno and Kings Counties.\n* WHEN...Through this evening.\n* IMPACTS...Excessive runoff may result in flooding of rivers,\ncreeks, streams, and other low-lying and flood-prone locations.\nLow-water crossings may be flooded. Area creeks and streams are\nrunning high and could flood with more heavy rain.\n* ADDITIONAL DETAILS...\n- Heavy rainfall remains possible in much of Central California\nat elevations up to 4000 feet today through this evening.\n- http://www.weather.gov/safety/flood",
+          "tags":[
+             "Flood"
+          ]
+       }
+    ]
+ }
