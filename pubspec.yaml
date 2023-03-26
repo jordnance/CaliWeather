@@ -23,6 +23,7 @@ dependencies:
   sqflite:
   weather: ^2.0.1
   weather_icons: ^3.0.0-nullsafety.x
+  flash: ^2.0.5
 
   flutter:
     sdk: flutter
