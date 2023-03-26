@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'globals.dart' as globals;
 import '../util/sharedprefutil.dart';
-import '../models/weather_alerts.dart';
 
 class WeatherHelper {
   static Future<Weather> getCurrent() async {
@@ -73,7 +72,7 @@ class WeatherHelper {
     );
 
     if (response.statusCode != 200) {
-      print(response.statusCode);
+      //print(response.statusCode);
       return null;
     }
 
