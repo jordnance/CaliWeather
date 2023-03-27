@@ -1,7 +1,9 @@
 import '../util/sharedprefutil.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:caliweather/util/graph_helper.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:caliweather/pages/components/raingraph.dart';
 import 'package:caliweather/pages/components/tempgraph.dart';
 import 'package:caliweather/pages/components/humgraph.dart';
@@ -163,38 +165,52 @@ class _AnalysisPageState extends State<AnalysisPage> {
           Positioned(
             right: 10,
             bottom: 10,
-            child: FloatingActionButton.extended(
-              backgroundColor: Colors.blue,
-              tooltip: 'Duration',
-              onPressed: () {
-                if (durationIndex == 3) {
-                  durationIndex = 1;
-                } else {
-                  durationIndex++;
-                }
-                switch (durationIndex) {
-                  case 1:
-                    length = 14;
-                    break;
-                  case 2:
+            child: SpeedDial(
+              spacing: 8,
+              spaceBetweenChildren: 8,
+              animatedIcon: AnimatedIcons.menu_close,
+              animatedIconTheme: const IconThemeData(size: 22.0),
+              closeManually: false,
+              curve: Curves.bounceIn,
+              overlayColor: Colors.black,
+              overlayOpacity: 0.5,
+              tooltip: 'Change Duration',
+              heroTag: 'speed-dial-hero-tag',
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+              elevation: 8.0,
+              shape: const CircleBorder(),
+              children: [
+                SpeedDialChild(
+                    child: const Icon(CupertinoIcons.time),
+                    backgroundColor: Colors.green,
+                    label: '14 Days',
+                    labelStyle: const TextStyle(fontSize: 18.0),
+                    onTap: () {
+                      length = 14;
+                      setState(() {});
+                    }),
+                SpeedDialChild(
+                  child: const Icon(CupertinoIcons.time),
+                  backgroundColor: Colors.yellow,
+                  label: '7 Days',
+                  labelStyle: const TextStyle(fontSize: 18.0),
+                  onTap: () {
                     length = 7;
-                    break;
-                  case 3:
-                    length = 3;
-                    break;
-                }
-                changeDuration();
-              },
-              label: Text(
-                durationTitle[titleIndex],
-                style: const TextStyle(
-                  fontSize: 15,
+                    setState(() {});
+                  },
                 ),
-              ),
-              icon: const Icon(
-                Icons.timelapse_rounded,
-                size: 30,
-              ),
+                SpeedDialChild(
+                  child: const Icon(CupertinoIcons.time),
+                  backgroundColor: Colors.red,
+                  label: '3 Days',
+                  labelStyle: const TextStyle(fontSize: 18.0),
+                  onTap: () {
+                    length = 3;
+                    setState(() {});
+                  },
+                ),
+              ],
             ),
           ),
         ],

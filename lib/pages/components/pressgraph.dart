@@ -13,7 +13,7 @@ class PressGraph extends StatelessWidget {
         aspectRatio: 1.4,
         child: Padding(
           padding: const EdgeInsets.only(
-            right: 18,
+            right: 24,
             left: 12,
             top: 24,
             bottom: 12,
@@ -197,7 +197,7 @@ class PressGraph extends StatelessWidget {
           gradient: LinearGradient(
             colors: pressColors,
           ),
-          barWidth: 5,
+          barWidth: 4,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
