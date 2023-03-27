@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
-
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key, required this.title});
   final String title;
@@ -15,6 +14,21 @@ class SettingsPage extends StatefulWidget {
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
+
+final List<String> languages = [
+  'English',
+  'Spanish',
+];
+final List<String> units = [
+  'Fahrenheit',
+  'Celsius',
+  'Kelvin',
+];
+final List<String> fontsize = [
+  'Small',
+  'Normal',
+  'Large',
+];
 
 enum LanguageSet { english, spanish }
 
@@ -123,9 +137,12 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     bool darkTheme = false;
+    String _languageSelection = languages.first;
+    String _unitsSelection = units.first;
+    String _fontSizeSelection = fontsize.first;
 
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(middle: Text('Developer')),
+      navigationBar: CupertinoNavigationBar(middle: Text('Settings')),
       child: SafeArea(
         bottom: false,
         child: SettingsList(
@@ -133,82 +150,192 @@ class _SettingsPageState extends State<SettingsPage> {
           platform: DevicePlatform.iOS,
           sections: [
             SettingsSection(
-              title: Text('APPEARANCE'),
+              title: Text('PREFERENCES'),
+              tiles: [
+                SettingsTile.navigation(
+                  onPressed: (_) {},
+                  title: Text('Language'),
+                  value: DropdownButtonHideUnderline(
+                    child: DropdownButton2(
+                      iconStyleData: const IconStyleData(
+                        icon: Visibility(
+                            visible: false,
+                            child: Icon(Icons.arrow_forward_ios_outlined)),
+                      ),
+                      dropdownStyleData: DropdownStyleData(
+                          maxHeight: 200,
+                          width: 200,
+                          isOverButton: true,
+                          padding: null,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: Colors.grey.shade300),
+                          elevation: 8,
+                          offset: const Offset(-20, 0),
+                          scrollbarTheme: ScrollbarThemeData(
+                            radius: const Radius.circular(40),
+                            thickness: MaterialStateProperty.all(6),
+                            thumbVisibility: MaterialStateProperty.all(true),
+                          )),
+                      items: languages
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                      value: _languageSelection,
+                      onChanged: (value) {
+                        setState(() {
+                          _languageSelection = value as String;
+                        });
+                      },
+                      buttonStyleData: const ButtonStyleData(
+                          padding: EdgeInsets.only(right: 5)),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                ),
+                SettingsTile.navigation(
+                  onPressed: (_) {},
+                  title: Text('Font Size'),
+                  value: DropdownButtonHideUnderline(
+                    child: DropdownButton2(
+                      iconStyleData: const IconStyleData(
+                        icon: Visibility(
+                            visible: false,
+                            child: Icon(Icons.arrow_forward_ios_outlined)),
+                      ),
+                      dropdownStyleData: DropdownStyleData(
+                          maxHeight: 200,
+                          width: 200,
+                          isOverButton: true,
+                          padding: null,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: Colors.grey.shade300),
+                          elevation: 8,
+                          offset: const Offset(-20, 0),
+                          scrollbarTheme: ScrollbarThemeData(
+                            radius: const Radius.circular(40),
+                            thickness: MaterialStateProperty.all(6),
+                            thumbVisibility: MaterialStateProperty.all(true),
+                          )),
+                      items: fontsize
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                      value: _fontSizeSelection,
+                      onChanged: (value) {
+                        setState(() {
+                          _fontSizeSelection = value as String;
+                        });
+                      },
+                      buttonStyleData: const ButtonStyleData(
+                          padding: EdgeInsets.only(right: 5)),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SettingsSection(
+              title: Text('WEATHER'),
+              tiles: [
+                SettingsTile.navigation(
+                  // this will be a searchable dropdownbutton2 widget
+                  // search list of cities in database available in openweather
+                  title: Text('Location'),
+                ),
+                SettingsTile.navigation(
+                  onPressed: (_) {},
+                  title: Text('Units'),
+                  value: DropdownButtonHideUnderline(
+                    child: DropdownButton2(
+                      iconStyleData: const IconStyleData(
+                        icon: Visibility(
+                            visible: false,
+                            child: Icon(Icons.arrow_forward_ios_outlined)),
+                      ),
+                      dropdownStyleData: DropdownStyleData(
+                          maxHeight: 200,
+                          width: 200,
+                          isOverButton: true,
+                          padding: null,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: Colors.grey.shade300),
+                          elevation: 8,
+                          offset: const Offset(-20, 0),
+                          scrollbarTheme: ScrollbarThemeData(
+                            radius: const Radius.circular(40),
+                            thickness: MaterialStateProperty.all(6),
+                            thumbVisibility: MaterialStateProperty.all(true),
+                          )),
+                      items: units
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                      value: _unitsSelection,
+                      onChanged: (value) {
+                        setState(() {
+                          _unitsSelection = value as String;
+                        });
+                      },
+                      buttonStyleData: const ButtonStyleData(
+                          padding: EdgeInsets.only(left: 100)),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SettingsSection(
+              title: Text('NOTIFICATIONS'),
+              tiles: [
+                SettingsTile.navigation(
+                  // this will be a checkbox dropdownbutton2 widget
+                  // selection will trigger shared preference changes
+                  title: Text('Alerts'),
+                ),
+              ],
+            ),
+            SettingsSection(
+              title: Text('DISPLAY'),
               tiles: [
                 SettingsTile.switchTile(
+                  title: Text('Enable Dark Theme'),
+                  initialValue: darkTheme,
+                  activeSwitchColor: const Color.fromARGB(255, 0, 83, 129),
                   onToggle: (value) {
                     setState(() {
                       darkTheme = value;
                     });
                   },
-                  initialValue: darkTheme,
-                  title: Text('Enable Dark Theme'),
-                ),
-              ],
-            ),
-            SettingsSection(
-              title: Text('DISPLAY ZOOM'),
-              tiles: [
-                SettingsTile.navigation(
-                  onPressed: (_) {},
-                  title: Text('View'),
-                  value: Text('Standard'),
-                  description: Text(
-                    'Choose a view for iPhone. '
-                    'Zoomed shadows larger controls. '
-                    'Standart shows more content.',
-                  ),
-                ),
-              ],
-            ),
-            SettingsSection(
-              title: Text('UI AUTOMATION'),
-              tiles: [
-                SettingsTile.switchTile(
-                  onToggle: (_) {},
-                  initialValue: true,
-                  title: Text('Enable UI Automation'),
-                ),
-                SettingsTile.navigation(
-                  title: Text('Multipath Networking'),
-                ),
-                SettingsTile.switchTile(
-                  onToggle: (_) {},
-                  initialValue: false,
-                  title: Text('HTTP/3'),
-                ),
-              ],
-            ),
-            SettingsSection(
-              title: Text('STATE RESTORATION TESTING'),
-              tiles: [
-                SettingsTile.switchTile(
-                  onToggle: (_) {},
-                  initialValue: false,
-                  title: Text(
-                    'Fast App Termination',
-                  ),
-                  description: Text(
-                    'Terminate instead of suspending apps when backgrounded to '
-                    'force apps to be relaunched when tray '
-                    'are foregrounded.',
-                  ),
-                ),
-              ],
-            ),
-            SettingsSection(
-              title: Text('IAD DEVELOPER APP TESTING'),
-              tiles: [
-                SettingsTile.navigation(
-                  title: Text('Fill Rate'),
-                ),
-                SettingsTile.navigation(
-                  title: Text('Add Refresh Rate'),
-                ),
-                SettingsTile.switchTile(
-                  onToggle: (_) {},
-                  initialValue: false,
-                  title: Text('Unlimited Ad Presentation'),
                 ),
               ],
             ),
