@@ -45,6 +45,11 @@ enum TempSet { fahrenheit, celsius }
 enum ThemeSet { dark, light }
 
 class _SettingsPageState extends State<SettingsPage> {
+  bool darkTheme = false;
+  String _languageSelection = languages.first;
+  String _unitsSelection = units.first;
+  String _fontSizeSelection = fontsize[1];
+
   bool isVisibleLang = false;
   bool isVisibleFont = false;
   bool isVisibleAlert = false;
@@ -136,11 +141,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool darkTheme = false;
-    String _languageSelection = languages.first;
-    String _unitsSelection = units.first;
-    String _fontSizeSelection = fontsize.first;
-
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(middle: Text('Settings')),
       child: SafeArea(
@@ -169,7 +169,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           padding: null,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14),
-                              color: Colors.grey.shade300),
+                              color: Colors.grey.shade50),
                           elevation: 8,
                           offset: const Offset(-20, 0),
                           scrollbarTheme: ScrollbarThemeData(
@@ -219,7 +219,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           padding: null,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14),
-                              color: Colors.grey.shade300),
+                              color: Colors.grey.shade50),
                           elevation: 8,
                           offset: const Offset(-20, 0),
                           scrollbarTheme: ScrollbarThemeData(
@@ -279,7 +279,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           padding: null,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14),
-                              color: Colors.grey.shade300),
+                              color: Colors.grey.shade50),
                           elevation: 8,
                           offset: const Offset(-20, 0),
                           scrollbarTheme: ScrollbarThemeData(
