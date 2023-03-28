@@ -49,7 +49,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    if (SharedPrefUtil.getUsername() != '') {
+    if (SharedPrefUtil.getIsLoggedIn()) {
       usernameValue = SharedPrefUtil.getUsername();
       setSettings();
     } else {
