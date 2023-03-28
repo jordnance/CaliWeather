@@ -276,8 +276,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                         child: PageView(
                           controller: pg2Controller,
                           children: <Widget>[
-                            TempGraph(todos: temp, duration: length),
-                            //WindGraph(todos: wind, duration: length),
+                            WindGraph(todos: wind, duration: length),
                             RainGraph(todos: rain, duration: length),
                             SnowGraph(todos: snow, duration: length),
                           ],
