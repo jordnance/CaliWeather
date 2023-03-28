@@ -94,7 +94,7 @@ class SQLHelper {
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'fiftysix.db',
+      'version_one.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -173,6 +173,13 @@ class SQLHelper {
     final db = await SQLHelper.db();
     return db
         .rawQuery("SELECT * FROM Preference WHERE userprefId = ?", [userId]);
+  }
+
+  static Future<List<Map<String, dynamic>>> getFrequency(int userId) async {
+    final db = await SQLHelper.db();
+    return db.rawQuery("""SELECT COUNT(*) FROM WeatherData  
+     WHERE apiCallDate > (SELECT datetime('now','-6 hours', 'localtime')) AND userId = ? 
+     """, [userId]);
   }
 
   // Update user's profile info <-- WORKS

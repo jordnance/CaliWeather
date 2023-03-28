@@ -171,25 +171,30 @@ class WeatherHelper {
     if (SharedPrefUtil.getIsLoggedIn()) {
       int? userId = SharedPrefUtil.getUserId();
 
-      String? temp = weather.temperature?.fahrenheit.toString();
-      String formatTemp = temp!.replaceAll('Fahrenheit', '');
-      double? doubleTemp = double.parse(formatTemp);
-      double newTemp = double.parse(doubleTemp.toStringAsFixed(1));
+      var getFreq = await SQLHelper.getFrequency(userId);
+      var frequency = getFreq[0]['COUNT(*)'];
 
-      DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-      String apiCallDate = dateFormat.format(DateTime.now());
+      if (frequency == 0) {
+        String? temp = weather.temperature?.fahrenheit.toString();
+        String formatTemp = temp!.replaceAll('Fahrenheit', '');
+        double? doubleTemp = double.parse(formatTemp);
+        double newTemp = double.parse(doubleTemp.toStringAsFixed(1));
 
-      SQLHelper.createWeatherData(
-          userId,
-          apiCallDate,
-          weather.areaName,
-          weather.rainLastHour,
-          newTemp,
-          weather.humidity,
-          weather.snowLastHour,
-          weather.pressure,
-          weather.windSpeed);
-    } 
+        DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+        String apiCallDate = dateFormat.format(DateTime.now());
+
+        SQLHelper.createWeatherData(
+            userId,
+            apiCallDate,
+            weather.areaName,
+            weather.rainLastHour,
+            newTemp,
+            weather.humidity,
+            weather.snowLastHour,
+            weather.pressure,
+            weather.windSpeed);
+      }
+    }
 
     return microData;
   }
