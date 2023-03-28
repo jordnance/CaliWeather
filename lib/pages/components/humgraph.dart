@@ -5,6 +5,7 @@ class HumGraph extends StatelessWidget {
   const HumGraph({super.key, required this.todos, required this.duration});
   final List<FlSpot>? todos;
   final double? duration;
+  static const Color textColor = Colors.black87;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class HumGraph extends StatelessWidget {
   Widget humLeftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: textColor,
       fontSize: 13,
     );
     String text;
@@ -70,7 +71,7 @@ class HumGraph extends StatelessWidget {
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: textColor,
       fontSize: 13,
     );
     Widget text;
@@ -137,6 +138,7 @@ class HumGraph extends StatelessWidget {
     ];
 
     return LineChartData(
+      backgroundColor: Colors.grey.shade900,
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
@@ -166,7 +168,7 @@ class HumGraph extends StatelessWidget {
           axisNameWidget: const Text(
             'Humidity',
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
+                color: textColor, fontWeight: FontWeight.w900, fontSize: 18),
           ),
         ),
         bottomTitles: AxisTitles(
@@ -178,7 +180,7 @@ class HumGraph extends StatelessWidget {
           ),
           axisNameWidget: const Text(
             'Days',
-            style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
+            style: TextStyle(color: textColor, fontStyle: FontStyle.italic),
           ),
         ),
         leftTitles: AxisTitles(
@@ -190,7 +192,7 @@ class HumGraph extends StatelessWidget {
           ),
           axisNameWidget: const Text(
             'Percent (%)',
-            style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
+            style: TextStyle(color: textColor, fontStyle: FontStyle.italic),
           ),
         ),
       ),

@@ -5,6 +5,7 @@ class SnowGraph extends StatelessWidget {
   const SnowGraph({super.key, required this.todos, required this.duration});
   final List<FlSpot>? todos;
   final double? duration;
+  static const Color textColor = Colors.black87;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class SnowGraph extends StatelessWidget {
   Widget snowLeftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: textColor,
       fontSize: 14,
     );
     String text;
@@ -58,7 +59,7 @@ class SnowGraph extends StatelessWidget {
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: textColor,
       fontSize: 14,
     );
     Widget text;
@@ -125,6 +126,7 @@ class SnowGraph extends StatelessWidget {
     ];
 
     return LineChartData(
+      backgroundColor: Colors.grey.shade900,
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
@@ -154,7 +156,7 @@ class SnowGraph extends StatelessWidget {
           axisNameWidget: const Text(
             'Snow',
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
+                color: textColor, fontWeight: FontWeight.w900, fontSize: 18),
           ),
         ),
         bottomTitles: AxisTitles(
@@ -166,7 +168,7 @@ class SnowGraph extends StatelessWidget {
           ),
           axisNameWidget: const Text(
             'Days',
-            style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
+            style: TextStyle(color: textColor, fontStyle: FontStyle.italic),
           ),
         ),
         leftTitles: AxisTitles(
@@ -178,7 +180,7 @@ class SnowGraph extends StatelessWidget {
           ),
           axisNameWidget: const Text(
             'Rate (mm/hr)',
-            style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
+            style: TextStyle(color: textColor, fontStyle: FontStyle.italic),
           ),
         ),
       ),

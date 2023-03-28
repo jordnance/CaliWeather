@@ -220,7 +220,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
     final PageController pg2Controller = PageController();
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade900,
+      backgroundColor: Colors.grey.shade200,
       body: FutureBuilder<void>(
           future: getData(length),
           builder: (context, snapshot) {
