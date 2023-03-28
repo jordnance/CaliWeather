@@ -12,7 +12,7 @@ class WeatherHelper {
     weather = await wf.currentWeatherByLocation(
         globals.positionLat, globals.positionLong);
 
-    if (SharedPrefUtil.getIsLoggedIn() == true) {
+    if (SharedPrefUtil.getIsLoggedIn()) {
       SQLHelper.updateLocation(
           SharedPrefUtil.getUserPrefId(), weather.areaName!);
       SharedPrefUtil.setLocation(weather.areaName!);
@@ -25,7 +25,7 @@ class WeatherHelper {
     List<dynamic> setData = [];
     List<dynamic> forecast;
 
-    if (SharedPrefUtil.getIsLoggedIn() == false) {
+    if (!SharedPrefUtil.getIsLoggedIn()) {
       forecast = await wf.fiveDayForecastByLocation(
           globals.positionLat, globals.positionLong);
     } else {
@@ -168,26 +168,28 @@ class WeatherHelper {
       windSpeed
     ];
 
-    int? userId = SharedPrefUtil.getUserId();
+    if (SharedPrefUtil.getIsLoggedIn()) {
+      int? userId = SharedPrefUtil.getUserId();
 
-    String? temp = weather.temperature?.fahrenheit.toString();
-    String formatTemp = temp!.replaceAll('Fahrenheit', '');
-    double? doubleTemp = double.parse(formatTemp);
-    double newTemp = double.parse(doubleTemp.toStringAsFixed(1));
+      String? temp = weather.temperature?.fahrenheit.toString();
+      String formatTemp = temp!.replaceAll('Fahrenheit', '');
+      double? doubleTemp = double.parse(formatTemp);
+      double newTemp = double.parse(doubleTemp.toStringAsFixed(1));
 
-    DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-    String apiCallDate = dateFormat.format(DateTime.now());
+      DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+      String apiCallDate = dateFormat.format(DateTime.now());
 
-    SQLHelper.createWeatherData(
-        userId,
-        apiCallDate,
-        weather.areaName,
-        weather.rainLastHour,
-        newTemp,
-        weather.humidity,
-        weather.snowLastHour,
-        weather.pressure,
-        weather.windSpeed);
+      SQLHelper.createWeatherData(
+          userId,
+          apiCallDate,
+          weather.areaName,
+          weather.rainLastHour,
+          newTemp,
+          weather.humidity,
+          weather.snowLastHour,
+          weather.pressure,
+          weather.windSpeed);
+    } 
 
     return microData;
   }
