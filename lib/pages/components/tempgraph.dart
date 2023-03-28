@@ -192,7 +192,7 @@ class TempGraph extends StatelessWidget {
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: const Color(0xff37434d), width: 4),
+        border: Border.all(color: const Color(0xff33434d), width: 4),
       ),
       minX: 0,
       maxX: maxX,
