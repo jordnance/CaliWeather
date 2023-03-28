@@ -132,7 +132,7 @@ class TempGraph extends StatelessWidget {
     ];
 
     return LineChartData(
-      backgroundColor: Colors.grey.shade900,
+      backgroundColor: Colors.grey.shade600,
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
