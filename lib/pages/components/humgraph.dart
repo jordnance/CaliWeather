@@ -6,6 +6,11 @@ class HumGraph extends StatelessWidget {
   final List<FlSpot>? todos;
   final double? duration;
   static const Color textColor = Colors.black87;
+  static const Color graphBgColor = Color(0xFF212121); //grey.shae900
+  static const Color graphGridLineColor = Colors.white10;
+  static const Color graphBorderLineColor = Color(0xff37434d); //blue-grey
+  static const Color graphLineGradientColor1 = Color.fromARGB(255, 65, 255, 77);
+  static const Color graphLineGradientColor2 = Color.fromARGB(255, 0, 102, 19);
 
   @override
   Widget build(BuildContext context) {
@@ -133,12 +138,12 @@ class HumGraph extends StatelessWidget {
 
   LineChartData graphData(double? maxX) {
     List<Color> humColors = [
-      Color.fromARGB(255, 65, 255, 77),
-      Color.fromARGB(255, 0, 102, 19),
+      graphLineGradientColor1,
+      graphLineGradientColor2,
     ];
 
     return LineChartData(
-      backgroundColor: Colors.grey.shade900,
+      backgroundColor: graphBgColor,
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
@@ -146,13 +151,13 @@ class HumGraph extends StatelessWidget {
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color: Colors.white10,
+            color: graphGridLineColor,
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
           return FlLine(
-            color: Colors.white10,
+            color: graphGridLineColor,
             strokeWidth: 1,
           );
         },
@@ -198,7 +203,7 @@ class HumGraph extends StatelessWidget {
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: const Color(0xff37434d), width: 4),
+        border: Border.all(color: graphBorderLineColor, width: 4),
       ),
       minX: 0,
       maxX: maxX,
