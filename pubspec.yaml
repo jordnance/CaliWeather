@@ -9,7 +9,6 @@ environment:
 dependencies:
   carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.2
-  dropdown_button2: ^2.0.0
   fl_chart: ^0.61.0
   flash: ^2.0.5
   flutter_map: ^3.1.0
