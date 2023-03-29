@@ -1,0 +1,42 @@
+{
+    "lat": 34.3917,
+    "lon": -118.5426,
+    "timezone": "America/Los_Angeles",
+    "timezone_offset": -25200,
+    "current": {
+      "dt": 1679802427,
+      "sunrise": 1679752264,
+      "sunset": 1679796546,
+      "temp": 282.96,
+      "feels_like": 281.93,
+      "pressure": 1018,
+      "humidity": 44,
+      "dew_point": 271.51,
+      "uvi": 0,
+      "clouds": 1,
+      "visibility": 10000,
+      "wind_speed": 2.24,
+      "wind_deg": 336,
+      "wind_gust": 4.02,
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01n"
+        }
+      ]
+    },
+    "alerts": [
+      {
+        "sender_name": "NWS Oxnard (The Los Angeles Area)",
+        "event": "Wind Advisory",
+        "start": 1679780100,
+        "end": 1679846400,
+        "description": "...WIND ADVISORY REMAINS IN EFFECT UNTIL 9 AM PDT SUNDAY...\n* WHAT...North winds 20 to 30 mph with gusts up to 45 mph.\n* WHERE...Santa Clarita Valley, Eastern Santa Monica Mountains\nRecreational Area, Western San Fernando Valley and Santa\nSusana Mountains.\n* WHEN...Until 9 AM PDT Sunday.\n* IMPACTS...Gusty winds will blow around unsecured objects and\nmake driving difficult, especially for high profile vehicles.\nTree limbs could be blown down and a few power outages may\nresult.",
+        "tags": [
+          "Wind"
+        ]
+      }
+    ]
+  }

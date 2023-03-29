@@ -34,6 +34,17 @@ class MicroWeather extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
+            'Feels Like: ${todos?[14]}',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
             'Cloudiness: ${todos?[1]}',
             textAlign: TextAlign.center,
             style: const TextStyle(
@@ -57,17 +68,6 @@ class MicroWeather extends StatelessWidget {
           padding: const EdgeInsets.all(4.0),
           child: Text(
             'Pressure: ${todos?[7]}',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w300,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Text(
-            'Feels Like: ${todos?[14]}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,

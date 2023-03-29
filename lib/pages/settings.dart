@@ -49,18 +49,52 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    if (SharedPrefUtil.getUsername() != '') {
+    if (SharedPrefUtil.getIsLoggedIn()) {
       usernameValue = SharedPrefUtil.getUsername();
+      setSettings();
+    } else {
+      SharedPrefUtil.setLanguage(_languageSet.toString().split('.').last);
+      SharedPrefUtil.setFontSize(_fontSet.toString().split('.').last);
+      SharedPrefUtil.setFontSize(_fontSet.toString().split('.').last);
+      SharedPrefUtil.setConserveEnergy(_alertEnergy.toString().split('.').last);
+      SharedPrefUtil.setConserveWater(_alertWater.toString().split('.').last);
+      SharedPrefUtil.setApiRelated(_alertAPI.toString().split('.').last);
+      SharedPrefUtil.setTempFormat(_tempSet.toString().split('.').last);
+      SharedPrefUtil.setTheme(_themeSet.toString().split('.').last);
+      SharedPrefUtil.checkAllPrefs();
     }
-    SharedPrefUtil.setLanguage(_languageSet.toString().split('.').last);
-    SharedPrefUtil.setFontSize(_fontSet.toString().split('.').last);
-    SharedPrefUtil.setFontSize(_fontSet.toString().split('.').last);
-    SharedPrefUtil.setConserveEnergy(_alertEnergy.toString().split('.').last);
-    SharedPrefUtil.setConserveWater(_alertWater.toString().split('.').last);
-    SharedPrefUtil.setApiRelated(_alertAPI.toString().split('.').last);
-    SharedPrefUtil.setTempFormat(_tempSet.toString().split('.').last);
-    SharedPrefUtil.setTheme(_themeSet.toString().split('.').last);
-    SharedPrefUtil.checkAllPrefs();
+  }
+
+  void setSettings() async {
+    var uId = SharedPrefUtil.getUserPrefId();
+    var pref = await SQLHelper.getUserPref(uId);
+    var lang = pref[0]['lang'];
+    var font = pref[0]['fontSize'];
+    var theme = pref[0]['theme'];
+    var tFormat = pref[0]['tempFormat'];
+    var location = pref[0]['location'];
+    SharedPrefUtil.setLanguage(lang);
+    SharedPrefUtil.setFontSize(font);
+    SharedPrefUtil.setTheme(theme);
+    SharedPrefUtil.setTempFormat(tFormat);
+    SharedPrefUtil.setLocation(location);
+    if (SharedPrefUtil.getLanguage() == 'spanish') {
+      _languageSet = LanguageSet.spanish;
+    }
+
+    if (SharedPrefUtil.getFontSize() == "medium") {
+      _fontSet = FontSet.medium;
+    } else if (SharedPrefUtil.getFontSize() == "large") {
+      _fontSet = FontSet.large;
+    }
+
+    if (SharedPrefUtil.getTheme() == "dark") {
+      _themeSet = ThemeSet.dark;
+    }
+
+    if (SharedPrefUtil.getTempFormat() == "celsius") {
+      _tempSet = TempSet.celsius;
+    }
   }
 
   Future<void> _showSaveAlert() async {

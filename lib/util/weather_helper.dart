@@ -1,18 +1,18 @@
 import 'package:caliweather/util/sql_helper.dart';
-import '../util/sharedprefutil.dart';
-import 'globals.dart' as globals;
-import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'globals.dart' as globals;
+import '../util/sharedprefutil.dart';
 
 class WeatherHelper {
-  static Future<Weather> getCurrent() async {
-    WeatherFactory wf = WeatherFactory(globals.apiKey);
+  static Future<Weather> getCurrent(WeatherFactory wf) async {
     Weather weather;
-
     weather = await wf.currentWeatherByLocation(
         globals.positionLat, globals.positionLong);
 
-    if (SharedPrefUtil.getIsLoggedIn() == true) {
+    if (SharedPrefUtil.getIsLoggedIn()) {
       SQLHelper.updateLocation(
           SharedPrefUtil.getUserPrefId(), weather.areaName!);
       SharedPrefUtil.setLocation(weather.areaName!);
@@ -21,12 +21,11 @@ class WeatherHelper {
     return weather;
   }
 
-  static Future<List<dynamic>> setForecast() async {
-    WeatherFactory wf = WeatherFactory(globals.apiKey);
+  static Future<List<dynamic>> setForecast(WeatherFactory wf) async {
     List<dynamic> setData = [];
     List<dynamic> forecast;
 
-    if (SharedPrefUtil.getIsLoggedIn() == false) {
+    if (!SharedPrefUtil.getIsLoggedIn()) {
       forecast = await wf.fiveDayForecastByLocation(
           globals.positionLat, globals.positionLong);
     } else {
@@ -44,9 +43,9 @@ class WeatherHelper {
     return setData;
   }
 
-  static Future<List> getForecast() async {
+  static Future<List> getForecast(WeatherFactory wf) async {
     List<dynamic> formatData = [[], [], [], [], []];
-    List<dynamic> forecastData = await setForecast();
+    List<dynamic> forecastData = await setForecast(wf);
     for (int i = 0; i < 5; i++) {
       DateTime? formatDate = forecastData[i].date;
       String? temp =
@@ -59,8 +58,27 @@ class WeatherHelper {
     return formatData;
   }
 
-  static Future<List> getMainweather() async {
-    Weather weather = await WeatherHelper.getCurrent();
+  static Future<List?> getAlerts() async {
+    http.Response response = await http.get(
+      Uri.https('api.openweathermap.org', '/data/3.0/onecall', {
+        'lat': globals.positionLat.toString(),
+        'lon': globals.positionLong.toString(),
+        'exclude': 'daily,hourly,minutely',
+        'appid': '0d8187b327e042982d4478dcbf90bae3'
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      //print(response.statusCode);
+      return null;
+    }
+
+    Map<String, dynamic> w = jsonDecode(response.body);
+    return w['alerts'];
+  }
+
+  static Future<List> getMainweather(WeatherFactory wf) async {
+    Weather weather = await WeatherHelper.getCurrent(wf);
     DateTime? formatDate = weather.date;
 
     String weatherIcon = weather.weatherIcon.toString();
@@ -81,8 +99,8 @@ class WeatherHelper {
     return mainData;
   }
 
-  static Future<List> getMicroweather() async {
-    Weather weather = await WeatherHelper.getCurrent();
+  static Future<List> getMicroweather(WeatherFactory wf) async {
+    Weather weather = await WeatherHelper.getCurrent(wf);
 
     DateTime? formatSunrise = weather.sunrise;
     DateTime? formatSunset = weather.sunset;
@@ -150,26 +168,33 @@ class WeatherHelper {
       windSpeed
     ];
 
-    int? userId = SharedPrefUtil.getUserId();
+    if (SharedPrefUtil.getIsLoggedIn()) {
+      int? userId = SharedPrefUtil.getUserId();
 
-    String? temp = weather.temperature?.fahrenheit.toString();
-    String formatTemp = temp!.replaceAll('Fahrenheit', '');
-    double? doubleTemp = double.parse(formatTemp);
-    double newTemp = double.parse(doubleTemp.toStringAsFixed(1));
+      var getFreq = await SQLHelper.getFrequency(userId);
+      var frequency = getFreq[0]['COUNT(*)'];
 
-    DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-    String apiCallDate = dateFormat.format(DateTime.now());
+      if (frequency == 0) {
+        String? temp = weather.temperature?.fahrenheit.toString();
+        String formatTemp = temp!.replaceAll('Fahrenheit', '');
+        double? doubleTemp = double.parse(formatTemp);
+        double newTemp = double.parse(doubleTemp.toStringAsFixed(1));
 
-    SQLHelper.createWeatherData(
-        userId,
-        apiCallDate,
-        weather.areaName,
-        weather.rainLastHour,
-        newTemp,
-        weather.humidity,
-        weather.snowLastHour,
-        weather.pressure,
-        weather.windSpeed);
+        DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+        String apiCallDate = dateFormat.format(DateTime.now());
+
+        SQLHelper.createWeatherData(
+            userId,
+            apiCallDate,
+            weather.areaName,
+            weather.rainLastHour,
+            newTemp,
+            weather.humidity,
+            weather.snowLastHour,
+            weather.pressure,
+            weather.windSpeed);
+      }
+    }
 
     return microData;
   }
