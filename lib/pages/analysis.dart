@@ -45,7 +45,6 @@ class _AnalysisPageState extends State<AnalysisPage> {
   int durationIndex = 1;
   int titleIndex = 0;
   List<String> durationTitle = ['2 Weeks', '1 Week', '3 Days'];
-  Color pgBackgroundColor = Colors.grey.shade200;
 
   Future<void> getData(double? durationLength) async {
     if (SharedPrefUtil.getIsLoggedIn() == true) {
@@ -221,7 +220,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
     final PageController pg2Controller = PageController();
 
     return Scaffold(
-      backgroundColor: pgBackgroundColor,
+      backgroundColor: Colors.grey.shade900,
       body: FutureBuilder<void>(
           future: getData(length),
           builder: (context, snapshot) {

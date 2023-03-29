@@ -5,14 +5,6 @@ class SnowGraph extends StatelessWidget {
   const SnowGraph({super.key, required this.todos, required this.duration});
   final List<FlSpot>? todos;
   final double? duration;
-  static const Color textColor = Colors.black87;
-  static const Color graphBgColor = Color(0xFF212121); //grey.shae900
-  static const Color graphGridLineColor = Colors.white10;
-  static const Color graphBorderLineColor = Color(0xff37434d); //blue-grey
-  static const Color graphLineGradientColor1 =
-      Color.fromARGB(255, 255, 255, 255);
-  static const Color graphLineGradientColor2 =
-      Color.fromARGB(255, 123, 123, 123);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +29,7 @@ class SnowGraph extends StatelessWidget {
   Widget snowLeftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      color: textColor,
+      color: Colors.white,
       fontSize: 14,
     );
     String text;
@@ -66,7 +58,7 @@ class SnowGraph extends StatelessWidget {
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      color: textColor,
+      color: Colors.white,
       fontSize: 14,
     );
     Widget text;
@@ -128,12 +120,11 @@ class SnowGraph extends StatelessWidget {
 
   LineChartData graphData(double? maxX) {
     List<Color> snowColors = [
-      graphLineGradientColor1,
-      graphLineGradientColor2,
+      Color.fromARGB(255, 255, 255, 255),
+      Color.fromARGB(255, 123, 123, 123),
     ];
 
     return LineChartData(
-      backgroundColor: graphBgColor,
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
@@ -141,13 +132,13 @@ class SnowGraph extends StatelessWidget {
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color: graphGridLineColor,
+            color: Colors.white10,
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
           return FlLine(
-            color: graphGridLineColor,
+            color: Colors.white10,
             strokeWidth: 1,
           );
         },
@@ -163,7 +154,7 @@ class SnowGraph extends StatelessWidget {
           axisNameWidget: const Text(
             'Snow',
             style: TextStyle(
-                color: textColor, fontWeight: FontWeight.w900, fontSize: 18),
+                color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
           ),
         ),
         bottomTitles: AxisTitles(
@@ -175,7 +166,7 @@ class SnowGraph extends StatelessWidget {
           ),
           axisNameWidget: const Text(
             'Days',
-            style: TextStyle(color: textColor, fontStyle: FontStyle.italic),
+            style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
           ),
         ),
         leftTitles: AxisTitles(
@@ -187,13 +178,13 @@ class SnowGraph extends StatelessWidget {
           ),
           axisNameWidget: const Text(
             'Rate (mm/hr)',
-            style: TextStyle(color: textColor, fontStyle: FontStyle.italic),
+            style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
           ),
         ),
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: graphBorderLineColor, width: 4),
+        border: Border.all(color: const Color(0xff37434d), width: 4),
       ),
       minX: 0,
       maxX: maxX,

@@ -5,13 +5,6 @@ class RainGraph extends StatelessWidget {
   const RainGraph({super.key, required this.todos, required this.duration});
   final List<FlSpot>? todos;
   final double? duration;
-  static const Color textColor = Colors.black87;
-  static const Color graphBgColor = Color(0xFF212121); //grey.shae900
-  static const Color graphGridLineColor = Colors.white10;
-  static const Color graphBorderLineColor = Color(0xff37434d); //blue-grey
-  static const Color graphLineGradientColor1 =
-      Color.fromARGB(255, 60, 154, 255);
-  static const Color graphLineGradientColor2 = Color.fromARGB(255, 68, 0, 255);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +29,7 @@ class RainGraph extends StatelessWidget {
   Widget rainLeftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      color: textColor,
+      color: Colors.white,
       fontSize: 14,
     );
     String text;
@@ -77,7 +70,7 @@ class RainGraph extends StatelessWidget {
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      color: textColor,
+      color: Colors.white,
       fontSize: 13,
     );
     Widget text;
@@ -139,12 +132,11 @@ class RainGraph extends StatelessWidget {
 
   LineChartData graphData(double? maxX) {
     List<Color> rainColors = [
-      graphLineGradientColor1,
-      graphLineGradientColor2,
+      Color.fromARGB(255, 60, 154, 255),
+      Color.fromARGB(255, 68, 0, 255),
     ];
 
     return LineChartData(
-      backgroundColor: Colors.grey.shade900,
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
@@ -152,13 +144,13 @@ class RainGraph extends StatelessWidget {
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color: graphGridLineColor,
+            color: Colors.white10,
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
           return FlLine(
-            color: graphGridLineColor,
+            color: Colors.white10,
             strokeWidth: 1,
           );
         },
@@ -174,7 +166,7 @@ class RainGraph extends StatelessWidget {
           axisNameWidget: const Text(
             'Rain',
             style: TextStyle(
-                color: textColor, fontWeight: FontWeight.w900, fontSize: 18),
+                color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
           ),
         ),
         bottomTitles: AxisTitles(
@@ -186,7 +178,7 @@ class RainGraph extends StatelessWidget {
           ),
           axisNameWidget: const Text(
             'Days',
-            style: TextStyle(color: textColor, fontStyle: FontStyle.italic),
+            style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
           ),
         ),
         leftTitles: AxisTitles(
@@ -198,13 +190,13 @@ class RainGraph extends StatelessWidget {
           ),
           axisNameWidget: const Text(
             'Rate (mm/hr)',
-            style: TextStyle(color: textColor, fontStyle: FontStyle.italic),
+            style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
           ),
         ),
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: graphBorderLineColor, width: 4),
+        border: Border.all(color: const Color(0xff37434d), width: 4),
       ),
       minX: 0,
       maxX: maxX,
