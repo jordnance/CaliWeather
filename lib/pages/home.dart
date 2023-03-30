@@ -5,8 +5,6 @@ import 'package:caliweather/pages/components/mainweather.dart';
 import 'package:caliweather/pages/components/forecast.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flash/flash.dart';
-import 'package:weather/weather.dart';
-import '../util/globals.dart' as globals;
 
 class Todo {
   final String mainData;
@@ -33,17 +31,16 @@ class _HomePageState extends State<HomePage> {
 
   Color bgColor = Colors.grey.shade200;
   final PageController pgController = PageController();
-  WeatherFactory wf = WeatherFactory(globals.apiKey);
 
   @override
   void initState() {
     super.initState();
   }
 
-  Future<void> getData(WeatherFactory wf) async {
-    List microData = await WeatherHelper.getMicroweather(wf);
-    List forecastData = await WeatherHelper.getForecast(wf);
-    List mainData = await WeatherHelper.getMainweather(wf);
+  Future<void> getData() async {
+    List microData = await WeatherHelper.getMicroweather();
+    List forecastData = await WeatherHelper.getForecast();
+    List mainData = await WeatherHelper.getMainweather();
     alerts = await WeatherHelper.getAlerts();
     if (alerts != null) {
       showAlertIndicator = true;
@@ -92,7 +89,7 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder<void>(
-            future: getData(wf),
+            future: getData(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
@@ -165,6 +162,9 @@ class _HomePageState extends State<HomePage> {
                                           ForecastWeather(todos: forecast?[2]),
                                           ForecastWeather(todos: forecast?[3]),
                                           ForecastWeather(todos: forecast?[4]),
+                                          ForecastWeather(todos: forecast?[5]),
+                                          ForecastWeather(todos: forecast?[6]),
+                                          ForecastWeather(todos: forecast?[7])
                                         ],
                                       ),
                                     ),

@@ -178,7 +178,7 @@ class SQLHelper {
   static Future<List<Map<String, dynamic>>> getFrequency(int userId) async {
     final db = await SQLHelper.db();
     return db.rawQuery("""SELECT COUNT(*) FROM WeatherData  
-     WHERE apiCallDate > (SELECT datetime('now','-6 hours', 'localtime')) AND userId = ? 
+     WHERE apiCallDate > (SELECT datetime('now','-2 hours', 'localtime')) AND userId = ? 
      """, [userId]);
   }
 

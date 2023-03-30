@@ -25,10 +25,8 @@ dependencies:
   shared_preferences: ^2.0.17
   smooth_page_indicator: ^1.0.1
   sqflite:
-  weather: ^2.0.1
   weather_icons: ^3.0.0-nullsafety.x
   
-
   flutter:
     sdk: flutter
 

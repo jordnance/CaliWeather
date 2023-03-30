@@ -34,20 +34,20 @@ class WindGraph extends StatelessWidget {
     );
     String text;
     switch (value.toInt()) {
-      case 5:
-        text = '5';
-        break;
       case 10:
         text = '10';
-        break;
-      case 15:
-        text = '15';
         break;
       case 20:
         text = '20';
         break;
-      case 25:
-        text = '25';
+      case 30:
+        text = '30';
+        break;
+      case 40:
+        text = '40';
+        break;
+      case 50:
+        text = '50';
         break;
       default:
         return Container();
@@ -128,7 +128,7 @@ class WindGraph extends StatelessWidget {
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: 5,
+        horizontalInterval: 10,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
@@ -177,7 +177,7 @@ class WindGraph extends StatelessWidget {
             reservedSize: 28,
           ),
           axisNameWidget: const Text(
-            'Speed (m/s)',
+            'Speed (mph)',
             style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
           ),
         ),
@@ -189,7 +189,7 @@ class WindGraph extends StatelessWidget {
       minX: 0,
       maxX: maxX,
       minY: 0,
-      maxY: 30,
+      maxY: 60,
       lineBarsData: [
         LineChartBarData(
           spots: todos,

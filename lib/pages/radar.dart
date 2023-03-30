@@ -128,7 +128,7 @@ class _RadarPageState extends State<RadarPage> {
   void play() {
     changeIcon();
     if (playStopIndex == 1) {
-      Timer.periodic(const Duration(milliseconds: 1250), (timer) {
+      Timer.periodic(const Duration(milliseconds: 1500), (timer) {
         if (currentSliderValue == 0 || radarIndex == 0) {
           changeIcon();
           timer.cancel();

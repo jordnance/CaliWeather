@@ -1,4 +1,5 @@
 import '../util/sql_helper.dart';
+import '../util/weather_helper.dart';
 import '../util/sharedprefutil.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -10,6 +11,8 @@ class GraphHelper {
     var thisTime, difference, parsedLeastCurrent, parsedThisTime;
     double seconds, newX = 0;
     List<double> xCoords = [];
+    bool isEqual = false;
+    bool isOver = false;
 
     for (int i = 0; i < test.length; i++) {
       thisTime = test[i]['apiCallDate'];
@@ -18,10 +21,21 @@ class GraphHelper {
       difference = parsedThisTime.difference(parsedLeastCurrent);
       seconds = difference.inSeconds.toDouble();
       newX = seconds / 86400;
-      if (newX <= durationLength!) {
+
+      if (newX < durationLength!) {
         xCoords.add(newX);
+      } else if (newX == durationLength) {
+        isEqual = true;
+        xCoords.add(newX);
+      } else if (newX > durationLength) {
+        isOver = true;
       }
     }
+
+    //if (!isEqual && isOver) {
+    //  WeatherHelper.test(durationLength!);
+    //}
+
     return xCoords;
   }
 
