@@ -2,15 +2,14 @@ import 'package:caliweather/util/sql_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:convert';
-import 'globals.dart' as globals;
 import '../util/sharedprefutil.dart';
 
 class WeatherHelper {
-  static Future<List<dynamic>> getGeo() async {
+  static Future<List<dynamic>> getGeoName() async {
     http.Response geoResponse = await http.get(
       Uri.https('api.openweathermap.org', '/geo/1.0/reverse', {
-        'lat': globals.positionLat.toString(),
-        'lon': globals.positionLong.toString(),
+        'lat': SharedPrefUtil.getLatitude().toString(),
+        'lon': SharedPrefUtil.getLongitude().toString(),
         'appid': '0d8187b327e042982d4478dcbf90bae3',
       }),
     );
@@ -19,13 +18,31 @@ class WeatherHelper {
     return g;
   }
 
+  static Future<List<dynamic>> getGeoCoords() async {
+    http.Response geoResponse = await http.get(
+      Uri.https('api.openweathermap.org', '/geo/1.0/direct', {
+        'q': SharedPrefUtil.getLocation(),
+        'appid': '0d8187b327e042982d4478dcbf90bae3',
+      }),
+    );
+
+    List<dynamic> c = jsonDecode(geoResponse.body);
+    return c;
+  }
+
   static Future<Map<String, dynamic>> getCurrent() async {
-    var g = await getGeo();
+    if (SharedPrefUtil.getIsLoggedIn()) {
+      if (!SharedPrefUtil.getIsServiceEnabled()) {
+        var geo = await WeatherHelper.getGeoCoords();
+        SharedPrefUtil.setLatitude(geo[0]['lat']);
+        SharedPrefUtil.setLongitude(geo[0]['lon']);
+      }
+    }
 
     http.Response weatherResponse = await http.get(
       Uri.https('api.openweathermap.org', '/data/3.0/onecall', {
-        'lat': globals.positionLat.toString(),
-        'lon': globals.positionLong.toString(),
+        'lat': SharedPrefUtil.getLatitude().toString(),
+        'lon': SharedPrefUtil.getLongitude().toString(),
         'exclude': 'hourly,minutely',
         'appid': '0d8187b327e042982d4478dcbf90bae3',
         'units': 'imperial',
@@ -34,12 +51,6 @@ class WeatherHelper {
     );
 
     Map<String, dynamic> w = jsonDecode(weatherResponse.body);
-
-    if (SharedPrefUtil.getIsLoggedIn()) {
-      SQLHelper.updateLocation(SharedPrefUtil.getUserPrefId(), g[0]['name']);
-      SharedPrefUtil.setLocation(g[0]['name']);
-    }
-
     return w;
   }
 
@@ -62,24 +73,25 @@ class WeatherHelper {
     List<dynamic> forecastData = await setForecast();
 
     for (int i = 0; i < 8; i++) {
-      DateTime? formatDate =
+      DateTime formatDate =
           DateTime.fromMillisecondsSinceEpoch(forecastData[i]['dt'] * 1000);
 
-      String? temp = forecastData[i]['temp']['day'].toStringAsFixed(0)!;
+      String temp = forecastData[i]['temp']['day'].toStringAsFixed(0)!;
       String desc = forecastData[i]['weather'][0]['main'].toString();
       String icon = forecastData[i]['weather'][0]['icon'].toString();
       String date = DateFormat('MMM dd').format(formatDate);
 
       formatData[i] = [temp, desc, date, icon];
     }
+
     return formatData;
   }
 
   static Future<List?> getAlerts() async {
     http.Response response = await http.get(
       Uri.https('api.openweathermap.org', '/data/3.0/onecall', {
-        'lat': globals.positionLat.toString(),
-        'lon': globals.positionLong.toString(),
+        'lat': SharedPrefUtil.getLatitude().toString(),
+        'lon': SharedPrefUtil.getLongitude().toString(),
         'exclude': 'daily,hourly,minutely',
         'appid': '0d8187b327e042982d4478dcbf90bae3'
       }),
@@ -96,7 +108,7 @@ class WeatherHelper {
 
   static Future<List> getMainweather() async {
     var weather = await getCurrent();
-    var geo = await getGeo();
+    var geo = await getGeoName();
 
     DateTime formatDate =
         DateTime.fromMillisecondsSinceEpoch(weather['current']['dt'] * 1000);
@@ -109,7 +121,7 @@ class WeatherHelper {
 
     date = DateFormat('MMM dd').format(formatDate);
 
-    List<String?> mainData = [
+    List<String> mainData = [
       weatherIcon,
       temperature,
       weatherMain,
@@ -122,11 +134,10 @@ class WeatherHelper {
 
   static Future<List> getMicroweather() async {
     var weather = await getCurrent();
-    var geo = await getGeo();
+    var geo = await getGeoName();
 
     DateTime formatSunrise = DateTime.fromMillisecondsSinceEpoch(
         weather['current']['sunrise'] * 1000);
-
     DateTime formatSunset = DateTime.fromMillisecondsSinceEpoch(
         weather['current']['sunset'] * 1000);
 
@@ -138,40 +149,21 @@ class WeatherHelper {
     String dewPoint =
         "${weather['current']['dew_point'].toStringAsFixed(0)} °F";
     String humidity = "${weather['current']['humidity']}%";
-
     String pressure =
         "${weather['current']['pressure'].toStringAsFixed(0)} hPa";
-
-    String? rainLastHour;
-    if (weather['current']['rain'] != null) {
-      rainLastHour = "${weather['current']['rain']['1h']} mm";
-    } else {
-      rainLastHour = '0';
-    }
-
-    String? snowLastHour;
-    if (weather['current']['snow'] != null) {
-      rainLastHour = "${weather['current']['snow']['1h']} mm";
-    } else {
-      snowLastHour = '0';
-    }
-
     String tempFeelsLike =
         "${weather['current']['feels_like'].toStringAsFixed(0)} °F";
-
-    String? temperature =
+    String temperature =
         "${(weather['current']['temp'].toStringAsFixed(1))!} °F";
-
     String uvi = "${weather['current']['uvi'].toStringAsFixed(0)} of 10";
     String weatherDescription =
         weather['current']['weather'][0]['description'].toString();
     weatherDescription = weatherDescription.replaceFirst(
         weatherDescription[0], weatherDescription[0].toUpperCase());
-
     String windSpeed =
         "${weather['current']['wind_speed'].toStringAsFixed(0)} mph";
 
-    List<String?> microData = [
+    List<String> microData = [
       cloudiness,
       dewPoint,
       humidity,
@@ -184,10 +176,25 @@ class WeatherHelper {
       windSpeed
     ];
 
+    String? rainLastHour;
+    if (weather['current']['rain'] != null) {
+      rainLastHour = "${weather['current']['rain']['1h']}";
+    } else {
+      rainLastHour = '0';
+    }
+
+    String? snowLastHour;
+    if (weather['current']['snow'] != null) {
+      rainLastHour = "${weather['current']['snow']['1h']}";
+    } else {
+      snowLastHour = '0';
+    }
+
     if (SharedPrefUtil.getIsLoggedIn()) {
-      int? userId = SharedPrefUtil.getUserId();
+      int userId = SharedPrefUtil.getUserId();
       var getFreq = await SQLHelper.getFrequency(userId);
       var frequency = getFreq[0]['COUNT(*)'];
+
       if (frequency == 0) {
         String formatTemp = temperature.replaceAll('°F', '');
         double doubleTemp = double.parse(formatTemp);
@@ -196,16 +203,14 @@ class WeatherHelper {
         DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
         String apiCallDate = dateFormat.format(DateTime.now());
 
-        String formatRain = rainLastHour.replaceAll('mm', '');
-        double doubleRain = double.parse(formatRain);
+        double doubleRain = double.parse(rainLastHour);
         double newRain = double.parse(doubleRain.toStringAsFixed(1));
 
         String formatHum = humidity.replaceAll('%', '');
         double doubleHum = double.parse(formatHum);
         double newHum = double.parse(doubleHum.toStringAsFixed(1));
 
-        String formatSnow = snowLastHour!.replaceAll('mm', '');
-        double doubleSnow = double.parse(formatSnow);
+        double doubleSnow = double.parse(snowLastHour!);
         double newSnow = double.parse(doubleSnow.toStringAsFixed(1));
 
         String formatPress = pressure.replaceAll('hPa', '');

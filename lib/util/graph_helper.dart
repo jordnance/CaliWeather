@@ -1,5 +1,4 @@
 import '../util/sql_helper.dart';
-import '../util/weather_helper.dart';
 import '../util/sharedprefutil.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -11,8 +10,6 @@ class GraphHelper {
     var thisTime, difference, parsedLeastCurrent, parsedThisTime;
     double seconds, newX = 0;
     List<double> xCoords = [];
-    bool isEqual = false;
-    bool isOver = false;
 
     for (int i = 0; i < test.length; i++) {
       thisTime = test[i]['apiCallDate'];
@@ -22,19 +19,10 @@ class GraphHelper {
       seconds = difference.inSeconds.toDouble();
       newX = seconds / 86400;
 
-      if (newX < durationLength!) {
+      if (newX <= durationLength!) {
         xCoords.add(newX);
-      } else if (newX == durationLength) {
-        isEqual = true;
-        xCoords.add(newX);
-      } else if (newX > durationLength) {
-        isOver = true;
       }
     }
-
-    //if (!isEqual && isOver) {
-    //  WeatherHelper.test(durationLength!);
-    //}
 
     return xCoords;
   }
@@ -63,6 +51,7 @@ class GraphHelper {
       yCoords.add(values);
       values = [];
     }
+
     return yCoords;
   }
 
@@ -90,7 +79,15 @@ class GraphHelper {
           pressData.add(FlSpot(xCoords[i], yCoords[i][5]));
         }
 
-        newCoords = [rainData, tempData, humData, snowData, windData, pressData];
+        newCoords = [
+          rainData,
+          tempData,
+          humData,
+          snowData,
+          windData,
+          pressData
+        ];
+
         return newCoords;
       } else {
         return Future.error('No weather data has been stored');
