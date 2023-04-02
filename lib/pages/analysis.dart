@@ -44,6 +44,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
   bool? isPressed = false;
   int durationIndex = 1;
   int titleIndex = 0;
+  Color pgBackgroundColor = Colors.grey.shade200;
 
   Future<void> getData(double? durationLength) async {
     if (SharedPrefUtil.getIsLoggedIn() == true) {
@@ -219,7 +220,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
     final PageController pg2Controller = PageController();
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade900,
+      backgroundColor: pgBackgroundColor,
       body: FutureBuilder<void>(
           future: getData(length),
           builder: (context, snapshot) {
