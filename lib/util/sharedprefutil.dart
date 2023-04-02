@@ -26,6 +26,9 @@ class SharedPrefUtil {
   static const String conserveEnergy = 'conserveEnergy';
   static const String conserveWater = 'conserveWater';
   static const String apiRelated = 'apiRelated';
+  static const String isEnabled = 'isEnabled';
+  static const String latitude = 'latitude';
+  static const String longitude = 'longitude';
 
   //AMBIGOUS SETTER FUNCTIONS
   static Future<void> setIntByKey(String key, int val) async =>
@@ -92,6 +95,15 @@ class SharedPrefUtil {
   static Future<void> setApiRelated(String val) async =>
       await _prefs.setString(SharedPrefUtil.apiRelated, val);
 
+  static Future<void> setServiceEnabled(bool val) async =>
+      await _prefs.setBool(SharedPrefUtil.isEnabled, val);
+
+  static Future<void> setLatitude(double val) async =>
+      await _prefs.setDouble(SharedPrefUtil.latitude, val);
+
+  static Future<void> setLongitude(double val) async =>
+      await _prefs.setDouble(SharedPrefUtil.longitude, val);
+
   static Future<void> setLogout() async => await _prefs.clear();
 
   static Future<void> setUserLogin(Map user) async {
@@ -111,6 +123,9 @@ class SharedPrefUtil {
     setConserveEnergy(user[conserveEnergy]);
     setConserveWater(user[conserveWater]);
     setApiRelated(user[apiRelated]);
+    setServiceEnabled(true);
+    setLatitude(35.393528);
+    setLongitude(-119.043732);
   }
 
   //USER AND PROFILE GETTER FUNCTIONS
@@ -158,6 +173,15 @@ class SharedPrefUtil {
   static String getApiRelated() =>
       _prefs.getString(SharedPrefUtil.apiRelated) ?? 'err';
 
+  static bool getIsServiceEnabled() =>
+      _prefs.getBool(SharedPrefUtil.isEnabled) ?? false;
+
+  static double getLatitude() =>
+      _prefs.getDouble(SharedPrefUtil.latitude) ?? 35.393528;
+
+  static double getLongitude() =>
+      _prefs.getDouble(SharedPrefUtil.longitude) ?? -119.043732;
+
   static Future<void> checkAllPrefs() async {
     print(getIsLoggedIn());
     print(getUserId());
@@ -174,5 +198,8 @@ class SharedPrefUtil {
     print(getConserveEnergy());
     print(getConserveWater());
     print(getApiRelated());
+    print(getIsServiceEnabled());
+    print(getLatitude());
+    print(getLongitude());
   }
 }

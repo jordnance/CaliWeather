@@ -18,10 +18,12 @@ class GraphHelper {
       difference = parsedThisTime.difference(parsedLeastCurrent);
       seconds = difference.inSeconds.toDouble();
       newX = seconds / 86400;
+
       if (newX <= durationLength!) {
         xCoords.add(newX);
       }
     }
+
     return xCoords;
   }
 
@@ -49,6 +51,7 @@ class GraphHelper {
       yCoords.add(values);
       values = [];
     }
+
     return yCoords;
   }
 
@@ -76,7 +79,15 @@ class GraphHelper {
           pressData.add(FlSpot(xCoords[i], yCoords[i][5]));
         }
 
-        newCoords = [rainData, tempData, humData, snowData, windData, pressData];
+        newCoords = [
+          rainData,
+          tempData,
+          humData,
+          snowData,
+          windData,
+          pressData
+        ];
+
         return newCoords;
       } else {
         return Future.error('No weather data has been stored');
