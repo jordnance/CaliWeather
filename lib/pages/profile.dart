@@ -1,10 +1,8 @@
-import 'settings.dart';
 import 'package:flutter/material.dart';
 import 'components/header_login_profile.dart';
 import '../util/sharedprefutil.dart';
 import '../util/userverify.dart';
 import '../util/globals.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'components/profile_info.dart';
 
 class ProfilePage extends StatefulWidget {
