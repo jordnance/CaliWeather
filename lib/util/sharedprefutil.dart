@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer' as developer;
 
 class SharedPrefUtil {
   static late SharedPreferences _prefs;
@@ -183,23 +184,77 @@ class SharedPrefUtil {
       _prefs.getDouble(SharedPrefUtil.longitude) ?? -119.043732;
 
   static Future<void> checkAllPrefs() async {
-    print(getIsLoggedIn());
-    print(getUserId());
-    print(getUserFirstName());
-    print(getUserLastName());
-    print(getUsername());
-    print(getUserPrefId());
-    print(getLanguage());
-    print(getFontSize());
-    print(getTempFormat());
-    print(getLocation());
-    print(getTheme());
-    print(getUserPrefAlertId());
-    print(getConserveEnergy());
-    print(getConserveWater());
-    print(getApiRelated());
-    print(getIsServiceEnabled());
-    print(getLatitude());
-    print(getLongitude());
+    developer.log(
+      getIsLoggedIn().toString(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getUserId().toString(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getUserFirstName(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getUserLastName(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getUsername(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getUserPrefId().toString(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getLanguage(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getFontSize(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getTempFormat(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getLocation(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getTheme(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getUserPrefAlertId().toString(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getConserveEnergy(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getConserveWater(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getApiRelated(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getIsServiceEnabled().toString(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getLatitude().toString(),
+      name: 'debug_sharedpref.util',
+    );
+    developer.log(
+      getLongitude().toString(),
+      name: 'debug_sharedpref.util',
+    );
   }
 }
