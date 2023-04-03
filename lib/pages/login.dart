@@ -126,7 +126,9 @@ class _LoginPageState extends State<LoginPage> {
                         forgotPasswordValue = _forgotPasswordController.text;
                       });
                       await _updatePassword();
-                      Navigator.of(context, rootNavigator: true).pop(context);
+                      if (context.mounted) {
+                        Navigator.of(context, rootNavigator: true).pop(context);
+                      }
                     },
                     child: const Text('Confirm'),
                   )
@@ -208,7 +210,9 @@ class _LoginPageState extends State<LoginPage> {
                         newPasswordValue = _newPasswordController.text;
                       });
                       await _addUser();
-                      Navigator.of(context, rootNavigator: true).pop(context);
+                      if (context.mounted) {
+                        Navigator.of(context, rootNavigator: true).pop(context);
+                      }
                       showMessage("You've successfully signed up!");
                     },
                     child: const Text('Sign Up'),
