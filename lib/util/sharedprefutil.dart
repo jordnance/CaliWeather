@@ -186,75 +186,75 @@ class SharedPrefUtil {
   static Future<void> checkAllPrefs() async {
     developer.log(
       getIsLoggedIn().toString(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.LoggedIn',
     );
     developer.log(
       getUserId().toString(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.UserId',
     );
     developer.log(
       getUserFirstName(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.UserFirstName',
     );
     developer.log(
       getUserLastName(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.UserLastName',
     );
     developer.log(
       getUsername(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.Username',
     );
     developer.log(
       getUserPrefId().toString(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.UserPrefId',
     );
     developer.log(
       getLanguage(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.Language',
     );
     developer.log(
       getFontSize(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.FontSize',
     );
     developer.log(
       getTempFormat(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.TempFormat',
     );
     developer.log(
       getLocation(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.Location',
     );
     developer.log(
       getTheme(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.Theme',
     );
     developer.log(
       getUserPrefAlertId().toString(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.PrefAlertId',
     );
     developer.log(
       getConserveEnergy(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.ConserveEnergy',
     );
     developer.log(
       getConserveWater(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.ConserveWater',
     );
     developer.log(
       getApiRelated(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.ApiRelated',
     );
     developer.log(
       getIsServiceEnabled().toString(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.IsServiceEnabled',
     );
     developer.log(
       getLatitude().toString(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.Latitude',
     );
     developer.log(
       getLongitude().toString(),
-      name: 'debug_sharedpref.util',
+      name: 'debug_sharedpref.Longitude',
     );
   }
 }
