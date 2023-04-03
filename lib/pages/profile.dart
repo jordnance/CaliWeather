@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'components/header_login_profile.dart';
 import '../util/sharedprefutil.dart';
 import '../util/userverify.dart';
+import '../util/globals.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'components/profile_info.dart';
 
@@ -55,13 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ElevatedButton(
                     onPressed: () {
-                      PersistentNavBarNavigator.pushNewScreen(
-                        context,
-                        screen: const SettingsPage(title: 'Settings'),
-                        withNavBar: false,
-                        pageTransitionAnimation:
-                            PageTransitionAnimation.cupertino,
-                      );
+                      navBarController.index = 4;
                     },
                     style: ElevatedButton.styleFrom(
                         elevation: 3,
