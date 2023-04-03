@@ -1,4 +1,5 @@
 import 'util/userverify.dart';
+import 'util/globals.dart';
 import 'pages/home.dart';
 import 'pages/radar.dart';
 import 'pages/analysis.dart';
@@ -43,9 +44,6 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 2);
-
   List<Widget> _navBarPages() {
     return [
       const UserVerify(),
@@ -96,7 +94,7 @@ class _MainState extends State<Main> {
     return Center(
       child: PersistentTabView(
         context,
-        controller: _controller,
+        controller: navBarController,
         screens: _navBarPages(),
         items: _navBarItems(),
         confineInSafeArea: true,
