@@ -27,8 +27,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
         ScaffoldMessenger.of(context)
           ..removeCurrentSnackBar()
           ..showSnackBar(SnackBar(
-              behavior: SnackBarBehavior.fixed, 
-              padding: const EdgeInsets.only(left: 24, top: 14, right: 0, bottom: 24),
+              behavior: SnackBarBehavior.fixed,
+              padding: const EdgeInsets.only(
+                  left: 24, top: 14, right: 0, bottom: 24),
               content: Text(message)));
       });
     }
@@ -89,7 +90,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
                         passwordValue = _passwordController.text;
                       });
                       await _updateUser();
-                      Navigator.of(context, rootNavigator: true).pop(context);
+                      if (context.mounted) {
+                        Navigator.of(context, rootNavigator: true).pop(context);
+                      }
                       showMessage("You've successfully updated your info!");
                     },
                     child: const Text('Update'),
