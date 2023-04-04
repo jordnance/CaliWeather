@@ -85,111 +85,118 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 color: Colors.grey[600],
               ),
             ),
-            Container(
-              width: 350,
-              height: 58,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    width: 1.5,
-                    color: Colors.grey.shade600,
-                  ),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Expanded(
-                    child: SizedBox(
-                      height: 24,
-                      child: TextField(
-                        controller: _newPasswordController,
-                        obscureText: true,
-                        enabled: true,
-                        decoration: const InputDecoration(
-                          suffixIcon: Icon(
-                            Icons.mode_edit_outline,
-                            size: 16,
-                          ),
-                          floatingLabelAlignment: FloatingLabelAlignment.start,
-                          floatingLabelBehavior: FloatingLabelBehavior.auto,
-                          label: Text.rich(
-                            TextSpan(
-                              children: <InlineSpan>[
-                                WidgetSpan(
-                                  child: Text(
-                                    'Enter New Password',
-                                  ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Expanded(
+                  child: SizedBox(
+                    height: 54,
+                    child: TextField(
+                      controller: _newPasswordController,
+                      obscureText: true,
+                      enabled: true,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        suffixIcon: Icon(
+                          Icons.mode_edit_outline,
+                          size: 16,
+                        ),
+                        floatingLabelAlignment: FloatingLabelAlignment.start,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        label: Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              WidgetSpan(
+                                child: Text(
+                                  'Enter New Password',
                                 ),
-                                WidgetSpan(
-                                  child: Text(
-                                    '*',
-                                    style: TextStyle(color: Colors.red),
-                                  ),
+                              ),
+                              WidgetSpan(
+                                child: Text(
+                                  '*',
+                                  style: TextStyle(color: Colors.red),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                        textAlign: TextAlign.start,
-                        textDirection: TextDirection.ltr,
-                        onTapOutside: (_) {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                        },
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 13, 71, 161),
+                            width: 1.5,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 117, 117, 117),
+                              width: 1.5),
+                        ),
                       ),
+                      textAlign: TextAlign.start,
+                      textDirection: TextDirection.ltr,
+                      onTapOutside: (_) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      },
                     ),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 10),
-            Container(
-              width: 350,
-              height: 58,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    width: 1.5,
-                    color: Colors.grey.shade600,
-                  ),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Center(
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: SizedBox(
-                      height: 24,
-                      child: TextField(
-                        controller: _confirmPasswordController,
-                        obscureText: true,
-                        enabled: true,
-                        decoration: const InputDecoration(
-                          suffixIcon: Icon(
-                            Icons.mode_edit_outline,
-                            size: 16,
-                          ),
-                          label: Text.rich(
-                            TextSpan(
-                              children: <InlineSpan>[
-                                WidgetSpan(
-                                  child: Text(
-                                    'Confirm Password',
-                                  ),
+                  child: SizedBox(
+                    height: 54,
+                    child: TextField(
+                      controller: _confirmPasswordController,
+                      obscureText: true,
+                      enabled: true,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        suffixIcon: Icon(
+                          Icons.mode_edit_outline,
+                          size: 16,
+                        ),
+                        floatingLabelAlignment: FloatingLabelAlignment.start,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        label: Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              WidgetSpan(
+                                child: Text(
+                                  'Confirm Password',
                                 ),
-                                WidgetSpan(
-                                  child: Text(
-                                    '*',
-                                    style: TextStyle(color: Colors.red),
-                                  ),
+                              ),
+                              WidgetSpan(
+                                child: Text(
+                                  '*',
+                                  style: TextStyle(color: Colors.red),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                        textAlign: TextAlign.left,
-                        onTapOutside: (_) {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                        },
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 13, 71, 161),
+                            width: 1.5,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 117, 117, 117),
+                              width: 1.5),
+                        ),
                       ),
+                      textAlign: TextAlign.start,
+                      textDirection: TextDirection.ltr,
+                      onTapOutside: (_) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      },
                     ),
                   ),
                 ),
@@ -241,48 +248,6 @@ class _ProfileInfoState extends State<ProfileInfo> {
         ),
       ),
     );
-    // child: Column(
-    //       mainAxisSize: MainAxisSize.min,
-    //       crossAxisAlignment: CrossAxisAlignment.end,
-    //       children: [
-    //         TextField(
-    //           controller: _currentPasswordController,
-    //           decoration: const InputDecoration(hintText: 'First Name'),
-    //         ),
-    //         const SizedBox(
-    //           height: 10,
-    //         ),
-    //         TextField(
-    //           controller: _newPasswordController,
-    //           decoration: const InputDecoration(hintText: 'Last Name'),
-    //         ),
-    //         const SizedBox(
-    //           height: 10,
-    //         ),
-    //         TextField(
-    //           controller: _newPasswordController,
-    //           decoration: const InputDecoration(hintText: 'Username'),
-    //         ),
-    //         const SizedBox(
-    //           height: 20,
-    //         ),
-    //         ElevatedButton(
-    //           onPressed: () async {
-    //             setState(() {
-    //               newPasswordValue = _newPasswordController.text;
-    //             });
-    //             await _updatePassword();
-    //             if (context.mounted) {
-    //               Navigator.of(context, rootNavigator: true).pop(context);
-    //             }
-    //             showMessage("Password changed!");
-    //           },
-    //           child: const Text('Update'),
-    //         )
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 
   void _editProfileShowModul() async {
