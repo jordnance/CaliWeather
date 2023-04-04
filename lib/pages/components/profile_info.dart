@@ -291,7 +291,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
