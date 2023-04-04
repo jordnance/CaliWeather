@@ -15,7 +15,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
   String? currentPasswordValue;
   String? newPasswordValue;
   final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _currentPasswordController =
+  final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _firstNameController =
       TextEditingController(text: SharedPrefUtil.getUserFirstName());
@@ -53,6 +53,10 @@ class _ProfileInfoState extends State<ProfileInfo> {
       elevation: 5,
       isScrollControlled: true,
       useRootNavigator: true,
+      backgroundColor: Colors.grey.shade100,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       builder: (_) => Container(
         padding: EdgeInsets.only(
           top: 15,
@@ -64,44 +68,221 @@ class _ProfileInfoState extends State<ProfileInfo> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            TextField(
-              controller: _currentPasswordController,
-              decoration: const InputDecoration(hintText: 'First Name'),
+            const Center(
+              child: Text(
+                "Reset Password",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
-            const SizedBox(
-              height: 10,
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Divider(
+                thickness: 0.5,
+                color: Colors.grey[600],
+              ),
             ),
-            TextField(
-              controller: _newPasswordController,
-              decoration: const InputDecoration(hintText: 'Last Name'),
+            Container(
+              width: 350,
+              height: 58,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    width: 1.5,
+                    color: Colors.grey.shade600,
+                  ),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Expanded(
+                    child: SizedBox(
+                      height: 24,
+                      child: TextField(
+                        controller: _newPasswordController,
+                        obscureText: true,
+                        enabled: true,
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(
+                            Icons.mode_edit_outline,
+                            size: 16,
+                          ),
+                          floatingLabelAlignment: FloatingLabelAlignment.start,
+                          floatingLabelBehavior: FloatingLabelBehavior.auto,
+                          label: Text.rich(
+                            TextSpan(
+                              children: <InlineSpan>[
+                                WidgetSpan(
+                                  child: Text(
+                                    'Enter New Password',
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    '*',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        textAlign: TextAlign.start,
+                        textDirection: TextDirection.ltr,
+                        onTapOutside: (_) {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
-            const SizedBox(
-              height: 10,
+            const SizedBox(height: 10),
+            Container(
+              width: 350,
+              height: 58,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    width: 1.5,
+                    color: Colors.grey.shade600,
+                  ),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Center(
+                child: Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: SizedBox(
+                      height: 24,
+                      child: TextField(
+                        controller: _confirmPasswordController,
+                        obscureText: true,
+                        enabled: true,
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(
+                            Icons.mode_edit_outline,
+                            size: 16,
+                          ),
+                          label: Text.rich(
+                            TextSpan(
+                              children: <InlineSpan>[
+                                WidgetSpan(
+                                  child: Text(
+                                    'Confirm Password',
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    '*',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        textAlign: TextAlign.left,
+                        onTapOutside: (_) {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
-            TextField(
-              controller: _newPasswordController,
-              decoration: const InputDecoration(hintText: 'Username'),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 96, 96, 96),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _newPasswordController.text = '';
+                      _confirmPasswordController.text = '';
+                    });
+                    Navigator.of(context, rootNavigator: true).pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 0, 83, 129),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onPressed: () async {
+                    setState(() {
+                      newPasswordValue = _newPasswordController.text;
+                    });
+                    await _updateProfileInfo();
+                    if (context.mounted) {
+                      Navigator.of(context, rootNavigator: true).pop(context);
+                    }
+                    showMessage("Password Updated!");
+                  },
+                  child: const Text('Update'),
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                setState(() {
-                  newPasswordValue = _newPasswordController.text;
-                });
-                await _updatePassword();
-                if (context.mounted) {
-                  Navigator.of(context, rootNavigator: true).pop(context);
-                }
-                showMessage("Password changed!");
-              },
-              child: const Text('Update'),
-            )
           ],
         ),
       ),
     );
+    // child: Column(
+    //       mainAxisSize: MainAxisSize.min,
+    //       crossAxisAlignment: CrossAxisAlignment.end,
+    //       children: [
+    //         TextField(
+    //           controller: _currentPasswordController,
+    //           decoration: const InputDecoration(hintText: 'First Name'),
+    //         ),
+    //         const SizedBox(
+    //           height: 10,
+    //         ),
+    //         TextField(
+    //           controller: _newPasswordController,
+    //           decoration: const InputDecoration(hintText: 'Last Name'),
+    //         ),
+    //         const SizedBox(
+    //           height: 10,
+    //         ),
+    //         TextField(
+    //           controller: _newPasswordController,
+    //           decoration: const InputDecoration(hintText: 'Username'),
+    //         ),
+    //         const SizedBox(
+    //           height: 20,
+    //         ),
+    //         ElevatedButton(
+    //           onPressed: () async {
+    //             setState(() {
+    //               newPasswordValue = _newPasswordController.text;
+    //             });
+    //             await _updatePassword();
+    //             if (context.mounted) {
+    //               Navigator.of(context, rootNavigator: true).pop(context);
+    //             }
+    //             showMessage("Password changed!");
+    //           },
+    //           child: const Text('Update'),
+    //         )
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 
   void _editProfileShowModul() async {
