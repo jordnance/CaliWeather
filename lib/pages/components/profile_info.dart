@@ -3,6 +3,7 @@ import 'package:caliweather/pages/profile.dart';
 import 'package:caliweather/util/sql_helper.dart';
 import 'package:caliweather/util/sharedprefutil.dart';
 import 'package:caliweather/pages/components/header_login_profile.dart';
+import 'package:flash/flash.dart';
 
 class ProfileInfo extends StatefulWidget {
   const ProfileInfo({super.key});
@@ -33,18 +34,33 @@ class _ProfileInfoState extends State<ProfileInfo> {
     color: Colors.black,
   );
 
-  void showMessage(String message) {
-    if (mounted) {
-      setState(() {
-        ScaffoldMessenger.of(context)
-          ..removeCurrentSnackBar()
-          ..showSnackBar(SnackBar(
-              behavior: SnackBarBehavior.fixed,
-              padding: const EdgeInsets.only(
-                  left: 24, top: 14, right: 0, bottom: 24),
-              content: Text(message)));
-      });
-    }
+  void showMessage(String message,
+      {FlashBehavior style = FlashBehavior.floating}) {
+    showFlash(
+      context: context,
+      duration: const Duration(seconds: 3),
+      persistent: true,
+      builder: (_, controller) {
+        return Flash(
+          controller: controller,
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
+          boxShadows: const [BoxShadow(blurRadius: 4)],
+          barrierDismissible: true,
+          behavior: style,
+          position: FlashPosition.top,
+          child: FlashBar(
+            content: Text(message),
+            showProgressIndicator: true,
+            primaryAction: TextButton(
+              onPressed: () => controller.dismiss(),
+              child:
+                  const Text('DISMISS', style: TextStyle(color: Colors.amber)),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _updatePassword() async {
