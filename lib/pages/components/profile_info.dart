@@ -3,6 +3,7 @@ import 'package:caliweather/pages/profile.dart';
 import 'package:caliweather/util/sql_helper.dart';
 import 'package:caliweather/util/sharedprefutil.dart';
 import 'package:caliweather/pages/components/header_login_profile.dart';
+import 'package:flash/flash.dart';
 
 class ProfileInfo extends StatefulWidget {
   const ProfileInfo({super.key});
@@ -12,123 +13,534 @@ class ProfileInfo extends StatefulWidget {
 }
 
 class _ProfileInfoState extends State<ProfileInfo> {
-  String? firstNameValue;
-  String? lastNameValue;
-  String? usernameValue;
-  String? passwordValue;
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  String? currentPasswordValue;
+  String? newPasswordValue;
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final TextEditingController _firstNameController =
+      TextEditingController(text: SharedPrefUtil.getUserFirstName());
+  final TextEditingController _lastNameController =
+      TextEditingController(text: SharedPrefUtil.getUserLastName());
+  final TextEditingController _usernameController =
+      TextEditingController(text: SharedPrefUtil.getUsername());
 
-  void showMessage(String message) {
-    if (mounted) {
-      setState(() {
-        ScaffoldMessenger.of(context)
-          ..removeCurrentSnackBar()
-          ..showSnackBar(SnackBar(
-              behavior: SnackBarBehavior.fixed, 
-              padding: const EdgeInsets.only(left: 24, top: 14, right: 0, bottom: 24),
-              content: Text(message)));
-      });
+  InputDecoration? currentBoxDecoration;
+  TextStyle? currentTextStyle;
+
+  final TextStyle _editingOnTextStyle = const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: Colors.black,
+  );
+
+  void showMessage(String message,
+      {FlashBehavior style = FlashBehavior.floating}) {
+    showFlash(
+      context: context,
+      duration: const Duration(seconds: 3),
+      persistent: true,
+      builder: (_, controller) {
+        return Flash(
+          controller: controller,
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
+          boxShadows: const [BoxShadow(blurRadius: 4)],
+          barrierDismissible: true,
+          behavior: style,
+          position: FlashPosition.top,
+          child: FlashBar(
+            content: Text(message),
+            showProgressIndicator: true,
+            primaryAction: TextButton(
+              onPressed: () => controller.dismiss(),
+              child:
+                  const Text('DISMISS', style: TextStyle(color: Colors.amber)),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _updatePassword() async {
+    if (_newPasswordController.text == '' ||
+        _confirmPasswordController.text == '') {
+      _newPasswordController.text = '';
+      _confirmPasswordController.text = '';
+      showMessage('Fields cannot be empty');
+      return;
     }
+
+    if (_newPasswordController.text != _confirmPasswordController.text) {
+      _newPasswordController.text = '';
+      _confirmPasswordController.text = '';
+      showMessage('Passwords do not match');
+      return;
+    }
+
+    SQLHelper.updatePassword(
+        SharedPrefUtil.getUsername(), _confirmPasswordController.text);
+    showMessage("Password updated successfully.");
+
+    _newPasswordController.text = '';
+    _confirmPasswordController.text = '';
+    setState(() {});
   }
 
   void _updateForm() async {
     showModalBottomSheet(
-        context: context,
-        elevation: 5,
-        isScrollControlled: true,
-        useRootNavigator: true,
-        builder: (_) => Container(
-              padding: EdgeInsets.only(
-                top: 15,
-                left: 15,
-                right: 15,
-                bottom: MediaQuery.of(context).viewInsets.bottom + 260,
+      context: context,
+      elevation: 5,
+      isScrollControlled: true,
+      useRootNavigator: true,
+      backgroundColor: Colors.grey.shade100,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      builder: (_) => Container(
+        padding: EdgeInsets.only(
+          top: 15,
+          left: 15,
+          right: 15,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 260,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            const Center(
+              child: Text(
+                "Reset Password",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  TextField(
-                    controller: _firstNameController,
-                    decoration: const InputDecoration(hintText: 'First Name'),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Divider(
+                thickness: 0.5,
+                color: Colors.grey[600],
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Expanded(
+                  child: SizedBox(
+                    height: 54,
+                    child: TextField(
+                      controller: _newPasswordController,
+                      obscureText: true,
+                      enabled: true,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        suffixIcon: Icon(
+                          Icons.mode_edit_outline,
+                          size: 16,
+                        ),
+                        floatingLabelAlignment: FloatingLabelAlignment.start,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        label: Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              WidgetSpan(
+                                child: Text(
+                                  'Enter New Password',
+                                ),
+                              ),
+                              WidgetSpan(
+                                child: Text(
+                                  '*',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 13, 71, 161),
+                            width: 1.5,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 117, 117, 117),
+                              width: 1.5),
+                        ),
+                      ),
+                      textAlign: TextAlign.start,
+                      textDirection: TextDirection.ltr,
+                      onTapOutside: (_) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      },
+                    ),
                   ),
-                  const SizedBox(
-                    height: 10,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Expanded(
+                  child: SizedBox(
+                    height: 54,
+                    child: TextField(
+                      controller: _confirmPasswordController,
+                      obscureText: true,
+                      enabled: true,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        suffixIcon: Icon(
+                          Icons.mode_edit_outline,
+                          size: 16,
+                        ),
+                        floatingLabelAlignment: FloatingLabelAlignment.start,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        label: Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              WidgetSpan(
+                                child: Text(
+                                  'Confirm Password',
+                                ),
+                              ),
+                              WidgetSpan(
+                                child: Text(
+                                  '*',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 13, 71, 161),
+                            width: 1.5,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 117, 117, 117),
+                              width: 1.5),
+                        ),
+                      ),
+                      textAlign: TextAlign.start,
+                      textDirection: TextDirection.ltr,
+                      onTapOutside: (_) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      },
+                    ),
                   ),
-                  TextField(
-                    controller: _lastNameController,
-                    decoration: const InputDecoration(hintText: 'Last Name'),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 96, 96, 96),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  const SizedBox(
-                    height: 10,
+                  onPressed: () {
+                    setState(() {
+                      _newPasswordController.text = '';
+                      _confirmPasswordController.text = '';
+                    });
+                    Navigator.of(context, rootNavigator: true).pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 0, 83, 129),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  TextField(
-                    controller: _usernameController,
-                    decoration: const InputDecoration(hintText: 'Username'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(hintText: 'Password'),
-                    obscureText: true,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      setState(() {
-                        firstNameValue = _firstNameController.text;
-                        lastNameValue = _lastNameController.text;
-                        usernameValue = _usernameController.text;
-                        passwordValue = _passwordController.text;
-                      });
-                      await _updateUser();
+                  onPressed: () async {
+                    setState(() {
+                      newPasswordValue = _newPasswordController.text;
+                    });
+                    _updatePassword();
+                    if (context.mounted) {
                       Navigator.of(context, rootNavigator: true).pop(context);
-                      showMessage("You've successfully updated your info!");
-                    },
-                    child: const Text('Update'),
-                  )
-                ],
-              ),
-            ));
+                    }
+                  },
+                  child: const Text('Update'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  Future<void> _updateUser() async {
+  void _editProfileShowModul() async {
+    showModalBottomSheet(
+      context: context,
+      elevation: 5,
+      isScrollControlled: true,
+      useRootNavigator: true,
+      backgroundColor: Colors.grey.shade100,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      builder: (_) => Container(
+        padding: EdgeInsets.only(
+          top: 15,
+          left: 15,
+          right: 15,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 260,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            const Center(
+              child: Text(
+                "Update Profile",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Divider(
+                thickness: 0.5,
+                color: Colors.grey[600],
+              ),
+            ),
+            Container(
+              width: 350,
+              height: 58,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    width: 1.5,
+                    color: Colors.grey.shade600,
+                  ),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Center(
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        "First Name: ",
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 40.0),
+                        child: SizedBox(
+                          height: 24,
+                          child: TextField(
+                            controller: _firstNameController,
+                            enabled: true,
+                            readOnly: false,
+                            decoration: const InputDecoration(
+                              suffixIcon: Icon(
+                                Icons.mode_edit_outline,
+                                size: 16,
+                              ),
+                            ),
+                            textAlign: TextAlign.center,
+                            style: _editingOnTextStyle,
+                            onTapOutside: (_) {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: 350,
+              height: 58,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    width: 1.5,
+                    color: Colors.grey.shade600,
+                  ),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Center(
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        "Last Name: ",
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 40.0),
+                        child: SizedBox(
+                          height: 24,
+                          child: TextField(
+                            controller: _lastNameController,
+                            enabled: true,
+                            readOnly: false,
+                            decoration: const InputDecoration(
+                              suffixIcon: Icon(
+                                Icons.mode_edit_outline,
+                                size: 16,
+                              ),
+                            ),
+                            textAlign: TextAlign.center,
+                            style: _editingOnTextStyle,
+                            onTapOutside: (_) {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: 350,
+              height: 58,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    width: 1.5,
+                    color: Colors.grey.shade600,
+                  ),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Center(
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        "Username: ",
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 40.0),
+                        child: SizedBox(
+                          height: 24,
+                          child: TextField(
+                            controller: _usernameController,
+                            enabled: true,
+                            readOnly: false,
+                            decoration: const InputDecoration(
+                              suffixIcon: Icon(
+                                Icons.mode_edit_outline,
+                                size: 16,
+                              ),
+                            ),
+                            textAlign: TextAlign.center,
+                            style: _editingOnTextStyle,
+                            onTapOutside: (_) {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 96, 96, 96),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _firstNameController.text =
+                          SharedPrefUtil.getUserFirstName();
+                      _lastNameController.text =
+                          SharedPrefUtil.getUserLastName();
+                      _usernameController.text = SharedPrefUtil.getUsername();
+                    });
+                    Navigator.of(context, rootNavigator: true).pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 0, 83, 129),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onPressed: () async {
+                    setState(() {
+                      newPasswordValue = _newPasswordController.text;
+                    });
+                    await _updateProfileInfo();
+                    if (context.mounted) {
+                      Navigator.of(context, rootNavigator: true).pop(context);
+                    }
+                    showMessage("Profile Updated!");
+                  },
+                  child: const Text('Update'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _updateProfileInfo() async {
     int userId = SharedPrefUtil.getUserId();
-
-    if (firstNameValue == '') {
-      firstNameValue = SharedPrefUtil.getUserFirstName();
-    }
-
-    if (lastNameValue == '') {
-      lastNameValue = SharedPrefUtil.getUserLastName();
-    }
-
-    if (usernameValue == '') {
-      usernameValue = SharedPrefUtil.getUsername();
-    }
-
-    if (passwordValue == '') {
-      passwordValue = SharedPrefUtil.getPassword();
-    }
-
+    String password = SharedPrefUtil.getPassword();
     SQLHelper.updateUser(
-        firstNameValue, lastNameValue, usernameValue, passwordValue, userId);
-    SharedPrefUtil.setUserFirstName(firstNameValue!);
-    SharedPrefUtil.setUserLastName(lastNameValue!);
-    SharedPrefUtil.setUsername(usernameValue!);
-    SharedPrefUtil.setPassword(passwordValue!);
-
-    _firstNameController.text = '';
-    _lastNameController.text = '';
-    _usernameController.text = '';
-    _passwordController.text = '';
+      _firstNameController.text,
+      _lastNameController.text,
+      _usernameController.text,
+      password,
+      userId,
+    );
+    SharedPrefUtil.setUserFirstName(_firstNameController.text);
+    SharedPrefUtil.setUserLastName(_lastNameController.text);
+    SharedPrefUtil.setUsername(_usernameController.text);
     setState(() {});
   }
 
@@ -137,142 +549,206 @@ class _ProfileInfoState extends State<ProfileInfo> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: SafeArea(
-          child: Center(
-        child: Column(children: <Widget>[
-          const HeaderLoginProfile(),
-          Container(
-            width: 350,
-            height: 58,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  width: 3,
-                  color: Colors.black,
-                ),
-                borderRadius: BorderRadius.circular(30)),
-            child: Center(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("First Name: ",
-                    style: TextStyle(fontSize: 16, color: Colors.black)),
-                Text(SharedPrefUtil.getUserFirstName(),
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.black)),
-              ],
-            )),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Container(
-            width: 350,
-            height: 58,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  width: 3,
-                  color: Colors.black,
-                ),
-                borderRadius: BorderRadius.circular(30)),
-            child: Center(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Last Name: ",
-                    style: TextStyle(fontSize: 16, color: Colors.black)),
-                Text(SharedPrefUtil.getUserLastName(),
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.black)),
-              ],
-            )),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Container(
-            width: 350,
-            height: 58,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  width: 3,
-                  color: Colors.black,
-                ),
-                borderRadius: BorderRadius.circular(30)),
-            child: Center(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Username: ",
-                    style: TextStyle(fontSize: 16, color: Colors.black)),
-                Text(SharedPrefUtil.getUsername(),
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.black)),
-              ],
-            )),
-          ),
-          const SizedBox(height: 15),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => const ProfilePage()));
-            },
-            child: const Text('Back'),
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Divider(
-                    thickness: 0.5,
-                    color: Colors.grey[600],
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              const HeaderLoginProfile(),
+              Container(
+                width: 350,
+                height: 58,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      width: 1.5,
+                      color: Colors.grey.shade600,
+                    ),
+                    borderRadius: BorderRadius.circular(20)),
+                child: Center(
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          "First Name: ",
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          SharedPrefUtil.getUserFirstName(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Text(
-                    'Need to change your info?',
-                    style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 13,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                width: 350,
+                height: 58,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      width: 1.5,
+                      color: Colors.grey.shade600,
+                    ),
+                    borderRadius: BorderRadius.circular(20)),
+                child: Center(
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          "Last Name: ",
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          SharedPrefUtil.getUserLastName(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                width: 350,
+                height: 58,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      width: 1.5,
+                      color: Colors.grey.shade600,
+                    ),
+                    borderRadius: BorderRadius.circular(20)),
+                child: Center(
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          "Username: ",
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          SharedPrefUtil.getUsername(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              SizedBox(
+                height: 45,
+                width: 150,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 0, 83, 129),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
+                  onPressed: () async {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            const ProfilePage()));
+                  },
+                  child: const Text('Back'),
                 ),
-                const SizedBox(width: 3),
-                Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child: InkWell(
-                    onTap: _updateForm,
-                    child: const Text(
-                      'Update here',
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: InkWell(
+                        onTap: _editProfileShowModul,
+                        child: const Text(
+                          'Edit Profile Info',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 18, 108, 181),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 7),
+                    Text(
+                      '  ||  ',
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500),
+                        color: Colors.grey[700],
+                        fontSize: 13,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 3),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child: InkWell(
+                        onTap: _updateForm,
+                        child: const Text(
+                          'Reset Password',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 18, 108, 181),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                 ),
-                Expanded(
-                  child: Divider(
-                    thickness: 0.5,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ]),
-      )),
+        ),
+      ),
     );
   }
 }
