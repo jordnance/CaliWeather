@@ -36,7 +36,7 @@ class TextfieldLogin extends StatelessWidget {
               children: <InlineSpan>[
                 WidgetSpan(
                   child: Text(
-                    '$hintText',
+                    hintText,
                   ),
                 ),
               ],
