@@ -47,6 +47,31 @@ class _ProfileInfoState extends State<ProfileInfo> {
     }
   }
 
+  Future<void> _updatePassword() async {
+    if (_newPasswordController.text == '' ||
+        _confirmPasswordController.text == '') {
+      _newPasswordController.text = '';
+      _confirmPasswordController.text = '';
+      showMessage('Fields cannot be empty');
+      return;
+    }
+
+    if (_newPasswordController.text != _confirmPasswordController.text) {
+      _newPasswordController.text = '';
+      _confirmPasswordController.text = '';
+      showMessage('Passwords do not match');
+      return;
+    }
+
+    SQLHelper.updatePassword(
+        SharedPrefUtil.getUsername(), _confirmPasswordController.text);
+    showMessage("Password updated successfully.");
+
+    _newPasswordController.text = '';
+    _confirmPasswordController.text = '';
+    setState(() {});
+  }
+
   void _updateForm() async {
     showModalBottomSheet(
       context: context,
@@ -234,11 +259,10 @@ class _ProfileInfoState extends State<ProfileInfo> {
                     setState(() {
                       newPasswordValue = _newPasswordController.text;
                     });
-                    await _updateProfileInfo();
+                    _updatePassword();
                     if (context.mounted) {
                       Navigator.of(context, rootNavigator: true).pop(context);
                     }
-                    showMessage("Password Updated!");
                   },
                   child: const Text('Update'),
                 ),
@@ -501,16 +525,6 @@ class _ProfileInfoState extends State<ProfileInfo> {
     SharedPrefUtil.setUserFirstName(_firstNameController.text);
     SharedPrefUtil.setUserLastName(_lastNameController.text);
     SharedPrefUtil.setUsername(_usernameController.text);
-    setState(() {});
-  }
-
-  Future<void> _updatePassword() async {
-    String password = _newPasswordController.text;
-    SQLHelper.updatePassword(
-      _usernameController.text,
-      password,
-    );
-    SharedPrefUtil.setPassword(password);
     setState(() {});
   }
 
