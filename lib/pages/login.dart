@@ -31,6 +31,8 @@ class _LoginPageState extends State<LoginPage> {
       TextEditingController();
   final TextEditingController _forgotPasswordController =
       TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   // temporary function until final ui for displaying error messages
   void showMessage(String message) {
@@ -47,9 +49,16 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void clearTextControllers() {
+  void _clearTextControllers() {
     _usernameController.text = '';
     _passwordController.text = '';
+    _newFirstNameController.text = '';
+    _newLastNameController.text = '';
+    _newUsernameController.text = '';
+    _newPasswordController.text = '';
+    _forgotUsernameController.text = '';
+    _forgotPasswordController.text = '';
+    _confirmPasswordController.text = '';
   }
 
   void _signIn() async {
@@ -65,13 +74,13 @@ class _LoginPageState extends State<LoginPage> {
     //CATCH ERRORS AND RETURN
     if (user.isEmpty) {
       showMessage("User not found");
-      clearTextControllers();
+      _clearTextControllers();
       return;
     }
 
     if (user[0]['password'] != passwordValue) {
       showMessage("Incorrect Password");
-      clearTextControllers();
+      _clearTextControllers();
       return;
     }
 
@@ -79,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
     var userinfo = await SQLHelper.getUserInfo(user[0]['userId']);
     SharedPrefUtil.setUserLogin(userinfo[0]);
     showMessage("Welcome back ${SharedPrefUtil.getUserFirstName()}!");
-    clearTextControllers();
+    _clearTextControllers();
     if (context.mounted) {
       FocusScope.of(context).unfocus();
       Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -87,71 +96,345 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _forgotPassword() async {
+  void _forgotPasswordForm() async {
     showModalBottomSheet(
-        context: context,
-        elevation: 5,
-        isScrollControlled: true,
-        useRootNavigator: true,
-        builder: (_) => Container(
-              padding: EdgeInsets.only(
-                top: 15,
-                left: 15,
-                right: 15,
-                bottom: MediaQuery.of(context).viewInsets.bottom + 260,
+      context: context,
+      elevation: 5,
+      isScrollControlled: true,
+      useRootNavigator: true,
+      backgroundColor: Colors.grey.shade100,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      builder: (_) => Container(
+        padding: EdgeInsets.only(
+          top: 15,
+          left: 15,
+          right: 15,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 260,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            const Center(
+              child: Text(
+                "Reset Password",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  TextField(
-                    controller: _forgotUsernameController,
-                    decoration: const InputDecoration(hintText: 'Username'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: _forgotPasswordController,
-                    decoration: const InputDecoration(hintText: 'Password'),
-                    obscureText: true,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      setState(() {
-                        forgotUsernameValue = _forgotUsernameController.text;
-                        forgotPasswordValue = _forgotPasswordController.text;
-                      });
-                      await _updatePassword();
-                      if (context.mounted) {
-                        Navigator.of(context, rootNavigator: true).pop(context);
-                      }
-                    },
-                    child: const Text('Confirm'),
-                  )
-                ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Divider(
+                thickness: 0.5,
+                color: Colors.grey[600],
               ),
-            ));
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Expanded(
+                  child: SizedBox(
+                    height: 54,
+                    child: TextField(
+                      controller: _forgotUsernameController,
+                      obscureText: false,
+                      enabled: true,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        suffixIcon: Icon(
+                          Icons.mode_edit_outline,
+                          size: 16,
+                        ),
+                        floatingLabelAlignment: FloatingLabelAlignment.start,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        label: Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              WidgetSpan(
+                                child: Text(
+                                  'Username',
+                                ),
+                              ),
+                              WidgetSpan(
+                                child: Text(
+                                  '*',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 13, 71, 161),
+                            width: 1.5,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 117, 117, 117),
+                              width: 1.5),
+                        ),
+                      ),
+                      textAlign: TextAlign.start,
+                      textDirection: TextDirection.ltr,
+                      onTapOutside: (_) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Expanded(
+                  child: SizedBox(
+                    height: 54,
+                    child: TextField(
+                      controller: _forgotPasswordController,
+                      obscureText: true,
+                      enabled: true,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        suffixIcon: Icon(
+                          Icons.mode_edit_outline,
+                          size: 16,
+                        ),
+                        floatingLabelAlignment: FloatingLabelAlignment.start,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        label: Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              WidgetSpan(
+                                child: Text(
+                                  'Enter New Password',
+                                ),
+                              ),
+                              WidgetSpan(
+                                child: Text(
+                                  '*',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 13, 71, 161),
+                            width: 1.5,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 117, 117, 117),
+                              width: 1.5),
+                        ),
+                      ),
+                      textAlign: TextAlign.start,
+                      textDirection: TextDirection.ltr,
+                      onTapOutside: (_) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Expanded(
+                  child: SizedBox(
+                    height: 54,
+                    child: TextField(
+                      controller: _confirmPasswordController,
+                      obscureText: true,
+                      enabled: true,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        suffixIcon: Icon(
+                          Icons.mode_edit_outline,
+                          size: 16,
+                        ),
+                        floatingLabelAlignment: FloatingLabelAlignment.start,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        label: Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              WidgetSpan(
+                                child: Text(
+                                  'Confirm Password',
+                                ),
+                              ),
+                              WidgetSpan(
+                                child: Text(
+                                  '*',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 13, 71, 161),
+                            width: 1.5,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 117, 117, 117),
+                              width: 1.5),
+                        ),
+                      ),
+                      textAlign: TextAlign.start,
+                      textDirection: TextDirection.ltr,
+                      onTapOutside: (_) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 96, 96, 96),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _clearTextControllers();
+                    });
+                    Navigator.of(context, rootNavigator: true).pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 0, 83, 129),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onPressed: () async {
+                    setState(() {
+                      forgotUsernameValue = _forgotUsernameController.text;
+                      forgotPasswordValue = _forgotPasswordController.text;
+                      newPasswordValue = _newPasswordController.text;
+                    });
+                    await _updatePassword();
+                    if (context.mounted) {
+                      Navigator.of(context, rootNavigator: true).pop(context);
+                    }
+                  },
+                  child: const Text('Update'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
+  // void _forgotPassword() async {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     elevation: 5,
+  //     isScrollControlled: true,
+  //     useRootNavigator: true,
+  //     builder: (_) => Container(
+  //       padding: EdgeInsets.only(
+  //         top: 15,
+  //         left: 15,
+  //         right: 15,
+  //         bottom: MediaQuery.of(context).viewInsets.bottom + 260,
+  //       ),
+  //       child: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         crossAxisAlignment: CrossAxisAlignment.end,
+  //         children: [
+  //           TextField(
+  //             controller: _forgotUsernameController,
+  //             decoration: const InputDecoration(hintText: 'Username'),
+  //           ),
+  //           const SizedBox(
+  //             height: 10,
+  //           ),
+  //           TextField(
+  //             controller: _forgotPasswordController,
+  //             decoration: const InputDecoration(hintText: 'Password'),
+  //             obscureText: true,
+  //           ),
+  //           const SizedBox(
+  //             height: 10,
+  //           ),
+  //           ElevatedButton(
+  //             onPressed: () async {
+  //               setState(() {
+  //                 forgotUsernameValue = _forgotUsernameController.text;
+  //                 forgotPasswordValue = _forgotPasswordController.text;
+  //               });
+  //               await _updatePassword();
+  //               if (context.mounted) {
+  //                 Navigator.of(context, rootNavigator: true).pop(context);
+  //               }
+  //             },
+  //             child: const Text('Confirm'),
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+
   Future<void> _updatePassword() async {
-    if (forgotUsernameValue == '' || forgotPasswordValue == '') {
+    if (_forgotPasswordController.text == '' ||
+        _confirmPasswordController.text == '' ||
+        _forgotUsernameController.text == '') {
+      _clearTextControllers();
       showMessage('Fields cannot be empty');
-    } else {
-      var check = await SQLHelper.getUserByUsername(forgotUsernameValue);
-      if (check.isNotEmpty) {
-        SQLHelper.updatePassword(forgotUsernameValue, forgotPasswordValue);
-        showMessage("You've successfully updated your password!");
-      } else {
-        showMessage("Username was not found");
-      }
+      return;
     }
 
-    _forgotUsernameController.text = '';
-    _forgotPasswordController.text = '';
+    if (_forgotPasswordController.text != _confirmPasswordController.text) {
+      _clearTextControllers();
+      showMessage('Passwords do not match');
+      return;
+    }
+
+    var user = await SQLHelper.getUserByUsername(forgotUsernameValue);
+    if (user.isEmpty) {
+      _clearTextControllers();
+      showMessage("Username was not found");
+      return;
+    }
+
+    SQLHelper.updatePassword(forgotUsernameValue, forgotPasswordValue);
+    showMessage("Password Updated Successfully.");
+
+    _clearTextControllers();
     setState(() {});
   }
 
@@ -281,7 +564,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                        onTap: _forgotPassword,
+                        onTap: _forgotPasswordForm,
                         child: const Text(
                           'Forgot Password?',
                           style: TextStyle(
