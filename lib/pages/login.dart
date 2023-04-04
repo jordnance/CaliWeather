@@ -1,5 +1,6 @@
-import '../util/userverify.dart';
 import 'package:flutter/material.dart';
+import 'package:flash/flash.dart';
+import '../util/userverify.dart';
 import '../util/sql_helper.dart';
 import '../util/sharedprefutil.dart';
 import 'components/textfield_login.dart';
@@ -35,19 +36,33 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  // temporary function until final ui for displaying error messages
-  void showMessage(String message) {
-    if (mounted) {
-      setState(() {
-        ScaffoldMessenger.of(context)
-          ..removeCurrentSnackBar()
-          ..showSnackBar(SnackBar(
-              behavior: SnackBarBehavior.fixed,
-              padding: const EdgeInsets.only(
-                  left: 24, top: 14, right: 0, bottom: 24),
-              content: Text(message)));
-      });
-    }
+  void showMessage(String message,
+      {FlashBehavior style = FlashBehavior.floating}) {
+    showFlash(
+      context: context,
+      duration: const Duration(seconds: 3),
+      persistent: true,
+      builder: (_, controller) {
+        return Flash(
+          controller: controller,
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
+          boxShadows: const [BoxShadow(blurRadius: 4)],
+          barrierDismissible: true,
+          behavior: style,
+          position: FlashPosition.top,
+          child: FlashBar(
+            content: Text(message),
+            showProgressIndicator: true,
+            primaryAction: TextButton(
+              onPressed: () => controller.dismiss(),
+              child:
+                  const Text('DISMISS', style: TextStyle(color: Colors.amber)),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void _clearTextControllers() {
