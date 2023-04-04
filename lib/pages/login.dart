@@ -888,7 +888,7 @@ class _LoginPageState extends State<LoginPage> {
                   sufIcon: const Icon(Icons.email),
                   obscureTextFlag: false,
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 15),
                 TextfieldLogin(
                   controller: _passwordController,
                   hintText: "Password",
