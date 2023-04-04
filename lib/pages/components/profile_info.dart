@@ -652,37 +652,23 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 ),
               ),
               const SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 0, 83, 129),
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
+              Container(
+                height: 45,
+                width: 150,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 0, 83, 129),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w500,
                     ),
-                    onPressed: () async {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const ProfilePage()));
-                    },
-                    child: const Text('Back'),
                   ),
-                  const SizedBox(width: 8),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 96, 96, 96),
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    onPressed: () async {
-                      SharedPrefUtil.checkAllPrefs();
-                    },
-                    child: const Text('Test'),
-                  ),
-                ],
+                  onPressed: () async {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            const ProfilePage()));
+                  },
+                  child: const Text('Back'),
+                ),
               ),
               const SizedBox(height: 20),
               Padding(
