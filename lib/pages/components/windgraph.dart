@@ -5,14 +5,6 @@ class WindGraph extends StatelessWidget {
   const WindGraph({super.key, required this.todos, required this.duration});
   final List<FlSpot>? todos;
   final double? duration;
-  static const Color textColor = Colors.black87;
-  static const Color graphBgColor = Color(0xFF212121); //grey.shae900
-  static const Color graphGridLineColor = Colors.white10;
-  static const Color graphBorderLineColor = Color(0xff37434d); //blue-grey
-  static const Color graphLineGradientColor1 =
-      Color.fromARGB(255, 253, 175, 223);
-  static const Color graphLineGradientColor2 =
-      Color.fromARGB(255, 250, 13, 160);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +29,7 @@ class WindGraph extends StatelessWidget {
   Widget windLeftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      color: textColor,
+      color: Colors.white,
       fontSize: 12,
     );
     String text;
@@ -66,7 +58,7 @@ class WindGraph extends StatelessWidget {
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      color: textColor,
+      color: Colors.white,
       fontSize: 13,
     );
     Widget text;
@@ -128,12 +120,11 @@ class WindGraph extends StatelessWidget {
 
   LineChartData graphData(double? maxX) {
     List<Color> windColors = [
-      graphLineGradientColor1,
-      graphLineGradientColor2,
+      Color.fromARGB(255, 253, 175, 223),
+      Color.fromARGB(255, 250, 13, 160),
     ];
 
     return LineChartData(
-      backgroundColor: Colors.grey.shade900,
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
@@ -141,13 +132,13 @@ class WindGraph extends StatelessWidget {
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color: graphGridLineColor,
+            color: Colors.white10,
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
           return FlLine(
-            color: graphGridLineColor,
+            color: Colors.white10,
             strokeWidth: 1,
           );
         },
@@ -163,7 +154,7 @@ class WindGraph extends StatelessWidget {
           axisNameWidget: const Text(
             'Wind',
             style: TextStyle(
-                color: textColor, fontWeight: FontWeight.w900, fontSize: 18),
+                color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
           ),
         ),
         bottomTitles: AxisTitles(
@@ -175,7 +166,7 @@ class WindGraph extends StatelessWidget {
           ),
           axisNameWidget: const Text(
             'Days',
-            style: TextStyle(color: textColor, fontStyle: FontStyle.italic),
+            style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
           ),
         ),
         leftTitles: AxisTitles(
@@ -193,7 +184,7 @@ class WindGraph extends StatelessWidget {
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: graphBorderLineColor, width: 4),
+        border: Border.all(color: const Color(0xff37434d), width: 4),
       ),
       minX: 0,
       maxX: maxX,
