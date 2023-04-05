@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:caliweather/util/sharedprefutil.dart';
+import 'package:caliweather/util/weather_helper.dart';
 import '../util/globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -27,13 +29,11 @@ class _RadarPageState extends State<RadarPage> {
   double currentSliderValue = -2;
   MapController mapController = MapController();
 
-  Position? currentPosition;
-  LatLng currentCenter = LatLng(globals.positionLat, globals.positionLong);
-
-  final store = FlutterMapTileCaching.instance('RadarStore');
-
   bool timerCancel = false;
   late Timer timerClearCache;
+  Position? currentPosition;
+  final store = FlutterMapTileCaching.instance('RadarStore');
+  LatLng currentCenter = LatLng(SharedPrefUtil.getLatitude(), SharedPrefUtil.getLongitude());
 
   List<String> pastRadarUrl = [
     'https://tilecache.rainviewer.com/v2/radar/${RadarUtil.getTimestamps(0)}/512/{z}/{x}/{y}/1/1_1.png',
@@ -84,12 +84,12 @@ class _RadarPageState extends State<RadarPage> {
   void centerBack() {
     moveMarker();
     if (currentPosition != null) {
-      globals.positionLat = currentPosition!.latitude;
-      globals.positionLong = currentPosition!.longitude;
-      currentCenter = LatLng(globals.positionLat, globals.positionLong);
+      SharedPrefUtil.setLatitude(currentPosition!.latitude);
+      SharedPrefUtil.setLongitude(currentPosition!.longitude);
+      currentCenter = LatLng(SharedPrefUtil.getLatitude(), SharedPrefUtil.getLongitude());
       mapController.move(currentCenter, currentZoom);
     } else {
-      currentCenter = LatLng(globals.positionLat, globals.positionLong);
+      currentCenter = LatLng(SharedPrefUtil.getLatitude(), SharedPrefUtil.getLongitude());
       mapController.move(currentCenter, currentZoom);
     }
   }
@@ -128,7 +128,7 @@ class _RadarPageState extends State<RadarPage> {
   void play() {
     changeIcon();
     if (playStopIndex == 1) {
-      Timer.periodic(const Duration(milliseconds: 1250), (timer) {
+      Timer.periodic(const Duration(milliseconds: 1500), (timer) {
         if (currentSliderValue == 0 || radarIndex == 0) {
           changeIcon();
           timer.cancel();
@@ -148,7 +148,7 @@ class _RadarPageState extends State<RadarPage> {
   }
 
   void clearCache() {
-    Timer.periodic(const Duration(minutes: 30), (timer) {
+    Timer.periodic(const Duration(minutes: 10), (timer) {
       store.manage.reset();
       if (timerCancel) {
         timer.cancel();
@@ -159,15 +159,20 @@ class _RadarPageState extends State<RadarPage> {
   void getCurrentPosition() async {
     var serviceEnabled = await GeoHelper.getPermissions();
     if (serviceEnabled) {
+      SharedPrefUtil.setServiceEnabled(true);
       Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
           .then((Position position) {
         setState(() {
           currentPosition = position;
-          globals.positionLat = position.latitude;
-          globals.positionLong = position.longitude;
+          SharedPrefUtil.setLatitude(position.latitude);
+          SharedPrefUtil.setLongitude(position.longitude);
           centerBack();
         });
       });
+    } else if (SharedPrefUtil.getIsLoggedIn()) {
+      SharedPrefUtil.setServiceEnabled(false);
+      centerBack();
+      setState(() {});
     }
   }
 
@@ -230,8 +235,8 @@ class _RadarPageState extends State<RadarPage> {
                     MarkerLayer(
                       markers: [
                         Marker(
-                            point: LatLng(
-                                globals.positionLat, globals.positionLong),
+                            point: LatLng(SharedPrefUtil.getLatitude(),
+                                SharedPrefUtil.getLongitude()),
                             width: 80,
                             height: 80,
                             builder: (context) => const Icon(Icons.location_on,

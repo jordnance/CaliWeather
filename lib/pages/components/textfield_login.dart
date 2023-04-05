@@ -31,7 +31,21 @@ class TextfieldLogin extends StatelessWidget {
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey.shade400),
           suffixIcon: sufIcon,
+          label: Text.rich(
+            TextSpan(
+              children: <InlineSpan>[
+                WidgetSpan(
+                  child: Text(
+                    hintText,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
+        onTapOutside: (_) {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
       ),
     );
   }

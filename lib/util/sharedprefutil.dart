@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer' as developer;
 
 class SharedPrefUtil {
   static late SharedPreferences _prefs;
@@ -26,6 +27,9 @@ class SharedPrefUtil {
   static const String conserveEnergy = 'conserveEnergy';
   static const String conserveWater = 'conserveWater';
   static const String apiRelated = 'apiRelated';
+  static const String isEnabled = 'isEnabled';
+  static const String latitude = 'latitude';
+  static const String longitude = 'longitude';
 
   //AMBIGOUS SETTER FUNCTIONS
   static Future<void> setIntByKey(String key, int val) async =>
@@ -92,6 +96,15 @@ class SharedPrefUtil {
   static Future<void> setApiRelated(String val) async =>
       await _prefs.setString(SharedPrefUtil.apiRelated, val);
 
+  static Future<void> setServiceEnabled(bool val) async =>
+      await _prefs.setBool(SharedPrefUtil.isEnabled, val);
+
+  static Future<void> setLatitude(double val) async =>
+      await _prefs.setDouble(SharedPrefUtil.latitude, val);
+
+  static Future<void> setLongitude(double val) async =>
+      await _prefs.setDouble(SharedPrefUtil.longitude, val);
+
   static Future<void> setLogout() async => await _prefs.clear();
 
   static Future<void> setUserLogin(Map user) async {
@@ -111,6 +124,9 @@ class SharedPrefUtil {
     setConserveEnergy(user[conserveEnergy]);
     setConserveWater(user[conserveWater]);
     setApiRelated(user[apiRelated]);
+    setServiceEnabled(true);
+    setLatitude(35.393528);
+    setLongitude(-119.043732);
   }
 
   //USER AND PROFILE GETTER FUNCTIONS
@@ -158,21 +174,87 @@ class SharedPrefUtil {
   static String getApiRelated() =>
       _prefs.getString(SharedPrefUtil.apiRelated) ?? 'err';
 
+  static bool getIsServiceEnabled() =>
+      _prefs.getBool(SharedPrefUtil.isEnabled) ?? false;
+
+  static double getLatitude() =>
+      _prefs.getDouble(SharedPrefUtil.latitude) ?? 35.393528;
+
+  static double getLongitude() =>
+      _prefs.getDouble(SharedPrefUtil.longitude) ?? -119.043732;
+
   static Future<void> checkAllPrefs() async {
-    print(getIsLoggedIn());
-    print(getUserId());
-    print(getUserFirstName());
-    print(getUserLastName());
-    print(getUsername());
-    print(getUserPrefId());
-    print(getLanguage());
-    print(getFontSize());
-    print(getTempFormat());
-    print(getLocation());
-    print(getTheme());
-    print(getUserPrefAlertId());
-    print(getConserveEnergy());
-    print(getConserveWater());
-    print(getApiRelated());
+    developer.log(
+      getIsLoggedIn().toString(),
+      name: 'debug_sharedpref.LoggedIn',
+    );
+    developer.log(
+      getUserId().toString(),
+      name: 'debug_sharedpref.UserId',
+    );
+    developer.log(
+      getUserFirstName(),
+      name: 'debug_sharedpref.UserFirstName',
+    );
+    developer.log(
+      getUserLastName(),
+      name: 'debug_sharedpref.UserLastName',
+    );
+    developer.log(
+      getUsername(),
+      name: 'debug_sharedpref.Username',
+    );
+    developer.log(
+      getUserPrefId().toString(),
+      name: 'debug_sharedpref.UserPrefId',
+    );
+    developer.log(
+      getLanguage(),
+      name: 'debug_sharedpref.Language',
+    );
+    developer.log(
+      getFontSize(),
+      name: 'debug_sharedpref.FontSize',
+    );
+    developer.log(
+      getTempFormat(),
+      name: 'debug_sharedpref.TempFormat',
+    );
+    developer.log(
+      getLocation(),
+      name: 'debug_sharedpref.Location',
+    );
+    developer.log(
+      getTheme(),
+      name: 'debug_sharedpref.Theme',
+    );
+    developer.log(
+      getUserPrefAlertId().toString(),
+      name: 'debug_sharedpref.PrefAlertId',
+    );
+    developer.log(
+      getConserveEnergy(),
+      name: 'debug_sharedpref.ConserveEnergy',
+    );
+    developer.log(
+      getConserveWater(),
+      name: 'debug_sharedpref.ConserveWater',
+    );
+    developer.log(
+      getApiRelated(),
+      name: 'debug_sharedpref.ApiRelated',
+    );
+    developer.log(
+      getIsServiceEnabled().toString(),
+      name: 'debug_sharedpref.IsServiceEnabled',
+    );
+    developer.log(
+      getLatitude().toString(),
+      name: 'debug_sharedpref.Latitude',
+    );
+    developer.log(
+      getLongitude().toString(),
+      name: 'debug_sharedpref.Longitude',
+    );
   }
 }

@@ -44,7 +44,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
   bool? isPressed = false;
   int durationIndex = 1;
   int titleIndex = 0;
-  List<String> durationTitle = ['2 Weeks', '1 Week', '3 Days'];
+  Color pgBackgroundColor = Colors.grey.shade200;
 
   Future<void> getData(double? durationLength) async {
     if (SharedPrefUtil.getIsLoggedIn() == true) {
