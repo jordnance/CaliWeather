@@ -1,9 +1,7 @@
 import '../util/sharedprefutil.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:caliweather/util/graph_helper.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:caliweather/pages/components/raingraph.dart';
 import 'package:caliweather/pages/components/tempgraph.dart';
 import 'package:caliweather/pages/components/humgraph.dart';
@@ -40,25 +38,20 @@ class _AnalysisPageState extends State<AnalysisPage> {
   List<FlSpot>? snow;
   List<FlSpot>? wind;
   List<FlSpot>? press;
-  double? length = 14;
-  bool? isPressed = false;
-  int durationIndex = 1;
-  int titleIndex = 0;
+  double? length;
   Color pgBackgroundColor = Colors.grey.shade200;
 
-  Future<void> getData(double? durationLength) async {
+  Future<void> getData() async {
     if (SharedPrefUtil.getIsLoggedIn() == true) {
-      List<List<FlSpot>> data = await GraphHelper.newCoords(durationLength);
+      List<List<FlSpot>> data = await GraphHelper.newCoords();
       rain = data[0];
       temp = data[1];
       hum = data[2];
       snow = data[3];
       wind = data[4];
       press = data[5];
-    }
-
-    // Graph dummy data for testing
-    else {
+      length = data[0].last.x;
+    } else {
       List<FlSpot> dummyRain = [
         const FlSpot(0, 0),
         const FlSpot(1, 1),
@@ -167,51 +160,14 @@ class _AnalysisPageState extends State<AnalysisPage> {
         const FlSpot(14, 1016),
       ];
 
-      List<FlSpot> tempData = [];
-      for (int i = 0; i < durationLength! + 1; i++) {
-        tempData.insert(i, dummyRain[i]);
-      }
-      rain = tempData;
-      tempData = [];
-
-      for (int i = 0; i < durationLength + 1; i++) {
-        tempData.insert(i, dummyTemp[i]);
-      }
-      temp = tempData;
-      tempData = [];
-
-      for (int i = 0; i < durationLength + 1; i++) {
-        tempData.insert(i, dummyHum[i]);
-      }
-      hum = tempData;
-      tempData = [];
-
-      for (int i = 0; i < durationLength + 1; i++) {
-        tempData.insert(i, dummySnow[i]);
-      }
-      snow = tempData;
-      tempData = [];
-
-      for (int i = 0; i < durationLength + 1; i++) {
-        tempData.insert(i, dummyWind[i]);
-      }
-      wind = tempData;
-      tempData = [];
-
-      for (int i = 0; i < durationLength + 1; i++) {
-        tempData.insert(i, dummyPress[i]);
-      }
-      press = tempData;
+      rain = dummyRain;
+      temp = dummyTemp;
+      hum = dummyHum;
+      snow = dummySnow;
+      wind = dummyWind;
+      press = dummyPress;
+      length = dummyTemp.last.x;
     }
-  }
-
-  void changeDuration() {
-    if (titleIndex != 2) {
-      titleIndex++;
-    } else {
-      titleIndex = 0;
-    }
-    setState(() {});
   }
 
   @override
@@ -222,7 +178,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
       body: FutureBuilder<void>(
-          future: getData(length),
+          future: getData(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -312,52 +268,16 @@ class _AnalysisPageState extends State<AnalysisPage> {
           Positioned(
             right: 10,
             bottom: 10,
-            child: SpeedDial(
-              spacing: 8,
-              spaceBetweenChildren: 8,
-              animatedIcon: AnimatedIcons.menu_close,
-              animatedIconTheme: const IconThemeData(size: 22.0),
-              closeManually: false,
-              curve: Curves.bounceIn,
-              overlayColor: Colors.black,
-              overlayOpacity: 0.5,
-              tooltip: 'Change Duration',
-              heroTag: 'speed-dial-hero-tag',
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
-              elevation: 8.0,
-              shape: const CircleBorder(),
-              children: [
-                SpeedDialChild(
-                    child: const Icon(CupertinoIcons.time),
-                    backgroundColor: Colors.green,
-                    label: '14 Days',
-                    labelStyle: const TextStyle(fontSize: 18.0),
-                    onTap: () {
-                      length = 14;
-                      setState(() {});
-                    }),
-                SpeedDialChild(
-                  child: const Icon(CupertinoIcons.time),
-                  backgroundColor: Colors.yellow,
-                  label: '7 Days',
-                  labelStyle: const TextStyle(fontSize: 18.0),
-                  onTap: () {
-                    length = 7;
-                    setState(() {});
-                  },
-                ),
-                SpeedDialChild(
-                  child: const Icon(CupertinoIcons.time),
-                  backgroundColor: Colors.red,
-                  label: '3 Days',
-                  labelStyle: const TextStyle(fontSize: 18.0),
-                  onTap: () {
-                    length = 3;
-                    setState(() {});
-                  },
-                ),
-              ],
+            child: FloatingActionButton(
+              backgroundColor: Colors.blue,
+              tooltip: 'Refresh',
+              onPressed: () {
+                setState(() {});
+              },
+              child: const Icon(
+                Icons.refresh_rounded,
+                size: 30,
+              ),
             ),
           ),
         ],

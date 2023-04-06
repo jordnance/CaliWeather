@@ -62,55 +62,59 @@ class WindGraph extends StatelessWidget {
       fontSize: 13,
     );
     Widget text;
-    switch (value.toInt()) {
-      case 0:
-        text = const Text('0', style: style);
-        break;
-      case 1:
-        text = const Text('1', style: style);
-        break;
-      case 2:
-        text = const Text('2', style: style);
-        break;
-      case 3:
-        text = const Text('3', style: style);
-        break;
-      case 4:
-        text = const Text('4', style: style);
-        break;
-      case 5:
-        text = const Text('5', style: style);
-        break;
-      case 6:
-        text = const Text('6', style: style);
-        break;
-      case 7:
-        text = const Text('7', style: style);
-        break;
-      case 8:
-        text = const Text('8', style: style);
-        break;
-      case 9:
-        text = const Text('9', style: style);
-        break;
-      case 10:
-        text = const Text('10', style: style);
-        break;
-      case 11:
-        text = const Text('11', style: style);
-        break;
-      case 12:
-        text = const Text('12', style: style);
-        break;
-      case 13:
-        text = const Text('13', style: style);
-        break;
-      case 14:
-        text = const Text('14', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
+    if (value % 1 == 0) {
+      switch (value.toInt()) {
+        case 0:
+          text = const Text('0', style: style);
+          break;
+        case 1:
+          text = const Text('1', style: style);
+          break;
+        case 2:
+          text = const Text('2', style: style);
+          break;
+        case 3:
+          text = const Text('3', style: style);
+          break;
+        case 4:
+          text = const Text('4', style: style);
+          break;
+        case 5:
+          text = const Text('5', style: style);
+          break;
+        case 6:
+          text = const Text('6', style: style);
+          break;
+        case 7:
+          text = const Text('7', style: style);
+          break;
+        case 8:
+          text = const Text('8', style: style);
+          break;
+        case 9:
+          text = const Text('9', style: style);
+          break;
+        case 10:
+          text = const Text('10', style: style);
+          break;
+        case 11:
+          text = const Text('11', style: style);
+          break;
+        case 12:
+          text = const Text('12', style: style);
+          break;
+        case 13:
+          text = const Text('13', style: style);
+          break;
+        case 14:
+          text = const Text('14', style: style);
+          break;
+        default:
+          text = const Text('', style: style);
+          break;
+      }
+    } else {
+      text = const Text('', style: style);
     }
     return SideTitleWidget(
       axisSide: meta.axisSide,
