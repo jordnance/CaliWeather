@@ -10,13 +10,13 @@ class WindGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: AspectRatio(
-        aspectRatio: 1.4,
+        aspectRatio: .95,
         child: Padding(
           padding: const EdgeInsets.only(
             right: 24,
             left: 12,
-            top: 24,
-            bottom: 12,
+            top: 12,
+            bottom: 30,
           ),
           child: LineChart(
             graphData(duration),
@@ -150,11 +150,11 @@ class WindGraph extends StatelessWidget {
         ),
         topTitles: AxisTitles(
           sideTitles: SideTitles(showTitles: true, reservedSize: 7),
-          axisNameSize: 20,
+          axisNameSize: 45,
           axisNameWidget: const Text(
             'Wind',
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
+                color: Colors.white, fontWeight: FontWeight.w400, fontSize: 27),
           ),
         ),
         bottomTitles: AxisTitles(
