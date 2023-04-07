@@ -5,8 +5,8 @@ import 'dart:convert';
 import '../util/sharedprefutil.dart';
 
 class WeatherHelper {
-  static Future<List<dynamic>> getGeoName() async {
-    http.Response geoResponse = await http.get(
+  static Future<List<dynamic>?> getGeoName() async {
+    http.Response geoNameResponse = await http.get(
       Uri.https('api.openweathermap.org', '/geo/1.0/reverse', {
         'lat': SharedPrefUtil.getLatitude().toString(),
         'lon': SharedPrefUtil.getLongitude().toString(),
@@ -14,28 +14,40 @@ class WeatherHelper {
       }),
     );
 
-    List<dynamic> g = jsonDecode(geoResponse.body);
+    if (geoNameResponse.statusCode != 200) {
+      //print(response.statusCode);
+      return null;
+    }
+
+    List<dynamic> g = jsonDecode(geoNameResponse.body);
     return g;
   }
 
-  static Future<List<dynamic>> getGeoCoords() async {
-    http.Response geoResponse = await http.get(
+  static Future<List<dynamic>?> getGeoCoords() async {
+    http.Response geoCoordsResponse = await http.get(
       Uri.https('api.openweathermap.org', '/geo/1.0/direct', {
         'q': SharedPrefUtil.getLocation(),
         'appid': '0d8187b327e042982d4478dcbf90bae3',
       }),
     );
 
-    List<dynamic> c = jsonDecode(geoResponse.body);
+    if (geoCoordsResponse.statusCode != 200) {
+      //print(response.statusCode);
+      return null;
+    }
+
+    List<dynamic> c = jsonDecode(geoCoordsResponse.body);
     return c;
   }
 
-  static Future<Map<String, dynamic>> getCurrent() async {
+  static Future<Map<String, dynamic>?> getCurrent() async {
     if (SharedPrefUtil.getIsLoggedIn()) {
       if (!SharedPrefUtil.getIsServiceEnabled()) {
         var geo = await WeatherHelper.getGeoCoords();
-        SharedPrefUtil.setLatitude(geo[0]['lat']);
-        SharedPrefUtil.setLongitude(geo[0]['lon']);
+        if (geo != null) {
+          SharedPrefUtil.setLatitude(geo[0]['lat']);
+          SharedPrefUtil.setLongitude(geo[0]['lon']);
+        }
       }
     }
 
@@ -50,64 +62,39 @@ class WeatherHelper {
       }),
     );
 
+    if (weatherResponse.statusCode != 200) {
+      //print(response.statusCode);
+      return null;
+    }
+
     Map<String, dynamic> w = jsonDecode(weatherResponse.body);
     return w;
   }
 
-  static Future<List<dynamic>> setForecast() async {
-    List<dynamic> setData = [];
+  static Future<List> getForecast(Map<String, dynamic> weather) async {
     List<dynamic> forecast = [];
-
-    var weather = await getCurrent();
+    List<dynamic> forecastData = [];
+    List<dynamic> formatData = [[], [], [], [], [], [], [], []];
 
     for (int i = 0; i < 8; i++) {
       forecast.insert(i, weather['daily'][i]);
-      setData.insert(i, forecast[i]);
+      forecastData.insert(i, forecast[i]);
     }
-
-    return setData;
-  }
-
-  static Future<List> getForecast() async {
-    List<dynamic> formatData = [[], [], [], [], [], [], [], []];
-    List<dynamic> forecastData = await setForecast();
 
     for (int i = 0; i < 8; i++) {
       DateTime formatDate =
           DateTime.fromMillisecondsSinceEpoch(forecastData[i]['dt'] * 1000);
-
       String temp = forecastData[i]['temp']['day'].toStringAsFixed(0)!;
       String desc = forecastData[i]['weather'][0]['main'].toString();
       String icon = forecastData[i]['weather'][0]['icon'].toString();
       String date = DateFormat('MMM dd').format(formatDate);
-
       formatData[i] = [temp, desc, date, icon];
     }
 
     return formatData;
   }
 
-  static Future<List?> getAlerts() async {
-    http.Response response = await http.get(
-      Uri.https('api.openweathermap.org', '/data/3.0/onecall', {
-        'lat': SharedPrefUtil.getLatitude().toString(),
-        'lon': SharedPrefUtil.getLongitude().toString(),
-        'exclude': 'daily,hourly,minutely',
-        'appid': '0d8187b327e042982d4478dcbf90bae3'
-      }),
-    );
-
-    if (response.statusCode != 200) {
-      //print(response.statusCode);
-      return null;
-    }
-
-    Map<String, dynamic> w = jsonDecode(response.body);
-    return w['alerts'];
-  }
-
-  static Future<List> getMainweather() async {
-    var weather = await getCurrent();
+  static Future<List> getMainweather(Map<String, dynamic> weather) async {
     var geo = await getGeoName();
 
     DateTime formatDate =
@@ -117,7 +104,7 @@ class WeatherHelper {
     String weatherIcon = weather['current']['weather'][0]['icon'];
     String temperature = weather['current']['temp'].toStringAsFixed(0);
     String weatherMain = weather['current']['weather'][0]['main'];
-    String areaName = geo[0]['name'];
+    String areaName = geo![0]['name'];
 
     date = DateFormat('MMM dd').format(formatDate);
 
@@ -132,8 +119,7 @@ class WeatherHelper {
     return mainData;
   }
 
-  static Future<List> getMicroweather() async {
-    var weather = await getCurrent();
+  static Future<List> getMicroweather(Map<String, dynamic> weather) async {
     var geo = await getGeoName();
 
     DateTime formatSunrise = DateTime.fromMillisecondsSinceEpoch(
@@ -144,7 +130,7 @@ class WeatherHelper {
     String sunrise = DateFormat.jm().format(formatSunrise);
     String sunset = DateFormat.jm().format(formatSunset);
 
-    String areaName = geo[0]['name'];
+    String areaName = geo![0]['name'];
     String cloudiness = "${weather['current']['clouds']}%";
     String dewPoint =
         "${weather['current']['dew_point'].toStringAsFixed(0)} °F";

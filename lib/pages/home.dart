@@ -38,19 +38,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> getData() async {
-    List microData = await WeatherHelper.getMicroweather();
-    List forecastData = await WeatherHelper.getForecast();
-    List mainData = await WeatherHelper.getMainweather();
-    alerts = await WeatherHelper.getAlerts();
-    if (alerts != null) {
-      showAlertIndicator = true;
-    } else {
-      showAlertIndicator = false;
-    }
+    Map<String, dynamic>? weatherData = await WeatherHelper.getCurrent();
 
-    micro = microData;
-    forecast = forecastData;
-    main = mainData;
+    if (weatherData != null) {
+      micro = await WeatherHelper.getMicroweather(weatherData);
+      forecast = await WeatherHelper.getForecast(weatherData);
+      main = await WeatherHelper.getMainweather(weatherData);
+      alerts = weatherData['alerts'];
+
+      if (alerts != null) {
+        showAlertIndicator = true;
+      } else {
+        showAlertIndicator = false;
+      }
+    }
   }
 
   void _showTopFlash({FlashBehavior style = FlashBehavior.floating}) {
