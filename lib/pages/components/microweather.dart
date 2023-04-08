@@ -12,6 +12,28 @@ class MicroWeather extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
+            'Humidity: ${todos?[2]}',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Cloudiness: ${todos?[0]}',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
             'Feels Like: ${todos?[6]}',
             textAlign: TextAlign.center,
             style: const TextStyle(
@@ -34,7 +56,7 @@ class MicroWeather extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
-            'Wind Speed: ${todos?[9]}',
+            'Sunrise: ${todos?[4]}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,
@@ -45,18 +67,7 @@ class MicroWeather extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
-            'Cloudiness: ${todos?[0]}',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w300,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Text(
-            'Humidity: ${todos?[2]}',
+            'Sunset: ${todos?[5]}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,
@@ -89,18 +100,7 @@ class MicroWeather extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
-            'Sunrise: ${todos?[4]}',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w300,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Text(
-            'Sunset: ${todos?[5]}',
+            'Wind Speed: ${todos?[9]}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,

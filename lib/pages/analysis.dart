@@ -1,14 +1,12 @@
 import '../util/sharedprefutil.dart';
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:caliweather/util/graph_helper.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:caliweather/pages/components/raingraph.dart';
 import 'package:caliweather/pages/components/tempgraph.dart';
 import 'package:caliweather/pages/components/humgraph.dart';
 import 'package:caliweather/pages/components/snowgraph.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:caliweather/pages/components/windgraph.dart';
 import 'package:caliweather/pages/components/pressgraph.dart';
 
@@ -25,6 +23,15 @@ class Todo {
       this.pressData, this.windData, this.duration);
 }
 
+const List<Widget> weathericons = <Widget>[
+  Icon(CupertinoIcons.thermometer),
+  Icon(CupertinoIcons.cloud_rain),
+  Icon(CupertinoIcons.wind),
+  Icon(CupertinoIcons.snow),
+  Icon(CupertinoIcons.drop),
+  Icon(CupertinoIcons.gauge),
+];
+
 class AnalysisPage extends StatefulWidget {
   const AnalysisPage({super.key, required this.title});
   final String title;
@@ -34,31 +41,34 @@ class AnalysisPage extends StatefulWidget {
 }
 
 class _AnalysisPageState extends State<AnalysisPage> {
+  final List<bool> weatherSelected = [true, false, false, false, false, false];
+  bool isTempVisible = true;
+  bool isHumVisible = false;
+  bool isPressVisible = false;
+  bool isWindVisible = false;
+  bool isRainVisible = false;
+  bool isSnowVisible = false;
+
   List<FlSpot>? rain;
   List<FlSpot>? temp;
   List<FlSpot>? hum;
   List<FlSpot>? snow;
   List<FlSpot>? wind;
   List<FlSpot>? press;
-  double? length = 14;
-  bool? isPressed = false;
-  int durationIndex = 1;
-  int titleIndex = 0;
+  double? length;
   Color pgBackgroundColor = Colors.grey.shade200;
 
-  Future<void> getData(double? durationLength) async {
+  Future<void> getData() async {
     if (SharedPrefUtil.getIsLoggedIn() == true) {
-      List<List<FlSpot>> data = await GraphHelper.newCoords(durationLength);
+      List<List<FlSpot>> data = await GraphHelper.newCoords();
       rain = data[0];
       temp = data[1];
       hum = data[2];
       snow = data[3];
       wind = data[4];
       press = data[5];
-    }
-
-    // Graph dummy data for testing
-    else {
+      length = data[0].last.x;
+    } else {
       List<FlSpot> dummyRain = [
         const FlSpot(0, 0),
         const FlSpot(1, 1),
@@ -167,62 +177,22 @@ class _AnalysisPageState extends State<AnalysisPage> {
         const FlSpot(14, 1016),
       ];
 
-      List<FlSpot> tempData = [];
-      for (int i = 0; i < durationLength! + 1; i++) {
-        tempData.insert(i, dummyRain[i]);
-      }
-      rain = tempData;
-      tempData = [];
-
-      for (int i = 0; i < durationLength + 1; i++) {
-        tempData.insert(i, dummyTemp[i]);
-      }
-      temp = tempData;
-      tempData = [];
-
-      for (int i = 0; i < durationLength + 1; i++) {
-        tempData.insert(i, dummyHum[i]);
-      }
-      hum = tempData;
-      tempData = [];
-
-      for (int i = 0; i < durationLength + 1; i++) {
-        tempData.insert(i, dummySnow[i]);
-      }
-      snow = tempData;
-      tempData = [];
-
-      for (int i = 0; i < durationLength + 1; i++) {
-        tempData.insert(i, dummyWind[i]);
-      }
-      wind = tempData;
-      tempData = [];
-
-      for (int i = 0; i < durationLength + 1; i++) {
-        tempData.insert(i, dummyPress[i]);
-      }
-      press = tempData;
+      rain = dummyRain;
+      temp = dummyTemp;
+      hum = dummyHum;
+      snow = dummySnow;
+      wind = dummyWind;
+      press = dummyPress;
+      length = dummyTemp.last.x;
     }
-  }
-
-  void changeDuration() {
-    if (titleIndex != 2) {
-      titleIndex++;
-    } else {
-      titleIndex = 0;
-    }
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final PageController pgController = PageController();
-    final PageController pg2Controller = PageController();
-
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
       body: FutureBuilder<void>(
-          future: getData(length),
+          future: getData(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -239,69 +209,135 @@ class _AnalysisPageState extends State<AnalysisPage> {
               case ConnectionState.active:
                 return const Center(child: Text("Active"));
               case ConnectionState.done:
-                return Column(
-                  children: <Widget>[
-                    const Center(
-                      child: SizedBox(
-                        height: 30,
+                return SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      const Center(
+                        child: SizedBox(
+                          height: 45,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Center(
-                        child: PageView(
-                          controller: pgController,
-                          children: <Widget>[
-                            TempGraph(todos: temp, duration: length),
-                            HumGraph(todos: hum, duration: length),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
+                        child: ToggleButtons(
+                          onPressed: (int index) {
+                            int count = 0;
+                            for (final bool value in weatherSelected) {
+                              if (value) {
+                                count += 1;
+                              }
+                            }
+                            if (weatherSelected[index] && count < 2) {
+                              return;
+                            }
+                            setState(() {
+                              weatherSelected[index] = !weatherSelected[index];
+                              if (index == 0 && weatherSelected[index]) {
+                                isTempVisible = true;
+                              } else if (index == 0 &&
+                                  !weatherSelected[index]) {
+                                isTempVisible = false;
+                              }
+                              if (index == 1 && weatherSelected[index]) {
+                                isRainVisible = true;
+                              } else if (index == 1 &&
+                                  !weatherSelected[index]) {
+                                isRainVisible = false;
+                              }
+                              if (index == 2 && weatherSelected[index]) {
+                                isWindVisible = true;
+                              } else if (index == 2 &&
+                                  !weatherSelected[index]) {
+                                isWindVisible = false;
+                              }
+                              if (index == 3 && weatherSelected[index]) {
+                                isSnowVisible = true;
+                              } else if (index == 3 &&
+                                  !weatherSelected[index]) {
+                                isSnowVisible = false;
+                              }
+                              if (index == 4 && weatherSelected[index]) {
+                                isHumVisible = true;
+                              } else if (index == 4 &&
+                                  !weatherSelected[index]) {
+                                isHumVisible = false;
+                              }
+                              if (index == 5 && weatherSelected[index]) {
+                                isPressVisible = true;
+                              } else if (index == 5 &&
+                                  !weatherSelected[index]) {
+                                isPressVisible = false;
+                              }
+                            });
+                          },
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          selectedBorderColor: Colors.blue,
+                          borderColor: const Color.fromARGB(255, 71, 87, 99),
+                          borderWidth: 1.8,
+                          selectedColor: Colors.white,
+                          fillColor: const Color(0xff37434d),
+                          color: const Color.fromARGB(255, 188, 179, 179),
+                          constraints: const BoxConstraints(
+                              minHeight: 60.0, minWidth: 55.0),
+                          isSelected: weatherSelected,
+                          children: weathericons,
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
+                        child: Divider(
+                          thickness: 3,
+                          color: Color(0xff37434d),
+                        ),
+                      ),
+                      Visibility(
+                        visible: isTempVisible,
+                        child: Column(
+                          children: [TempGraph(todos: temp, duration: length)],
+                        ),
+                      ),
+                      Visibility(
+                        visible: isRainVisible,
+                        child: Column(
+                          children: [
+                            RainGraph(todos: rain, duration: length),
+                          ],
+                        ),
+                      ),
+                      Visibility(
+                        visible: isWindVisible,
+                        child: Column(
+                          children: [WindGraph(todos: wind, duration: length)],
+                        ),
+                      ),
+                      Visibility(
+                        visible: isSnowVisible,
+                        child: Column(
+                          children: [SnowGraph(todos: snow, duration: length)],
+                        ),
+                      ),
+                      Visibility(
+                        visible: isHumVisible,
+                        child: Column(
+                          children: [HumGraph(todos: hum, duration: length)],
+                        ),
+                      ),
+                      Visibility(
+                        visible: isPressVisible,
+                        child: Column(
+                          children: [
                             PressGraph(todos: press, duration: length)
                           ],
                         ),
                       ),
-                    ),
-                    Center(
-                      child: SmoothPageIndicator(
-                        controller: pgController,
-                        count: 3,
-                        axisDirection: Axis.horizontal,
-                        effect: SlideEffect(
-                          activeDotColor: Colors.blueGrey,
-                          dotHeight: 10,
-                          dotColor: Colors.grey.shade400,
-                          dotWidth: 10,
+                      const Center(
+                        child: SizedBox(
+                          height: 65,
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Center(
-                        child: PageView(
-                          controller: pg2Controller,
-                          children: <Widget>[
-                            WindGraph(todos: wind, duration: length),
-                            RainGraph(todos: rain, duration: length),
-                            SnowGraph(todos: snow, duration: length),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: SmoothPageIndicator(
-                        controller: pg2Controller,
-                        count: 3,
-                        axisDirection: Axis.horizontal,
-                        effect: SlideEffect(
-                          activeDotColor: Colors.blueGrey,
-                          dotHeight: 10,
-                          dotColor: Colors.grey.shade400,
-                          dotWidth: 10,
-                        ),
-                      ),
-                    ),
-                    const Center(
-                      child: SizedBox(
-                        height: 70,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
             }
           }),
@@ -312,52 +348,16 @@ class _AnalysisPageState extends State<AnalysisPage> {
           Positioned(
             right: 10,
             bottom: 10,
-            child: SpeedDial(
-              spacing: 8,
-              spaceBetweenChildren: 8,
-              animatedIcon: AnimatedIcons.menu_close,
-              animatedIconTheme: const IconThemeData(size: 22.0),
-              closeManually: false,
-              curve: Curves.bounceIn,
-              overlayColor: Colors.black,
-              overlayOpacity: 0.5,
-              tooltip: 'Change Duration',
-              heroTag: 'speed-dial-hero-tag',
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
-              elevation: 8.0,
-              shape: const CircleBorder(),
-              children: [
-                SpeedDialChild(
-                    child: const Icon(CupertinoIcons.time),
-                    backgroundColor: Colors.green,
-                    label: '14 Days',
-                    labelStyle: const TextStyle(fontSize: 18.0),
-                    onTap: () {
-                      length = 14;
-                      setState(() {});
-                    }),
-                SpeedDialChild(
-                  child: const Icon(CupertinoIcons.time),
-                  backgroundColor: Colors.yellow,
-                  label: '7 Days',
-                  labelStyle: const TextStyle(fontSize: 18.0),
-                  onTap: () {
-                    length = 7;
-                    setState(() {});
-                  },
-                ),
-                SpeedDialChild(
-                  child: const Icon(CupertinoIcons.time),
-                  backgroundColor: Colors.red,
-                  label: '3 Days',
-                  labelStyle: const TextStyle(fontSize: 18.0),
-                  onTap: () {
-                    length = 3;
-                    setState(() {});
-                  },
-                ),
-              ],
+            child: FloatingActionButton(
+              backgroundColor: Colors.blue,
+              tooltip: 'Refresh',
+              onPressed: () {
+                setState(() {});
+              },
+              child: const Icon(
+                Icons.refresh_rounded,
+                size: 30,
+              ),
             ),
           ),
         ],
