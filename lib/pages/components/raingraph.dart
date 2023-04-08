@@ -10,7 +10,7 @@ class RainGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: AspectRatio(
-        aspectRatio: .95,
+        aspectRatio: 1.0,
         child: Padding(
           padding: const EdgeInsets.only(
             right: 24,
@@ -136,8 +136,8 @@ class RainGraph extends StatelessWidget {
 
   LineChartData graphData(double? maxX) {
     List<Color> rainColors = [
-      Color.fromARGB(255, 60, 154, 255),
-      Color.fromARGB(255, 68, 0, 255),
+      const Color.fromARGB(255, 60, 154, 255),
+      const Color.fromARGB(255, 68, 0, 255),
     ];
 
     return LineChartData(
@@ -165,18 +165,18 @@ class RainGraph extends StatelessWidget {
           sideTitles: SideTitles(showTitles: false),
         ),
         topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: true, reservedSize: 7),
+          sideTitles: SideTitles(showTitles: true, reservedSize: 5),
           axisNameSize: 45,
           axisNameWidget: const Text(
             'Rain',
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w400, fontSize: 27),
+                color: Colors.white, fontWeight: FontWeight.w400, fontSize: 25),
           ),
         ),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 28,
+            reservedSize: 30,
             interval: 1,
             getTitlesWidget: bottomTitleWidgets,
           ),

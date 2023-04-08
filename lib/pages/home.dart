@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:caliweather/util/weather_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:caliweather/pages/components/microweather.dart';
@@ -23,10 +25,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Timer? apiCallTimer;
   List<dynamic>? micro;
   List<dynamic>? forecast;
   List<dynamic>? main;
   List<dynamic>? alerts;
+  bool checkLimit = false;
   bool showAlertIndicator = false;
 
   Color bgColor = Colors.grey.shade200;
@@ -35,6 +39,19 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    apiCallTimer?.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    apiCallTimer = Timer.periodic(const Duration(minutes: 5), (Timer t) async {
+      checkLimit = true;
+    });
   }
 
   Future<void> getData() async {
@@ -73,6 +90,35 @@ class _HomePageState extends State<HomePage> {
           child: FlashBar(
             title: Text('${alerts![0]['event']}'),
             content: Text('${alerts![0]['description']}'),
+            showProgressIndicator: true,
+            primaryAction: TextButton(
+              onPressed: () => controller.dismiss(),
+              child:
+                  const Text('DISMISS', style: TextStyle(color: Colors.amber)),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showMessage(String message,
+      {FlashBehavior style = FlashBehavior.floating}) {
+    showFlash(
+      context: context,
+      duration: const Duration(seconds: 3),
+      persistent: true,
+      builder: (_, controller) {
+        return Flash(
+          controller: controller,
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
+          boxShadows: const [BoxShadow(blurRadius: 4)],
+          barrierDismissible: true,
+          behavior: style,
+          position: FlashPosition.top,
+          child: FlashBar(
+            content: Text(message),
             showProgressIndicator: true,
             primaryAction: TextButton(
               onPressed: () => controller.dismiss(),
@@ -142,7 +188,13 @@ class _HomePageState extends State<HomePage> {
                               color: const Color.fromARGB(255, 87, 87, 87)
                                   .withOpacity(0.6),
                               onPressed: () {
-                                setState(() {});
+                                if (checkLimit) {
+                                  checkLimit = false;
+                                  setState(() {});
+                                } else {
+                                  showMessage(
+                                      'Last refresh was less than 5 minutes ago');
+                                }
                               },
                             ),
                           ),

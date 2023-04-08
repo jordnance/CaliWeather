@@ -10,7 +10,7 @@ class WindGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: AspectRatio(
-        aspectRatio: .95,
+        aspectRatio: 1.0,
         child: Padding(
           padding: const EdgeInsets.only(
             right: 24,
@@ -124,8 +124,8 @@ class WindGraph extends StatelessWidget {
 
   LineChartData graphData(double? maxX) {
     List<Color> windColors = [
-      Color.fromARGB(255, 253, 175, 223),
-      Color.fromARGB(255, 250, 13, 160),
+      const Color.fromARGB(255, 253, 175, 223),
+      const Color.fromARGB(255, 250, 13, 160),
     ];
 
     return LineChartData(
@@ -153,18 +153,18 @@ class WindGraph extends StatelessWidget {
           sideTitles: SideTitles(showTitles: false),
         ),
         topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: true, reservedSize: 7),
+          sideTitles: SideTitles(showTitles: true, reservedSize: 5),
           axisNameSize: 45,
           axisNameWidget: const Text(
             'Wind',
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w400, fontSize: 27),
+                color: Colors.white, fontWeight: FontWeight.w400, fontSize: 25)
           ),
         ),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 28,
+            reservedSize: 30,
             interval: 1,
             getTitlesWidget: bottomTitleWidgets,
           ),

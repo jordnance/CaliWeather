@@ -10,7 +10,7 @@ class HumGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: AspectRatio(
-        aspectRatio: .95,
+        aspectRatio: 1.0,
         child: Padding(
           padding: const EdgeInsets.only(
             right: 24,
@@ -136,8 +136,8 @@ class HumGraph extends StatelessWidget {
 
   LineChartData graphData(double? maxX) {
     List<Color> humColors = [
-      Color.fromARGB(255, 65, 255, 77),
-      Color.fromARGB(255, 0, 102, 19),
+      const Color.fromARGB(255, 65, 255, 77),
+      const Color.fromARGB(255, 0, 102, 19),
     ];
 
     return LineChartData(
@@ -165,18 +165,18 @@ class HumGraph extends StatelessWidget {
           sideTitles: SideTitles(showTitles: false),
         ),
         topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: true, reservedSize: 7),
+          sideTitles: SideTitles(showTitles: true, reservedSize: 5),
           axisNameSize: 45,
           axisNameWidget: const Text(
             'Humidity',
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w400, fontSize: 27),
+                color: Colors.white, fontWeight: FontWeight.w400, fontSize: 25),
           ),
         ),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 28,
+            reservedSize: 30,
             interval: 1,
             getTitlesWidget: bottomTitleWidgets,
           ),
