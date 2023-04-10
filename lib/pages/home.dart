@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:intl/intl.dart';
 import 'package:caliweather/util/weather_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:caliweather/pages/components/microweather.dart';
@@ -71,37 +71,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _showTopFlash({FlashBehavior style = FlashBehavior.floating}) {
-    showFlash(
-      context: context,
-      duration: const Duration(seconds: 9),
-      persistent: true,
-      builder: (_, controller) {
-        return Flash(
-          controller: controller,
-          backgroundColor: Colors.white,
-          brightness: Brightness.light,
-          boxShadows: const [BoxShadow(blurRadius: 4)],
-          barrierBlur: 3.0,
-          barrierColor: Colors.black38,
-          barrierDismissible: true,
-          behavior: style,
-          position: FlashPosition.top,
-          child: FlashBar(
-            title: Text('${alerts![0]['event']}'),
-            content: Text('${alerts![0]['description']}'),
-            showProgressIndicator: true,
-            primaryAction: TextButton(
-              onPressed: () => controller.dismiss(),
-              child:
-                  const Text('DISMISS', style: TextStyle(color: Colors.amber)),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   void showMessage(String message,
       {FlashBehavior style = FlashBehavior.floating}) {
     showFlash(
@@ -128,6 +97,48 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       },
+    );
+  }
+
+  void _showAlerts() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              'Active Alerts',
+              textAlign: TextAlign.center,
+            ),
+            titleTextStyle: const TextStyle(
+              color: Colors.black,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+            scrollable: true,
+            content: setupAlertDialoadContainer(),
+          );
+        });
+  }
+
+  Widget setupAlertDialoadContainer() {
+    return SizedBox(
+      height: 300.0,
+      width: 400.0,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: alerts!.length.toInt(),
+        itemBuilder: (BuildContext context, int index) {
+          return ExpansionTile(
+            backgroundColor: const Color.fromARGB(10, 68, 137, 255),
+            title: Text(alerts![index]['event'].toString()),
+            subtitle: Text(
+                'Until ${DateFormat('MMM dd').format(DateTime.fromMillisecondsSinceEpoch((alerts![index]['end'].toInt()) * 1000))}'),
+            children: <Widget>[
+              Text(alerts![index]['description'].toString()),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -239,8 +250,7 @@ class _HomePageState extends State<HomePage> {
                               color: const Color.fromARGB(255, 0, 83, 129),
                               iconSize: 55,
                               onPressed: () {
-                                _showTopFlash();
-                                //_test();
+                                _showAlerts();
                               },
                             ),
                           ),
