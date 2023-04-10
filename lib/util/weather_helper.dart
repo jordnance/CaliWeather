@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:convert';
 import '../util/sharedprefutil.dart';
+import 'dart:developer' as developer;
 
 class WeatherHelper {
   static Future<List<dynamic>?> getGeoName() async {
@@ -15,7 +16,10 @@ class WeatherHelper {
     );
 
     if (geoNameResponse.statusCode != 200) {
-      //print(response.statusCode);
+      developer.log(
+        geoNameResponse.statusCode.toString(),
+        name: 'geoNameResponse.statusCode.error',
+      );
       return null;
     }
 
@@ -32,7 +36,10 @@ class WeatherHelper {
     );
 
     if (geoCoordsResponse.statusCode != 200) {
-      //print(response.statusCode);
+      developer.log(
+        geoCoordsResponse.statusCode.toString(),
+        name: 'geoNameResponse.statusCode.error',
+      );
       return null;
     }
 
@@ -63,7 +70,10 @@ class WeatherHelper {
     );
 
     if (weatherResponse.statusCode != 200) {
-      //print(response.statusCode);
+      developer.log(
+        weatherResponse.statusCode.toString(),
+        name: 'geoNameResponse.statusCode.error',
+      );
       return null;
     }
 
