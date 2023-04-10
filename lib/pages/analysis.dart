@@ -190,7 +190,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade900,
+      backgroundColor: pgBackgroundColor,
       body: FutureBuilder<void>(
           future: getData(),
           builder: (context, snapshot) {
@@ -277,7 +277,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           borderWidth: 1.8,
                           selectedColor: Colors.white,
                           fillColor: const Color(0xff37434d),
-                          color: const Color.fromARGB(255, 188, 179, 179),
+                          color: Colors.grey.shade600,
                           constraints: const BoxConstraints(
                               minHeight: 60.0, minWidth: 55.0),
                           isSelected: weatherSelected,
