@@ -189,178 +189,187 @@ class _AnalysisPageState extends State<AnalysisPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: pgBackgroundColor,
-      body: FutureBuilder<void>(
-          future: getData(),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-                return const Center(
-                  child: Text("None"),
-                );
-              case ConnectionState.waiting:
-                return const Center(
-                  child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator()),
-                );
-              case ConnectionState.active:
-                return const Center(child: Text("Active"));
-              case ConnectionState.done:
-                return SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      const Center(
-                        child: SizedBox(
-                          height: 45,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: pgBackgroundColor,
+        body: FutureBuilder<void>(
+            future: getData(),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return const Center(
+                    child: Text("None"),
+                  );
+                case ConnectionState.waiting:
+                  return const Center(
+                    child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator()),
+                  );
+                case ConnectionState.active:
+                  return const Center(child: Text("Active"));
+                case ConnectionState.done:
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        const Center(
+                          child: SizedBox(
+                            height: 20,
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
-                        child: ToggleButtons(
-                          onPressed: (int index) {
-                            int count = 0;
-                            for (final bool value in weatherSelected) {
-                              if (value) {
-                                count += 1;
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
+                          child: ToggleButtons(
+                            onPressed: (int index) {
+                              int count = 0;
+                              for (final bool value in weatherSelected) {
+                                if (value) {
+                                  count += 1;
+                                }
                               }
-                            }
-                            if (weatherSelected[index] && count < 2) {
-                              return;
-                            }
-                            setState(() {
-                              weatherSelected[index] = !weatherSelected[index];
-                              if (index == 0 && weatherSelected[index]) {
-                                isTempVisible = true;
-                              } else if (index == 0 &&
-                                  !weatherSelected[index]) {
-                                isTempVisible = false;
+                              if (weatherSelected[index] && count < 2) {
+                                return;
                               }
-                              if (index == 1 && weatherSelected[index]) {
-                                isRainVisible = true;
-                              } else if (index == 1 &&
-                                  !weatherSelected[index]) {
-                                isRainVisible = false;
-                              }
-                              if (index == 2 && weatherSelected[index]) {
-                                isWindVisible = true;
-                              } else if (index == 2 &&
-                                  !weatherSelected[index]) {
-                                isWindVisible = false;
-                              }
-                              if (index == 3 && weatherSelected[index]) {
-                                isSnowVisible = true;
-                              } else if (index == 3 &&
-                                  !weatherSelected[index]) {
-                                isSnowVisible = false;
-                              }
-                              if (index == 4 && weatherSelected[index]) {
-                                isHumVisible = true;
-                              } else if (index == 4 &&
-                                  !weatherSelected[index]) {
-                                isHumVisible = false;
-                              }
-                              if (index == 5 && weatherSelected[index]) {
-                                isPressVisible = true;
-                              } else if (index == 5 &&
-                                  !weatherSelected[index]) {
-                                isPressVisible = false;
-                              }
-                            });
-                          },
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          selectedBorderColor: Colors.blue,
-                          borderColor: const Color.fromARGB(255, 71, 87, 99),
-                          borderWidth: 2.2,
-                          selectedColor: Colors.white,
-                          fillColor: const Color.fromARGB(255, 32, 73, 103),
-                          color: Colors.grey.shade700,
-                          constraints: const BoxConstraints(
-                              minHeight: 60.0, minWidth: 55.0),
-                          isSelected: weatherSelected,
-                          children: weathericons,
+                              setState(() {
+                                weatherSelected[index] =
+                                    !weatherSelected[index];
+                                if (index == 0 && weatherSelected[index]) {
+                                  isTempVisible = true;
+                                } else if (index == 0 &&
+                                    !weatherSelected[index]) {
+                                  isTempVisible = false;
+                                }
+                                if (index == 1 && weatherSelected[index]) {
+                                  isRainVisible = true;
+                                } else if (index == 1 &&
+                                    !weatherSelected[index]) {
+                                  isRainVisible = false;
+                                }
+                                if (index == 2 && weatherSelected[index]) {
+                                  isWindVisible = true;
+                                } else if (index == 2 &&
+                                    !weatherSelected[index]) {
+                                  isWindVisible = false;
+                                }
+                                if (index == 3 && weatherSelected[index]) {
+                                  isSnowVisible = true;
+                                } else if (index == 3 &&
+                                    !weatherSelected[index]) {
+                                  isSnowVisible = false;
+                                }
+                                if (index == 4 && weatherSelected[index]) {
+                                  isHumVisible = true;
+                                } else if (index == 4 &&
+                                    !weatherSelected[index]) {
+                                  isHumVisible = false;
+                                }
+                                if (index == 5 && weatherSelected[index]) {
+                                  isPressVisible = true;
+                                } else if (index == 5 &&
+                                    !weatherSelected[index]) {
+                                  isPressVisible = false;
+                                }
+                              });
+                            },
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            selectedBorderColor: Colors.blue,
+                            borderColor: const Color.fromARGB(255, 71, 87, 99),
+                            borderWidth: 2.2,
+                            selectedColor: Colors.white,
+                            fillColor: const Color.fromARGB(255, 32, 73, 103),
+                            color: Colors.grey.shade700,
+                            constraints: const BoxConstraints(
+                                minHeight: 60.0, minWidth: 55.0),
+                            isSelected: weatherSelected,
+                            children: weathericons,
+                          ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-                        child: Divider(
-                          thickness: 2.8,
-                          color: Color(0xff37434d),
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
+                          child: Divider(
+                            thickness: 2.8,
+                            color: Color(0xff37434d),
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: isTempVisible,
-                        child: Column(
-                          children: [TempGraph(todos: temp, duration: length)],
+                        Visibility(
+                          visible: isTempVisible,
+                          child: Column(
+                            children: [
+                              TempGraph(todos: temp, duration: length)
+                            ],
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: isRainVisible,
-                        child: Column(
-                          children: [
-                            RainGraph(todos: rain, duration: length),
-                          ],
+                        Visibility(
+                          visible: isRainVisible,
+                          child: Column(
+                            children: [
+                              RainGraph(todos: rain, duration: length),
+                            ],
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: isWindVisible,
-                        child: Column(
-                          children: [WindGraph(todos: wind, duration: length)],
+                        Visibility(
+                          visible: isWindVisible,
+                          child: Column(
+                            children: [
+                              WindGraph(todos: wind, duration: length)
+                            ],
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: isSnowVisible,
-                        child: Column(
-                          children: [SnowGraph(todos: snow, duration: length)],
+                        Visibility(
+                          visible: isSnowVisible,
+                          child: Column(
+                            children: [
+                              SnowGraph(todos: snow, duration: length)
+                            ],
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: isHumVisible,
-                        child: Column(
-                          children: [HumGraph(todos: hum, duration: length)],
+                        Visibility(
+                          visible: isHumVisible,
+                          child: Column(
+                            children: [HumGraph(todos: hum, duration: length)],
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: isPressVisible,
-                        child: Column(
-                          children: [
-                            PressGraph(todos: press, duration: length)
-                          ],
+                        Visibility(
+                          visible: isPressVisible,
+                          child: Column(
+                            children: [
+                              PressGraph(todos: press, duration: length)
+                            ],
+                          ),
                         ),
-                      ),
-                      const Center(
-                        child: SizedBox(
-                          height: 60,
+                        const Center(
+                          child: SizedBox(
+                            height: 60,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-            }
-          }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Stack(
-        fit: StackFit.expand,
-        children: [
-          Positioned(
-            right: 10,
-            bottom: 10,
-            child: FloatingActionButton(
-              backgroundColor: const Color.fromARGB(255, 255, 177, 81),
-              tooltip: 'Refresh',
-              onPressed: () {
-                setState(() {});
-              },
-              child: const Icon(
-                Icons.refresh_rounded,
-                size: 35,
+                      ],
+                    ),
+                  );
+              }
+            }),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Stack(
+          fit: StackFit.expand,
+          children: [
+            Positioned(
+              right: 10,
+              bottom: 10,
+              child: FloatingActionButton(
+                backgroundColor: const Color.fromARGB(255, 255, 177, 81),
+                tooltip: 'Refresh',
+                onPressed: () {
+                  setState(() {});
+                },
+                child: const Icon(
+                  Icons.refresh_rounded,
+                  size: 35,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
