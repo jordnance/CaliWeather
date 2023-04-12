@@ -5,18 +5,24 @@ class TempGraph extends StatelessWidget {
   const TempGraph({super.key, required this.todos, required this.duration});
   final List<FlSpot>? todos;
   final double? duration;
+  static const Color textColor = Colors.black87;
+  static const Color graphBgColor = Color(0xFF212121); //grey.shae900
+  static const Color graphGridLineColor = Colors.white10;
+  static const Color graphBorderLineColor = Color(0xff37434d); //blue-grey
+  static const Color graphLineGradientColor1 = Color.fromARGB(255, 255, 255, 0);
+  static const Color graphLineGradientColor2 = Color.fromARGB(255, 226, 105, 0);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: AspectRatio(
-        aspectRatio: 1.4,
+        aspectRatio: 1.0,
         child: Padding(
           padding: const EdgeInsets.only(
             right: 24,
             left: 12,
-            top: 24,
-            bottom: 12,
+            top: 12,
+            bottom: 30,
           ),
           child: LineChart(
             graphData(duration),
@@ -29,7 +35,7 @@ class TempGraph extends StatelessWidget {
   Widget tempLeftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: textColor,
       fontSize: 12,
     );
     String text;
@@ -64,59 +70,63 @@ class TempGraph extends StatelessWidget {
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: textColor,
       fontSize: 13,
     );
     Widget text;
-    switch (value.toInt()) {
-      case 0:
-        text = const Text('0', style: style);
-        break;
-      case 1:
-        text = const Text('1', style: style);
-        break;
-      case 2:
-        text = const Text('2', style: style);
-        break;
-      case 3:
-        text = const Text('3', style: style);
-        break;
-      case 4:
-        text = const Text('4', style: style);
-        break;
-      case 5:
-        text = const Text('5', style: style);
-        break;
-      case 6:
-        text = const Text('6', style: style);
-        break;
-      case 7:
-        text = const Text('7', style: style);
-        break;
-      case 8:
-        text = const Text('8', style: style);
-        break;
-      case 9:
-        text = const Text('9', style: style);
-        break;
-      case 10:
-        text = const Text('10', style: style);
-        break;
-      case 11:
-        text = const Text('11', style: style);
-        break;
-      case 12:
-        text = const Text('12', style: style);
-        break;
-      case 13:
-        text = const Text('13', style: style);
-        break;
-      case 14:
-        text = const Text('14', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
+    if (value % 1 == 0) {
+      switch (value.toInt()) {
+        case 0:
+          text = const Text('0', style: style);
+          break;
+        case 1:
+          text = const Text('1', style: style);
+          break;
+        case 2:
+          text = const Text('2', style: style);
+          break;
+        case 3:
+          text = const Text('3', style: style);
+          break;
+        case 4:
+          text = const Text('4', style: style);
+          break;
+        case 5:
+          text = const Text('5', style: style);
+          break;
+        case 6:
+          text = const Text('6', style: style);
+          break;
+        case 7:
+          text = const Text('7', style: style);
+          break;
+        case 8:
+          text = const Text('8', style: style);
+          break;
+        case 9:
+          text = const Text('9', style: style);
+          break;
+        case 10:
+          text = const Text('10', style: style);
+          break;
+        case 11:
+          text = const Text('11', style: style);
+          break;
+        case 12:
+          text = const Text('12', style: style);
+          break;
+        case 13:
+          text = const Text('13', style: style);
+          break;
+        case 14:
+          text = const Text('14', style: style);
+          break;
+        default:
+          text = const Text('', style: style);
+          break;
+      }
+    } else {
+      text = const Text('', style: style);
     }
     return SideTitleWidget(
       axisSide: meta.axisSide,
@@ -126,11 +136,12 @@ class TempGraph extends StatelessWidget {
 
   LineChartData graphData(double? maxX) {
     List<Color> tempColors = [
-      Color.fromARGB(255, 255, 255, 0),
-      Color.fromARGB(255, 226, 105, 0),
+      graphLineGradientColor1,
+      graphLineGradientColor2,
     ];
 
     return LineChartData(
+      backgroundColor: graphBgColor,
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
@@ -138,13 +149,13 @@ class TempGraph extends StatelessWidget {
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color: Colors.white10,
+            color: graphGridLineColor,
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
           return FlLine(
-            color: Colors.white10,
+            color: graphGridLineColor,
             strokeWidth: 1,
           );
         },
@@ -155,24 +166,24 @@ class TempGraph extends StatelessWidget {
           sideTitles: SideTitles(showTitles: false),
         ),
         topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: true, reservedSize: 7),
-          axisNameSize: 20,
+          sideTitles: SideTitles(showTitles: true, reservedSize: 5),
+          axisNameSize: 45,
           axisNameWidget: const Text(
             'Temperature',
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
+                color: textColor, fontWeight: FontWeight.w400, fontSize: 25),
           ),
         ),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 28,
+            reservedSize: 30,
             interval: 1,
             getTitlesWidget: bottomTitleWidgets,
           ),
           axisNameWidget: const Text(
             'Days',
-            style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
+            style: TextStyle(color: textColor, fontStyle: FontStyle.italic),
           ),
         ),
         leftTitles: AxisTitles(
@@ -184,13 +195,13 @@ class TempGraph extends StatelessWidget {
           ),
           axisNameWidget: const Text(
             'Degrees (°F)',
-            style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
+            style: TextStyle(color: textColor, fontStyle: FontStyle.italic),
           ),
         ),
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: const Color(0xff37434d), width: 4),
+        border: Border.all(color: graphBorderLineColor, width: 4),
       ),
       minX: 0,
       maxX: maxX,

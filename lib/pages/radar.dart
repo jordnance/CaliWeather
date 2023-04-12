@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:caliweather/util/sharedprefutil.dart';
-import 'package:caliweather/util/weather_helper.dart';
-import '../util/globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -33,7 +31,8 @@ class _RadarPageState extends State<RadarPage> {
   late Timer timerClearCache;
   Position? currentPosition;
   final store = FlutterMapTileCaching.instance('RadarStore');
-  LatLng currentCenter = LatLng(SharedPrefUtil.getLatitude(), SharedPrefUtil.getLongitude());
+  LatLng currentCenter =
+      LatLng(SharedPrefUtil.getLatitude(), SharedPrefUtil.getLongitude());
 
   List<String> pastRadarUrl = [
     'https://tilecache.rainviewer.com/v2/radar/${RadarUtil.getTimestamps(0)}/512/{z}/{x}/{y}/1/1_1.png',
@@ -86,10 +85,12 @@ class _RadarPageState extends State<RadarPage> {
     if (currentPosition != null) {
       SharedPrefUtil.setLatitude(currentPosition!.latitude);
       SharedPrefUtil.setLongitude(currentPosition!.longitude);
-      currentCenter = LatLng(SharedPrefUtil.getLatitude(), SharedPrefUtil.getLongitude());
+      currentCenter =
+          LatLng(SharedPrefUtil.getLatitude(), SharedPrefUtil.getLongitude());
       mapController.move(currentCenter, currentZoom);
     } else {
-      currentCenter = LatLng(SharedPrefUtil.getLatitude(), SharedPrefUtil.getLongitude());
+      currentCenter =
+          LatLng(SharedPrefUtil.getLatitude(), SharedPrefUtil.getLongitude());
       mapController.move(currentCenter, currentZoom);
     }
   }
