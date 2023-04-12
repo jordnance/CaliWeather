@@ -59,7 +59,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
   Color pgBackgroundColor = Colors.grey.shade200;
 
   Future<void> getData() async {
-    if (SharedPrefUtil.getIsLoggedIn() == true) {
+    if (SharedPrefUtil.getIsLoggedIn()) {
       List<List<FlSpot>> data = await GraphHelper.newCoords();
       rain = data[0];
       temp = data[1];
@@ -274,10 +274,10 @@ class _AnalysisPageState extends State<AnalysisPage> {
                               const BorderRadius.all(Radius.circular(10)),
                           selectedBorderColor: Colors.blue,
                           borderColor: const Color.fromARGB(255, 71, 87, 99),
-                          borderWidth: 1.8,
+                          borderWidth: 2.2,
                           selectedColor: Colors.white,
-                          fillColor: const Color(0xff37434d),
-                          color: Colors.grey.shade600,
+                          fillColor: const Color.fromARGB(255, 32, 73, 103),
+                          color: Colors.grey.shade700,
                           constraints: const BoxConstraints(
                               minHeight: 60.0, minWidth: 55.0),
                           isSelected: weatherSelected,
@@ -287,7 +287,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                       const Padding(
                         padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
                         child: Divider(
-                          thickness: 3,
+                          thickness: 2.8,
                           color: Color(0xff37434d),
                         ),
                       ),
@@ -333,7 +333,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                       ),
                       const Center(
                         child: SizedBox(
-                          height: 65,
+                          height: 60,
                         ),
                       ),
                     ],
@@ -349,14 +349,14 @@ class _AnalysisPageState extends State<AnalysisPage> {
             right: 10,
             bottom: 10,
             child: FloatingActionButton(
-              backgroundColor: Colors.blue,
+              backgroundColor: const Color.fromARGB(255, 255, 177, 81),
               tooltip: 'Refresh',
               onPressed: () {
                 setState(() {});
               },
               child: const Icon(
                 Icons.refresh_rounded,
-                size: 30,
+                size: 35,
               ),
             ),
           ),
