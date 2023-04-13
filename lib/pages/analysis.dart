@@ -357,7 +357,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
               right: 10,
               bottom: 10,
               child: FloatingActionButton(
-                backgroundColor: Colors.blue,
+                backgroundColor: Color.fromARGB(255, 114, 154, 255),
                 tooltip: 'Refresh',
                 onPressed: () {
                   setState(() {});
