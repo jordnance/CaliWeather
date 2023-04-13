@@ -266,7 +266,7 @@ class _RadarPageState extends State<RadarPage> {
                     fontSize: 15,
                   ),
                 ),
-                backgroundColor: Color.fromARGB(255, 255, 177, 81),
+                backgroundColor: const Color.fromARGB(255, 255, 177, 81),
                 tooltip: 'Overlays',
                 onPressed: changeOverlays,
                 icon: const Icon(
@@ -279,7 +279,7 @@ class _RadarPageState extends State<RadarPage> {
               right: 10,
               bottom: 150,
               child: FloatingActionButton(
-                backgroundColor: Color.fromARGB(255, 114, 154, 255),
+                backgroundColor: const Color.fromARGB(255, 114, 154, 255),
                 tooltip: 'Center',
                 onPressed: centerBack,
                 child: const Icon(
@@ -292,7 +292,7 @@ class _RadarPageState extends State<RadarPage> {
               right: 10,
               bottom: 80,
               child: FloatingActionButton(
-                backgroundColor: Color.fromARGB(255, 182, 68, 48),
+                backgroundColor: const Color.fromARGB(255, 182, 68, 48),
                 tooltip: 'Zoom Out',
                 onPressed: zoomOut,
                 child: const Icon(
@@ -305,7 +305,7 @@ class _RadarPageState extends State<RadarPage> {
               right: 10,
               bottom: 10,
               child: FloatingActionButton(
-                backgroundColor: Color.fromARGB(255, 174, 172, 87),
+                backgroundColor: const Color.fromARGB(255, 174, 172, 87),
                 tooltip: 'Zoom In',
                 onPressed: zoomIn,
                 child: const Icon(
@@ -323,7 +323,7 @@ class _RadarPageState extends State<RadarPage> {
                   width: 265,
                   height: 53,
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 56, 132, 186),
+                      color: const Color.fromARGB(255, 56, 122, 170),
                       borderRadius: BorderRadius.circular(26)),
                   child: Center(
                     child: Row(
@@ -338,7 +338,7 @@ class _RadarPageState extends State<RadarPage> {
                             child: Icon(
                               playStop[playStopIndex],
                               size: 40,
-                              color: Colors.amber,
+                              color: const Color.fromARGB(255, 255, 177, 81),
                             ),
                           ),
                         ),
@@ -347,9 +347,9 @@ class _RadarPageState extends State<RadarPage> {
                           value: currentSliderValue,
                           min: -2,
                           max: 0,
-                          activeColor: Color.fromARGB(255, 125, 197, 255),
+                          activeColor: const Color.fromARGB(255, 125, 197, 255),
                           inactiveColor: Colors.white,
-                          thumbColor: Colors.amber,
+                          thumbColor: const Color.fromARGB(255, 255, 177, 81),
                           onChanged: (double value) {
                             setState(() {
                               currentSliderValue = value;
