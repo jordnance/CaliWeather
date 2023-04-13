@@ -150,179 +150,167 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.grey[600],
               ),
             ),
-            Center(
+            SizedBox(
+              height: 54,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Expanded(
-                  child: SizedBox(
-                    height: 54,
-                    child: TextField(
-                      controller: _forgotUsernameController,
-                      obscureText: false,
-                      enabled: true,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        suffixIcon: Icon(
-                          Icons.mode_edit_outline,
-                          size: 16,
-                        ),
-                        floatingLabelAlignment: FloatingLabelAlignment.start,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        label: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              WidgetSpan(
-                                child: Text(
-                                  'Username',
-                                ),
-                              ),
-                              WidgetSpan(
-                                child: Text(
-                                  '*',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
+                child: TextField(
+                  controller: _forgotUsernameController,
+                  obscureText: false,
+                  enabled: true,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    suffixIcon: Icon(
+                      Icons.mode_edit_outline,
+                      size: 16,
+                    ),
+                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    label: Text.rich(
+                      TextSpan(
+                        children: <InlineSpan>[
+                          WidgetSpan(
+                            child: Text(
+                              'Username',
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 13, 71, 161),
-                            width: 1.5,
+                          WidgetSpan(
+                            child: Text(
+                              '*',
+                              style: TextStyle(color: Colors.red),
+                            ),
                           ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 117, 117, 117),
-                              width: 1.5),
-                        ),
+                        ],
                       ),
-                      textAlign: TextAlign.start,
-                      textDirection: TextDirection.ltr,
-                      onTapOutside: (_) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 13, 71, 161),
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 117, 117, 117),
+                          width: 1.5),
                     ),
                   ),
+                  textAlign: TextAlign.start,
+                  textDirection: TextDirection.ltr,
+                  onTapOutside: (_) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
                 ),
               ),
             ),
             const SizedBox(height: 10),
-            Center(
+            SizedBox(
+              height: 54,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Expanded(
-                  child: SizedBox(
-                    height: 54,
-                    child: TextField(
-                      controller: _forgotPasswordController,
-                      obscureText: true,
-                      enabled: true,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        suffixIcon: Icon(
-                          Icons.mode_edit_outline,
-                          size: 16,
-                        ),
-                        floatingLabelAlignment: FloatingLabelAlignment.start,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        label: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              WidgetSpan(
-                                child: Text(
-                                  'Enter New Password',
-                                ),
-                              ),
-                              WidgetSpan(
-                                child: Text(
-                                  '*',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
+                child: TextField(
+                  controller: _forgotPasswordController,
+                  obscureText: true,
+                  enabled: true,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    suffixIcon: Icon(
+                      Icons.mode_edit_outline,
+                      size: 16,
+                    ),
+                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    label: Text.rich(
+                      TextSpan(
+                        children: <InlineSpan>[
+                          WidgetSpan(
+                            child: Text(
+                              'Enter New Password',
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 13, 71, 161),
-                            width: 1.5,
+                          WidgetSpan(
+                            child: Text(
+                              '*',
+                              style: TextStyle(color: Colors.red),
+                            ),
                           ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 117, 117, 117),
-                              width: 1.5),
-                        ),
+                        ],
                       ),
-                      textAlign: TextAlign.start,
-                      textDirection: TextDirection.ltr,
-                      onTapOutside: (_) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 13, 71, 161),
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 117, 117, 117),
+                          width: 1.5),
                     ),
                   ),
+                  textAlign: TextAlign.start,
+                  textDirection: TextDirection.ltr,
+                  onTapOutside: (_) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
                 ),
               ),
             ),
             const SizedBox(height: 10),
-            Center(
+            SizedBox(
+              height: 54,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Expanded(
-                  child: SizedBox(
-                    height: 54,
-                    child: TextField(
-                      controller: _confirmPasswordController,
-                      obscureText: true,
-                      enabled: true,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        suffixIcon: Icon(
-                          Icons.mode_edit_outline,
-                          size: 16,
-                        ),
-                        floatingLabelAlignment: FloatingLabelAlignment.start,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        label: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              WidgetSpan(
-                                child: Text(
-                                  'Confirm Password',
-                                ),
-                              ),
-                              WidgetSpan(
-                                child: Text(
-                                  '*',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
+                child: TextField(
+                  controller: _confirmPasswordController,
+                  obscureText: true,
+                  enabled: true,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    suffixIcon: Icon(
+                      Icons.mode_edit_outline,
+                      size: 16,
+                    ),
+                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    label: Text.rich(
+                      TextSpan(
+                        children: <InlineSpan>[
+                          WidgetSpan(
+                            child: Text(
+                              'Confirm Password',
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 13, 71, 161),
-                            width: 1.5,
+                          WidgetSpan(
+                            child: Text(
+                              '*',
+                              style: TextStyle(color: Colors.red),
+                            ),
                           ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 117, 117, 117),
-                              width: 1.5),
-                        ),
+                        ],
                       ),
-                      textAlign: TextAlign.start,
-                      textDirection: TextDirection.ltr,
-                      onTapOutside: (_) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 13, 71, 161),
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 117, 117, 117),
+                          width: 1.5),
                     ),
                   ),
+                  textAlign: TextAlign.start,
+                  textDirection: TextDirection.ltr,
+                  onTapOutside: (_) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
                 ),
               ),
             ),
@@ -412,297 +400,277 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.grey[600],
               ),
             ),
-            Center(
+            SizedBox(
+              height: 54,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Expanded(
-                  child: SizedBox(
-                    height: 54,
-                    child: TextField(
-                      controller: _newFirstNameController,
-                      obscureText: false,
-                      enabled: true,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        suffixIcon: Icon(
-                          Icons.person,
-                          size: 16,
-                        ),
-                        floatingLabelAlignment: FloatingLabelAlignment.start,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        label: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              WidgetSpan(
-                                child: Text(
-                                  'First Name',
-                                ),
-                              ),
-                              WidgetSpan(
-                                child: Text(
-                                  '*',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
+                child: TextField(
+                  controller: _newFirstNameController,
+                  obscureText: false,
+                  enabled: true,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    suffixIcon: Icon(
+                      Icons.person,
+                      size: 16,
+                    ),
+                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    label: Text.rich(
+                      TextSpan(
+                        children: <InlineSpan>[
+                          WidgetSpan(
+                            child: Text(
+                              'First Name',
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 13, 71, 161),
-                            width: 1.5,
+                          WidgetSpan(
+                            child: Text(
+                              '*',
+                              style: TextStyle(color: Colors.red),
+                            ),
                           ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 117, 117, 117),
-                              width: 1.5),
-                        ),
+                        ],
                       ),
-                      textAlign: TextAlign.start,
-                      textDirection: TextDirection.ltr,
-                      onTapOutside: (_) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 13, 71, 161),
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 117, 117, 117),
+                          width: 1.5),
                     ),
                   ),
+                  textAlign: TextAlign.start,
+                  textDirection: TextDirection.ltr,
+                  onTapOutside: (_) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
                 ),
               ),
             ),
             const SizedBox(height: 10),
-            Center(
+            SizedBox(
+              height: 54,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Expanded(
-                  child: SizedBox(
-                    height: 54,
-                    child: TextField(
-                      controller: _newLastNameController,
-                      obscureText: false,
-                      enabled: true,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        suffixIcon: Icon(
-                          Icons.person,
-                          size: 16,
-                        ),
-                        floatingLabelAlignment: FloatingLabelAlignment.start,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        label: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              WidgetSpan(
-                                child: Text(
-                                  'Last Name',
-                                ),
-                              ),
-                              WidgetSpan(
-                                child: Text(
-                                  '*',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
+                child: TextField(
+                  controller: _newLastNameController,
+                  obscureText: false,
+                  enabled: true,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    suffixIcon: Icon(
+                      Icons.person,
+                      size: 16,
+                    ),
+                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    label: Text.rich(
+                      TextSpan(
+                        children: <InlineSpan>[
+                          WidgetSpan(
+                            child: Text(
+                              'Last Name',
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 13, 71, 161),
-                            width: 1.5,
+                          WidgetSpan(
+                            child: Text(
+                              '*',
+                              style: TextStyle(color: Colors.red),
+                            ),
                           ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 117, 117, 117),
-                              width: 1.5),
-                        ),
+                        ],
                       ),
-                      textAlign: TextAlign.start,
-                      textDirection: TextDirection.ltr,
-                      onTapOutside: (_) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 13, 71, 161),
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 117, 117, 117),
+                          width: 1.5),
                     ),
                   ),
+                  textAlign: TextAlign.start,
+                  textDirection: TextDirection.ltr,
+                  onTapOutside: (_) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
                 ),
               ),
             ),
             const SizedBox(height: 10),
-            Center(
+            SizedBox(
+              height: 54,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Expanded(
-                  child: SizedBox(
-                    height: 54,
-                    child: TextField(
-                      controller: _newUsernameController,
-                      obscureText: false,
-                      enabled: true,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        suffixIcon: Icon(
-                          Icons.abc,
-                          size: 16,
-                        ),
-                        floatingLabelAlignment: FloatingLabelAlignment.start,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        label: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              WidgetSpan(
-                                child: Text(
-                                  'Username',
-                                ),
-                              ),
-                              WidgetSpan(
-                                child: Text(
-                                  '*',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
+                child: TextField(
+                  controller: _newUsernameController,
+                  obscureText: false,
+                  enabled: true,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    suffixIcon: Icon(
+                      Icons.abc,
+                      size: 16,
+                    ),
+                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    label: Text.rich(
+                      TextSpan(
+                        children: <InlineSpan>[
+                          WidgetSpan(
+                            child: Text(
+                              'Username',
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 13, 71, 161),
-                            width: 1.5,
+                          WidgetSpan(
+                            child: Text(
+                              '*',
+                              style: TextStyle(color: Colors.red),
+                            ),
                           ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 117, 117, 117),
-                              width: 1.5),
-                        ),
+                        ],
                       ),
-                      textAlign: TextAlign.start,
-                      textDirection: TextDirection.ltr,
-                      onTapOutside: (_) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 13, 71, 161),
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 117, 117, 117),
+                          width: 1.5),
                     ),
                   ),
+                  textAlign: TextAlign.start,
+                  textDirection: TextDirection.ltr,
+                  onTapOutside: (_) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
                 ),
               ),
             ),
             const SizedBox(height: 10),
-            Center(
+            SizedBox(
+              height: 54,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Expanded(
-                  child: SizedBox(
-                    height: 54,
-                    child: TextField(
-                      controller: _newPasswordController,
-                      obscureText: true,
-                      enabled: true,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        suffixIcon: Icon(
-                          Icons.password,
-                          size: 16,
-                        ),
-                        floatingLabelAlignment: FloatingLabelAlignment.start,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        label: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              WidgetSpan(
-                                child: Text(
-                                  'Enter Password',
-                                ),
-                              ),
-                              WidgetSpan(
-                                child: Text(
-                                  '*',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
+                child: TextField(
+                  controller: _newPasswordController,
+                  obscureText: true,
+                  enabled: true,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    suffixIcon: Icon(
+                      Icons.password,
+                      size: 16,
+                    ),
+                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    label: Text.rich(
+                      TextSpan(
+                        children: <InlineSpan>[
+                          WidgetSpan(
+                            child: Text(
+                              'Enter Password',
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 13, 71, 161),
-                            width: 1.5,
+                          WidgetSpan(
+                            child: Text(
+                              '*',
+                              style: TextStyle(color: Colors.red),
+                            ),
                           ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 117, 117, 117),
-                              width: 1.5),
-                        ),
+                        ],
                       ),
-                      textAlign: TextAlign.start,
-                      textDirection: TextDirection.ltr,
-                      onTapOutside: (_) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 13, 71, 161),
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 117, 117, 117),
+                          width: 1.5),
                     ),
                   ),
+                  textAlign: TextAlign.start,
+                  textDirection: TextDirection.ltr,
+                  onTapOutside: (_) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
                 ),
               ),
             ),
             const SizedBox(height: 10),
-            Center(
+            SizedBox(
+              height: 54,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Expanded(
-                  child: SizedBox(
-                    height: 54,
-                    child: TextField(
-                      controller: _confirmPasswordController,
-                      obscureText: true,
-                      enabled: true,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        suffixIcon: Icon(
-                          Icons.password,
-                          size: 16,
-                        ),
-                        floatingLabelAlignment: FloatingLabelAlignment.start,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        label: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              WidgetSpan(
-                                child: Text(
-                                  'Confirm Password',
-                                ),
-                              ),
-                              WidgetSpan(
-                                child: Text(
-                                  '*',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
+                child: TextField(
+                  controller: _confirmPasswordController,
+                  obscureText: true,
+                  enabled: true,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    suffixIcon: Icon(
+                      Icons.password,
+                      size: 16,
+                    ),
+                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    label: Text.rich(
+                      TextSpan(
+                        children: <InlineSpan>[
+                          WidgetSpan(
+                            child: Text(
+                              'Confirm Password',
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 13, 71, 161),
-                            width: 1.5,
+                          WidgetSpan(
+                            child: Text(
+                              '*',
+                              style: TextStyle(color: Colors.red),
+                            ),
                           ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 117, 117, 117),
-                              width: 1.5),
-                        ),
+                        ],
                       ),
-                      textAlign: TextAlign.start,
-                      textDirection: TextDirection.ltr,
-                      onTapOutside: (_) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 13, 71, 161),
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 117, 117, 117),
+                          width: 1.5),
                     ),
                   ),
+                  textAlign: TextAlign.start,
+                  textDirection: TextDirection.ltr,
+                  onTapOutside: (_) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
                 ),
               ),
             ),
