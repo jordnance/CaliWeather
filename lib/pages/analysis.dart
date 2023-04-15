@@ -287,10 +287,10 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           ),
                         ),
                         const Padding(
-                          padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
+                          padding: EdgeInsets.fromLTRB(15, 9, 15, 5),
                           child: Divider(
-                            thickness: 2.8,
-                            color: Color(0xff37434d),
+                            thickness: 2.2,
+                            color: Color.fromARGB(255, 71, 87, 99),
                           ),
                         ),
                         Visibility(
