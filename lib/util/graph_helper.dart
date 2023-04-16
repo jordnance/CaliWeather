@@ -4,20 +4,21 @@ import 'package:fl_chart/fl_chart.dart';
 
 class GraphHelper {
   static Future<List<double>> getXCoords() async {
-    var test = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
-    var leastCurrent = test[0]['apiCallDate'];
+    var data = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
+    var mostCurrent = data[data.length - 1]['apiCallDate'];
 
-    var thisTime, difference, parsedLeastCurrent, parsedThisTime;
+    // ignore: prefer_typing_uninitialized_variables
+    var thisTime, difference, parsedMostCurrent, parsedThisTime;
     double seconds, newX = 0;
     List<double> xCoords = [];
 
-    for (int i = 0; i < test.length; i++) {
-      thisTime = test[i]['apiCallDate'];
+    for (int i = data.length - 1; i > -1; i--) {
+      thisTime = data[i]['apiCallDate'];
       parsedThisTime = DateTime.parse(thisTime);
-      parsedLeastCurrent = DateTime.parse(leastCurrent);
-      difference = parsedThisTime.difference(parsedLeastCurrent);
+      parsedMostCurrent = DateTime.parse(mostCurrent);
+      difference = parsedThisTime.difference(parsedMostCurrent);
       seconds = difference.inSeconds.toDouble();
-      newX = seconds / 86400;
+      newX = (seconds / 86400) * -1;
       xCoords.add(newX);
     }
 
@@ -25,20 +26,20 @@ class GraphHelper {
   }
 
   static Future<List<List<double>>> getYCoords() async {
-    var test = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
+    var data = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
     double? yRain, yTemp, yHum, ySnow, yWind, yPress;
     List<double> values = [];
     List<List<double>> yCoords = [];
 
-    for (int i = 0; i < test.length; i++) {
-      yRain = test[i]['rain'];
+    for (int i = data.length - 1; i > -1; i--) {
+      yRain = data[i]['rain'];
       yRain ??= 0;
-      yTemp = test[i]['temp'];
-      yHum = test[i]['humidity'];
-      ySnow = test[i]['snow'];
+      yTemp = data[i]['temp'];
+      yHum = data[i]['humidity'];
+      ySnow = data[i]['snow'];
       ySnow ??= 0;
-      yWind = test[i]['windSpeed'];
-      yPress = test[i]['pressure'];
+      yWind = data[i]['windSpeed'];
+      yPress = data[i]['pressure'];
       values.add(yRain);
       values.add(yTemp!);
       values.add(yHum!);
@@ -54,9 +55,9 @@ class GraphHelper {
 
   static Future<List<List<FlSpot>>> newCoords() async {
     if (SharedPrefUtil.getIsLoggedIn()) {
-      var test = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
+      var data = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
 
-      if (test.isNotEmpty) {
+      if (data.isNotEmpty) {
         var xCoords = await getXCoords();
         var yCoords = await getYCoords();
         List<List<FlSpot>> newCoords = [];
