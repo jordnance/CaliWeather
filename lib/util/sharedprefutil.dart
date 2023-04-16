@@ -30,6 +30,12 @@ class SharedPrefUtil {
   static const String isEnabled = 'isEnabled';
   static const String latitude = 'latitude';
   static const String longitude = 'longitude';
+  static const String isTempGraph = 'isTempGraph';
+  static const String isRainGraph = 'isRainGraph';
+  static const String isWindGraph = 'isWindGraph';
+  static const String isSnowGraph = 'isSnowGraph';
+  static const String isHumGraph = 'isHumGraph';
+  static const String isPressGraph = 'isPressGraph';
 
   //AMBIGOUS SETTER FUNCTIONS
   static Future<void> setIntByKey(String key, int val) async =>
@@ -107,6 +113,24 @@ class SharedPrefUtil {
 
   static Future<void> setLogout() async => await _prefs.clear();
 
+  static Future<void> setIsTempGraph(bool val) async =>
+      await _prefs.setBool(SharedPrefUtil.isTempGraph, val);
+
+  static Future<void> setIsRainGraph(bool val) async =>
+      await _prefs.setBool(SharedPrefUtil.isRainGraph, val);
+
+  static Future<void> setIsWindGraph(bool val) async =>
+      await _prefs.setBool(SharedPrefUtil.isWindGraph, val);
+
+  static Future<void> setIsSnowGraph(bool val) async =>
+      await _prefs.setBool(SharedPrefUtil.isSnowGraph, val);
+
+  static Future<void> setIsHumGraph(bool val) async =>
+      await _prefs.setBool(SharedPrefUtil.isHumGraph, val);
+
+  static Future<void> setIsPressGraph(bool val) async =>
+      await _prefs.setBool(SharedPrefUtil.isPressGraph, val);
+
   static Future<void> setUserLogin(Map user) async {
     setIsLoggedIn(true);
     setUserId(user[userId]);
@@ -127,6 +151,12 @@ class SharedPrefUtil {
     setServiceEnabled(true);
     setLatitude(35.393528);
     setLongitude(-119.043732);
+    setIsTempGraph(true);
+    setIsRainGraph(false);
+    setIsWindGraph(false);
+    setIsSnowGraph(false);
+    setIsHumGraph(false);
+    setIsPressGraph(false);
   }
 
   //USER AND PROFILE GETTER FUNCTIONS
@@ -182,6 +212,24 @@ class SharedPrefUtil {
 
   static double getLongitude() =>
       _prefs.getDouble(SharedPrefUtil.longitude) ?? -119.043732;
+
+  static bool getIsTempGraph() =>
+      _prefs.getBool(SharedPrefUtil.isTempGraph) ?? true;
+
+  static bool getIsRainGraph() =>
+      _prefs.getBool(SharedPrefUtil.isRainGraph) ?? false;
+
+  static bool getIsWindGraph() =>
+      _prefs.getBool(SharedPrefUtil.isWindGraph) ?? false;
+
+  static bool getIsSnowGraph() =>
+      _prefs.getBool(SharedPrefUtil.isSnowGraph) ?? false;
+
+  static bool getIsHumGraph() =>
+      _prefs.getBool(SharedPrefUtil.isHumGraph) ?? false;
+
+  static bool getIsPressGraph() =>
+      _prefs.getBool(SharedPrefUtil.isPressGraph) ?? false;
 
   static Future<void> checkAllPrefs() async {
     developer.log(
@@ -255,6 +303,30 @@ class SharedPrefUtil {
     developer.log(
       getLongitude().toString(),
       name: 'debug_sharedpref.Longitude',
+    );
+    developer.log(
+      getIsTempGraph().toString(),
+      name: 'debug_sharedpref.IsTempGraph',
+    );
+    developer.log(
+      getIsRainGraph().toString(),
+      name: 'debug_sharedpref.IsRainGraph',
+    );
+    developer.log(
+      getIsWindGraph().toString(),
+      name: 'debug_sharedpref.IsWindGraph',
+    );
+    developer.log(
+      getIsSnowGraph().toString(),
+      name: 'debug_sharedpref.IsSnowGraph',
+    );
+    developer.log(
+      getIsHumGraph().toString(),
+      name: 'debug_sharedpref.IsHumGraph',
+    );
+    developer.log(
+      getIsPressGraph().toString(),
+      name: 'debug_sharedpref.IsPressGraph',
     );
   }
 }

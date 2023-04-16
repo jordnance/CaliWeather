@@ -41,13 +41,14 @@ class AnalysisPage extends StatefulWidget {
 }
 
 class _AnalysisPageState extends State<AnalysisPage> {
-  final List<bool> weatherSelected = [true, false, false, false, false, false];
-  bool isTempVisible = true;
-  bool isHumVisible = false;
-  bool isPressVisible = false;
-  bool isWindVisible = false;
-  bool isRainVisible = false;
-  bool isSnowVisible = false;
+  final List<bool> weatherSelected = [
+    SharedPrefUtil.getIsTempGraph(),
+    SharedPrefUtil.getIsRainGraph(),
+    SharedPrefUtil.getIsWindGraph(),
+    SharedPrefUtil.getIsSnowGraph(),
+    SharedPrefUtil.getIsHumGraph(),
+    SharedPrefUtil.getIsPressGraph()
+  ];
 
   List<FlSpot>? rain;
   List<FlSpot>? temp;
@@ -235,40 +236,40 @@ class _AnalysisPageState extends State<AnalysisPage> {
                                 weatherSelected[index] =
                                     !weatherSelected[index];
                                 if (index == 0 && weatherSelected[index]) {
-                                  isTempVisible = true;
+                                  SharedPrefUtil.setIsTempGraph(true);
                                 } else if (index == 0 &&
                                     !weatherSelected[index]) {
-                                  isTempVisible = false;
+                                  SharedPrefUtil.setIsTempGraph(false);
                                 }
                                 if (index == 1 && weatherSelected[index]) {
-                                  isRainVisible = true;
+                                  SharedPrefUtil.setIsRainGraph(true);
                                 } else if (index == 1 &&
                                     !weatherSelected[index]) {
-                                  isRainVisible = false;
+                                  SharedPrefUtil.setIsRainGraph(false);
                                 }
                                 if (index == 2 && weatherSelected[index]) {
-                                  isWindVisible = true;
+                                  SharedPrefUtil.setIsWindGraph(true);
                                 } else if (index == 2 &&
                                     !weatherSelected[index]) {
-                                  isWindVisible = false;
+                                  SharedPrefUtil.setIsWindGraph(false);
                                 }
                                 if (index == 3 && weatherSelected[index]) {
-                                  isSnowVisible = true;
+                                  SharedPrefUtil.setIsSnowGraph(true);
                                 } else if (index == 3 &&
                                     !weatherSelected[index]) {
-                                  isSnowVisible = false;
+                                  SharedPrefUtil.setIsSnowGraph(false);
                                 }
                                 if (index == 4 && weatherSelected[index]) {
-                                  isHumVisible = true;
+                                  SharedPrefUtil.setIsHumGraph(true);
                                 } else if (index == 4 &&
                                     !weatherSelected[index]) {
-                                  isHumVisible = false;
+                                  SharedPrefUtil.setIsHumGraph(false);
                                 }
                                 if (index == 5 && weatherSelected[index]) {
-                                  isPressVisible = true;
+                                  SharedPrefUtil.setIsPressGraph(true);
                                 } else if (index == 5 &&
                                     !weatherSelected[index]) {
-                                  isPressVisible = false;
+                                  SharedPrefUtil.setIsPressGraph(false);
                                 }
                               });
                             },
@@ -294,7 +295,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           ),
                         ),
                         Visibility(
-                          visible: isTempVisible,
+                          visible: SharedPrefUtil.getIsTempGraph(),
                           child: Column(
                             children: [
                               TempGraph(todos: temp, duration: length)
@@ -302,7 +303,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           ),
                         ),
                         Visibility(
-                          visible: isRainVisible,
+                          visible: SharedPrefUtil.getIsRainGraph(),
                           child: Column(
                             children: [
                               RainGraph(todos: rain, duration: length),
@@ -310,7 +311,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           ),
                         ),
                         Visibility(
-                          visible: isWindVisible,
+                          visible: SharedPrefUtil.getIsWindGraph(),
                           child: Column(
                             children: [
                               WindGraph(todos: wind, duration: length)
@@ -318,7 +319,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           ),
                         ),
                         Visibility(
-                          visible: isSnowVisible,
+                          visible: SharedPrefUtil.getIsSnowGraph(),
                           child: Column(
                             children: [
                               SnowGraph(todos: snow, duration: length)
@@ -326,13 +327,13 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           ),
                         ),
                         Visibility(
-                          visible: isHumVisible,
+                          visible: SharedPrefUtil.getIsHumGraph(),
                           child: Column(
                             children: [HumGraph(todos: hum, duration: length)],
                           ),
                         ),
                         Visibility(
-                          visible: isPressVisible,
+                          visible: SharedPrefUtil.getIsPressGraph(),
                           child: Column(
                             children: [
                               PressGraph(todos: press, duration: length)
