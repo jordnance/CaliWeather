@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import '../util/sql_helper.dart';
 import '../util/sharedprefutil.dart';
 import '../util/settings_util.dart';
+import '../util/weather_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
   String _languageSelection = SettingsUtil.languages.first;
   String _unitsSelection = SettingsUtil.units.first;
   String _fontSizeSelection = SettingsUtil.fontsize[1];
-  String? _locationSelection;
+  String? _locationSelection = SharedPrefUtil.getLocation();
   final TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -63,6 +66,7 @@ class _SettingsPageState extends State<SettingsPage> {
     var tFormat = pref[0]['tempFormat'];
     var location = pref[0]['location'];
     SharedPrefUtil.setLanguage(lang);
+    SharedPrefUtil.setLocation(location);
     SharedPrefUtil.setFontSize(font);
     SharedPrefUtil.setTheme(theme);
     SharedPrefUtil.setTempFormat(tFormat);
@@ -87,6 +91,17 @@ class _SettingsPageState extends State<SettingsPage> {
     // if (SharedPrefUtil.getTempFormat() == "celsius") {
     //   _tempSet = TempSet.celsius;
     // }
+  }
+
+  void setCoordinates(String loc) async {
+    if (SharedPrefUtil.getIsLoggedIn()) {
+      await SQLHelper.updateLocation(SharedPrefUtil.getUserPrefId(), loc);
+    }
+    var geoLocation = await WeatherHelper.getGeoCoords();
+    var lat = geoLocation?[0]['lat'];
+    var lon = geoLocation?[0]['lon'];
+    SharedPrefUtil.setLatitude(lat);
+    SharedPrefUtil.setLongitude(lon);
   }
 
   @override
@@ -321,6 +336,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       onChanged: (value) {
                         setState(() {
                           _locationSelection = value as String;
+                          SharedPrefUtil.setLocation(
+                              _locationSelection as String);
+                          setCoordinates(value);
                           // push _[*]selection to sharedpref and update database with shared pref val
                           // api call to Openweather geolocation API will need to be made here
                           // talk to Jordan about where this information needs to be stored permanently

@@ -241,8 +241,10 @@ class _RadarPageState extends State<RadarPage> {
                                   SharedPrefUtil.getLongitude()),
                               width: 80,
                               height: 80,
-                              builder: (context) => const Icon(Icons.location_on,
-                                  color: Colors.deepPurple, size: 45)),
+                              builder: (context) => const Icon(
+                                  Icons.location_on,
+                                  color: Colors.deepPurple,
+                                  size: 45)),
                         ],
                       ),
                     ],
