@@ -146,7 +146,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       value: _languageSelection,
                       onChanged: (value) {
                         setState(() {
-                          _languageSelection = value as String;
+                          _languageSelection = value.toString();
                           // push _[*]selection to sharedpref and update database with shared pref val
                           // update locale settings for languages, (https://stackoverflow.com/questions/65307961/button-to-change-the-language-flutter)
                         });
@@ -203,7 +203,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       value: _fontSizeSelection,
                       onChanged: (value) {
                         setState(() {
-                          _fontSizeSelection = value as String;
+                          _fontSizeSelection = value.toString();
                           // push _[*]selection to sharedpref and update database with shared pref val
                           // will need to scale font size by a factor (this may be a stretch goal)
                         });
@@ -265,7 +265,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       value: _unitsSelection,
                       onChanged: (value) {
                         setState(() {
-                          _unitsSelection = value as String;
+                          _unitsSelection = value.toString();
                           // push _[*]selection to sharedpref and update database with shared pref val
                           // call to OpenAPI will need to be updated with new units
                           // ...display units on Home, Analysis, and potentially radar pg will need to be updated

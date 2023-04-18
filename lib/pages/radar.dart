@@ -159,9 +159,8 @@ class _RadarPageState extends State<RadarPage> {
   }
 
   void getCurrentPosition() async {
-    var serviceEnabled = await GeoHelper.getPermissions();
-    if (serviceEnabled) {
-      SharedPrefUtil.setServiceEnabled(true);
+    await GeoHelper.getPermissions();
+    if (SharedPrefUtil.getIsServiceEnabled()) {
       Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
           .then((Position position) {
         setState(() {
@@ -172,7 +171,6 @@ class _RadarPageState extends State<RadarPage> {
         });
       });
     } else if (SharedPrefUtil.getIsLoggedIn()) {
-      SharedPrefUtil.setServiceEnabled(false);
       centerBack();
       setState(() {});
     }
@@ -242,8 +240,10 @@ class _RadarPageState extends State<RadarPage> {
                                   SharedPrefUtil.getLongitude()),
                               width: 80,
                               height: 80,
-                              builder: (context) => const Icon(Icons.location_on,
-                                  color: Colors.deepPurple, size: 45)),
+                              builder: (context) => const Icon(
+                                  Icons.location_on,
+                                  color: Colors.deepPurple,
+                                  size: 45)),
                         ],
                       ),
                     ],
@@ -324,8 +324,16 @@ class _RadarPageState extends State<RadarPage> {
                   width: 265,
                   height: 53,
                   decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 56, 122, 170),
-                      borderRadius: BorderRadius.circular(26)),
+                    color: const Color.fromARGB(255, 56, 122, 170),
+                    borderRadius: BorderRadius.circular(26),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(-4.0, 4.0),
+                        blurRadius: 6.0,
+                      ),
+                    ],
+                  ),
                   child: Center(
                     child: Row(
                       children: [

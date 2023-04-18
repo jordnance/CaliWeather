@@ -162,12 +162,12 @@ class SnowGraph extends StatelessWidget {
           sideTitles: SideTitles(showTitles: false),
         ),
         topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: true, reservedSize: 5),
+          sideTitles: SideTitles(showTitles: true, reservedSize: 4),
           axisNameSize: 45,
           axisNameWidget: const Text(
             'Snow',
             style: TextStyle(
-                color: textColor, fontWeight: FontWeight.w400, fontSize: 25),
+                color: textColor, fontWeight: FontWeight.w500, fontSize: 25),
           ),
         ),
         bottomTitles: AxisTitles(
