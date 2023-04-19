@@ -41,13 +41,14 @@ class AnalysisPage extends StatefulWidget {
 }
 
 class _AnalysisPageState extends State<AnalysisPage> {
-  final List<bool> weatherSelected = [true, false, false, false, false, false];
-  bool isTempVisible = true;
-  bool isHumVisible = false;
-  bool isPressVisible = false;
-  bool isWindVisible = false;
-  bool isRainVisible = false;
-  bool isSnowVisible = false;
+  final List<bool> weatherSelected = [
+    SharedPrefUtil.getIsTempGraph(),
+    SharedPrefUtil.getIsRainGraph(),
+    SharedPrefUtil.getIsWindGraph(),
+    SharedPrefUtil.getIsSnowGraph(),
+    SharedPrefUtil.getIsHumGraph(),
+    SharedPrefUtil.getIsPressGraph()
+  ];
 
   List<FlSpot>? rain;
   List<FlSpot>? temp;
@@ -59,7 +60,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
   Color pgBackgroundColor = Colors.grey.shade200;
 
   Future<void> getData() async {
-    if (SharedPrefUtil.getIsLoggedIn() == true) {
+    if (SharedPrefUtil.getIsLoggedIn()) {
       List<List<FlSpot>> data = await GraphHelper.newCoords();
       rain = data[0];
       temp = data[1];
@@ -189,178 +190,187 @@ class _AnalysisPageState extends State<AnalysisPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: pgBackgroundColor,
-      body: FutureBuilder<void>(
-          future: getData(),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-                return const Center(
-                  child: Text("None"),
-                );
-              case ConnectionState.waiting:
-                return const Center(
-                  child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator()),
-                );
-              case ConnectionState.active:
-                return const Center(child: Text("Active"));
-              case ConnectionState.done:
-                return SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      const Center(
-                        child: SizedBox(
-                          height: 45,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: pgBackgroundColor,
+        body: FutureBuilder<void>(
+            future: getData(),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return const Center(
+                    child: Text("None"),
+                  );
+                case ConnectionState.waiting:
+                  return const Center(
+                    child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator()),
+                  );
+                case ConnectionState.active:
+                  return const Center(child: Text("Active"));
+                case ConnectionState.done:
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        const Center(
+                          child: SizedBox(
+                            height: 20,
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
-                        child: ToggleButtons(
-                          onPressed: (int index) {
-                            int count = 0;
-                            for (final bool value in weatherSelected) {
-                              if (value) {
-                                count += 1;
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
+                          child: ToggleButtons(
+                            onPressed: (int index) {
+                              int count = 0;
+                              for (final bool value in weatherSelected) {
+                                if (value) {
+                                  count += 1;
+                                }
                               }
-                            }
-                            if (weatherSelected[index] && count < 2) {
-                              return;
-                            }
-                            setState(() {
-                              weatherSelected[index] = !weatherSelected[index];
-                              if (index == 0 && weatherSelected[index]) {
-                                isTempVisible = true;
-                              } else if (index == 0 &&
-                                  !weatherSelected[index]) {
-                                isTempVisible = false;
+                              if (weatherSelected[index] && count < 2) {
+                                return;
                               }
-                              if (index == 1 && weatherSelected[index]) {
-                                isRainVisible = true;
-                              } else if (index == 1 &&
-                                  !weatherSelected[index]) {
-                                isRainVisible = false;
-                              }
-                              if (index == 2 && weatherSelected[index]) {
-                                isWindVisible = true;
-                              } else if (index == 2 &&
-                                  !weatherSelected[index]) {
-                                isWindVisible = false;
-                              }
-                              if (index == 3 && weatherSelected[index]) {
-                                isSnowVisible = true;
-                              } else if (index == 3 &&
-                                  !weatherSelected[index]) {
-                                isSnowVisible = false;
-                              }
-                              if (index == 4 && weatherSelected[index]) {
-                                isHumVisible = true;
-                              } else if (index == 4 &&
-                                  !weatherSelected[index]) {
-                                isHumVisible = false;
-                              }
-                              if (index == 5 && weatherSelected[index]) {
-                                isPressVisible = true;
-                              } else if (index == 5 &&
-                                  !weatherSelected[index]) {
-                                isPressVisible = false;
-                              }
-                            });
-                          },
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          selectedBorderColor: Colors.blue,
-                          borderColor: const Color.fromARGB(255, 71, 87, 99),
-                          borderWidth: 1.8,
-                          selectedColor: Colors.white,
-                          fillColor: const Color(0xff37434d),
-                          color: Colors.grey.shade600,
-                          constraints: const BoxConstraints(
-                              minHeight: 60.0, minWidth: 55.0),
-                          isSelected: weatherSelected,
-                          children: weathericons,
+                              setState(() {
+                                weatherSelected[index] =
+                                    !weatherSelected[index];
+                                if (index == 0 && weatherSelected[index]) {
+                                  SharedPrefUtil.setIsTempGraph(true);
+                                } else if (index == 0 &&
+                                    !weatherSelected[index]) {
+                                  SharedPrefUtil.setIsTempGraph(false);
+                                }
+                                if (index == 1 && weatherSelected[index]) {
+                                  SharedPrefUtil.setIsRainGraph(true);
+                                } else if (index == 1 &&
+                                    !weatherSelected[index]) {
+                                  SharedPrefUtil.setIsRainGraph(false);
+                                }
+                                if (index == 2 && weatherSelected[index]) {
+                                  SharedPrefUtil.setIsWindGraph(true);
+                                } else if (index == 2 &&
+                                    !weatherSelected[index]) {
+                                  SharedPrefUtil.setIsWindGraph(false);
+                                }
+                                if (index == 3 && weatherSelected[index]) {
+                                  SharedPrefUtil.setIsSnowGraph(true);
+                                } else if (index == 3 &&
+                                    !weatherSelected[index]) {
+                                  SharedPrefUtil.setIsSnowGraph(false);
+                                }
+                                if (index == 4 && weatherSelected[index]) {
+                                  SharedPrefUtil.setIsHumGraph(true);
+                                } else if (index == 4 &&
+                                    !weatherSelected[index]) {
+                                  SharedPrefUtil.setIsHumGraph(false);
+                                }
+                                if (index == 5 && weatherSelected[index]) {
+                                  SharedPrefUtil.setIsPressGraph(true);
+                                } else if (index == 5 &&
+                                    !weatherSelected[index]) {
+                                  SharedPrefUtil.setIsPressGraph(false);
+                                }
+                              });
+                            },
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            selectedBorderColor: Colors.blue,
+                            borderColor: const Color.fromARGB(255, 71, 87, 99),
+                            borderWidth: 2.2,
+                            selectedColor: Colors.white,
+                            fillColor: const Color.fromARGB(255, 32, 73, 103),
+                            color: Colors.grey.shade700,
+                            constraints: const BoxConstraints(
+                                minHeight: 60.0, minWidth: 55.0),
+                            isSelected: weatherSelected,
+                            children: weathericons,
+                          ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-                        child: Divider(
-                          thickness: 3,
-                          color: Color(0xff37434d),
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(15, 9, 15, 5),
+                          child: Divider(
+                            thickness: 2.2,
+                            color: Color.fromARGB(255, 71, 87, 99),
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: isTempVisible,
-                        child: Column(
-                          children: [TempGraph(todos: temp, duration: length)],
+                        Visibility(
+                          visible: SharedPrefUtil.getIsTempGraph(),
+                          child: Column(
+                            children: [
+                              TempGraph(todos: temp, duration: length)
+                            ],
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: isRainVisible,
-                        child: Column(
-                          children: [
-                            RainGraph(todos: rain, duration: length),
-                          ],
+                        Visibility(
+                          visible: SharedPrefUtil.getIsRainGraph(),
+                          child: Column(
+                            children: [
+                              RainGraph(todos: rain, duration: length),
+                            ],
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: isWindVisible,
-                        child: Column(
-                          children: [WindGraph(todos: wind, duration: length)],
+                        Visibility(
+                          visible: SharedPrefUtil.getIsWindGraph(),
+                          child: Column(
+                            children: [
+                              WindGraph(todos: wind, duration: length)
+                            ],
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: isSnowVisible,
-                        child: Column(
-                          children: [SnowGraph(todos: snow, duration: length)],
+                        Visibility(
+                          visible: SharedPrefUtil.getIsSnowGraph(),
+                          child: Column(
+                            children: [
+                              SnowGraph(todos: snow, duration: length)
+                            ],
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: isHumVisible,
-                        child: Column(
-                          children: [HumGraph(todos: hum, duration: length)],
+                        Visibility(
+                          visible: SharedPrefUtil.getIsHumGraph(),
+                          child: Column(
+                            children: [HumGraph(todos: hum, duration: length)],
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: isPressVisible,
-                        child: Column(
-                          children: [
-                            PressGraph(todos: press, duration: length)
-                          ],
+                        Visibility(
+                          visible: SharedPrefUtil.getIsPressGraph(),
+                          child: Column(
+                            children: [
+                              PressGraph(todos: press, duration: length)
+                            ],
+                          ),
                         ),
-                      ),
-                      const Center(
-                        child: SizedBox(
-                          height: 65,
+                        const Center(
+                          child: SizedBox(
+                            height: 60,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-            }
-          }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Stack(
-        fit: StackFit.expand,
-        children: [
-          Positioned(
-            right: 10,
-            bottom: 10,
-            child: FloatingActionButton(
-              backgroundColor: Colors.blue,
-              tooltip: 'Refresh',
-              onPressed: () {
-                setState(() {});
-              },
-              child: const Icon(
-                Icons.refresh_rounded,
-                size: 30,
+                      ],
+                    ),
+                  );
+              }
+            }),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Stack(
+          fit: StackFit.expand,
+          children: [
+            Positioned(
+              right: 10,
+              bottom: 10,
+              child: FloatingActionButton(
+                backgroundColor: const Color.fromARGB(255, 114, 154, 255),
+                tooltip: 'Refresh',
+                onPressed: () {
+                  setState(() {});
+                },
+                child: const Icon(
+                  Icons.refresh_rounded,
+                  size: 35,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
