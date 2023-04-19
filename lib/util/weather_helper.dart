@@ -113,15 +113,15 @@ class WeatherHelper {
 
     String weatherIcon = weather['current']['weather'][0]['icon'];
     String temperature = weather['current']['temp'].toStringAsFixed(0);
-    String weatherMain = weather['current']['weather'][0]['main'];
+    String description =
+        weather['current']['weather'][0]['description'].toString();
+    description = capString(description);
     String areaName = geo![0]['name'];
-
-    date = DateFormat('MMM dd').format(formatDate);
 
     List<String> mainData = [
       weatherIcon,
       temperature,
-      weatherMain,
+      description,
       areaName,
       date
     ];
@@ -223,5 +223,17 @@ class WeatherHelper {
     }
 
     return microData;
+  }
+
+  static String capString(String input) {
+    List<String> splitString = input.split(' ');
+
+    for (int i = 0; i < splitString.length; i++) {
+      splitString[i] =
+          '${splitString[i][0].toUpperCase()}${splitString[i].substring(1)}';
+    }
+
+    String output = splitString.join(' ');
+    return output;
   }
 }

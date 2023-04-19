@@ -108,17 +108,6 @@ class MicroWeather extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Text(
-            'Detail: ${todos?[7]}',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w300,
-            ),
-          ),
-        ),
       ],
     );
   }
