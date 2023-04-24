@@ -48,6 +48,7 @@ class WeatherHelper {
   }
 
   static Future<Map<String, dynamic>?> getCurrent() async {
+    var lang;
     if (SharedPrefUtil.getIsLoggedIn()) {
       if (!SharedPrefUtil.getIsServiceEnabled()) {
         var geo = await WeatherHelper.getGeoCoords();
@@ -58,6 +59,12 @@ class WeatherHelper {
       }
     }
 
+    if (SharedPrefUtil.getLanguage() == 'English') {
+      lang = 'en';
+    } else if (SharedPrefUtil.getLanguage() == 'Spanish') {
+      lang = 'sp';
+    }
+
     http.Response weatherResponse = await http.get(
       Uri.https('api.openweathermap.org', '/data/3.0/onecall', {
         'lat': SharedPrefUtil.getLatitude().toString(),
@@ -65,7 +72,7 @@ class WeatherHelper {
         'exclude': 'hourly,minutely',
         'appid': '0d8187b327e042982d4478dcbf90bae3',
         'units': 'imperial',
-        'lang': 'en',
+        'lang': lang,
       }),
     );
 
