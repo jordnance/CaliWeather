@@ -87,14 +87,14 @@ class SharedPrefUtil {
   static Future<void> setUserPrefAlertId(int val) async =>
       await _prefs.setInt(SharedPrefUtil.prefalertId, val);
 
-  static Future<void> setConserveEnergy(String val) async =>
-      await _prefs.setString(SharedPrefUtil.conserveEnergy, val);
+  static Future<void> setConserveEnergy(bool val) async =>
+      await _prefs.setBool(SharedPrefUtil.conserveEnergy, val);
 
-  static Future<void> setConserveWater(String val) async =>
-      await _prefs.setString(SharedPrefUtil.conserveWater, val);
+  static Future<void> setConserveWater(bool val) async =>
+      await _prefs.setBool(SharedPrefUtil.conserveWater, val);
 
-  static Future<void> setApiRelated(String val) async =>
-      await _prefs.setString(SharedPrefUtil.apiRelated, val);
+  static Future<void> setApiRelated(bool val) async =>
+      await _prefs.setBool(SharedPrefUtil.apiRelated, val);
 
   static Future<void> setServiceEnabled(bool val) async =>
       await _prefs.setBool(SharedPrefUtil.isEnabled, val);
@@ -165,14 +165,14 @@ class SharedPrefUtil {
   static int getUserPrefAlertId() =>
       _prefs.getInt(SharedPrefUtil.prefalertId) ?? 0;
 
-  static String getConserveEnergy() =>
-      _prefs.getString(SharedPrefUtil.conserveEnergy) ?? 'err';
+  static bool getConserveEnergy() =>
+      _prefs.getBool(SharedPrefUtil.conserveEnergy) ?? false;
 
-  static String getConserveWater() =>
-      _prefs.getString(SharedPrefUtil.conserveWater) ?? 'err';
+  static bool getConserveWater() =>
+      _prefs.getBool(SharedPrefUtil.conserveWater) ?? false;
 
-  static String getApiRelated() =>
-      _prefs.getString(SharedPrefUtil.apiRelated) ?? 'err';
+  static bool getApiRelated() =>
+      _prefs.getBool(SharedPrefUtil.apiRelated) ?? false;
 
   static bool getIsServiceEnabled() =>
       _prefs.getBool(SharedPrefUtil.isEnabled) ?? false;
@@ -233,15 +233,15 @@ class SharedPrefUtil {
       name: 'debug_sharedpref.PrefAlertId',
     );
     developer.log(
-      getConserveEnergy(),
+      getConserveEnergy().toString(),
       name: 'debug_sharedpref.ConserveEnergy',
     );
     developer.log(
-      getConserveWater(),
+      getConserveWater().toString(),
       name: 'debug_sharedpref.ConserveWater',
     );
     developer.log(
-      getApiRelated(),
+      getApiRelated().toString(),
       name: 'debug_sharedpref.ApiRelated',
     );
     developer.log(

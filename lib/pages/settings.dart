@@ -25,7 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
   String _languageSelection = SettingsUtil.languages.first;
   String _unitsSelection = SettingsUtil.units.first;
   String _fontSizeSelection = SettingsUtil.fontsize[1];
-  String? _locationSelection = SharedPrefUtil.getLocation();
+  String? _locationSelection;
   final TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -42,12 +42,12 @@ class _SettingsPageState extends State<SettingsPage> {
     } else {
       SharedPrefUtil.setLanguage(_languageSelection);
       SharedPrefUtil.setFontSize(_fontSizeSelection);
-      SharedPrefUtil.setConserveEnergy(_enableEnergyAlerts
-          .toString()); // need to update shared pref to boolean or use string val in onChnaged function
-      SharedPrefUtil.setConserveWater(_enableWaterAlerts
-          .toString()); // need to update shared pref to boolean or use string val in onChnaged function
-      SharedPrefUtil.setApiRelated(_enableApiAlerts
-          .toString()); // need to update shared pref to boolean or use string val in onChnaged function
+      SharedPrefUtil.setConserveEnergy(
+          _enableEnergyAlerts); // need to update shared pref to boolean or use string val in onChnaged function
+      SharedPrefUtil.setConserveWater(
+          _enableWaterAlerts); // need to update shared pref to boolean or use string val in onChnaged function
+      SharedPrefUtil.setApiRelated(
+          _enableApiAlerts); // need to update shared pref to boolean or use string val in onChnaged function
       SharedPrefUtil.setTempFormat(_unitsSelection);
       SharedPrefUtil.setTheme(_enableDarkTheme
           .toString()); // need to update shared pref to boolean or use string val in onChnaged function
@@ -70,7 +70,6 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPrefUtil.setFontSize(font);
     SharedPrefUtil.setTheme(theme);
     SharedPrefUtil.setTempFormat(tFormat);
-    SharedPrefUtil.setLocation(location);
 
     // TODO: Below code will need to be debugged
 
@@ -102,6 +101,30 @@ class _SettingsPageState extends State<SettingsPage> {
     var lon = geoLocation?[0]['lon'];
     SharedPrefUtil.setLatitude(lat);
     SharedPrefUtil.setLongitude(lon);
+  }
+
+  void setLanguage() async {
+    await SQLHelper.updateLang(
+        SharedPrefUtil.getUserPrefId(), SharedPrefUtil.getLanguage());
+  }
+
+  void setApiAlerts() async {
+    await SQLHelper.updateApiAlerts(
+        SharedPrefUtil.getUserPrefAlertId(), SharedPrefUtil.getApiRelated());
+  }
+
+  void setEnergyAlerts() async {
+    await SQLHelper.updateEnergyAlerts(
+      SharedPrefUtil.getUserPrefAlertId(),
+      SharedPrefUtil.getConserveEnergy(),
+    );
+  }
+
+  void setWaterAlerts() async {
+    await SQLHelper.updateWaterAlerts(
+      SharedPrefUtil.getUserPrefAlertId(),
+      SharedPrefUtil.getConserveWater(),
+    );
   }
 
   @override
@@ -162,6 +185,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       onChanged: (value) {
                         setState(() {
                           _languageSelection = value as String;
+                          SharedPrefUtil.setLanguage(_languageSelection);
+                          setLanguage();
                           // push _[*]selection to sharedpref and update database with shared pref val
                           // update locale settings for languages, (https://stackoverflow.com/questions/65307961/button-to-change-the-language-flutter)
                         });
@@ -414,6 +439,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   onToggle: (value) {
                     setState(() {
                       _enableApiAlerts = value;
+                      SharedPrefUtil.setApiRelated(_enableApiAlerts);
+                      setApiAlerts();
                       // push to sharedpref and update database
                     });
                   },
@@ -425,6 +452,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   onToggle: (value) {
                     setState(() {
                       _enableEnergyAlerts = value;
+                      SharedPrefUtil.setConserveEnergy(_enableEnergyAlerts);
+                      setEnergyAlerts();
                       // push to sharedpref and update database
                     });
                   },
@@ -436,6 +465,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   onToggle: (value) {
                     setState(() {
                       _enableWaterAlerts = value;
+                      SharedPrefUtil.setConserveWater(_enableWaterAlerts);
+                      setWaterAlerts();
                       // push to sharedpref and update database
                     });
                   },
