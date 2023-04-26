@@ -234,11 +234,24 @@ class SQLHelper {
   }
 
   // Update alerts <-- NEEDS TO BE TESTED
-  static Future<void> updateAlerts(int prefalertId, String conserveEnergy,
-      String conserveWater, String apiRelated) async {
+  static Future<void> updateEnergyAlerts(
+      int prefalertId, bool conserveEnergy) async {
     final db = await SQLHelper.db();
-    db.rawQuery("""UPDATE Alerts SET conserveEnergy = ?, conserveWater = ?, 
-    apiRelated = ? WHERE prefalertId = ?""",
-        [conserveEnergy, conserveWater, apiRelated, prefalertId]);
+    db.rawQuery(
+        """UPDATE Alerts SET conserveEnergy = ? WHERE prefalertId = ?""",
+        [conserveEnergy.toString(), prefalertId]);
+  }
+
+  static Future<void> updateWaterAlerts(
+      int prefalertId, bool conserveWater) async {
+    final db = await SQLHelper.db();
+    db.rawQuery("""UPDATE Alerts SET conserveWater = ? WHERE prefalertId = ?""",
+        [conserveWater.toString(), prefalertId]);
+  }
+
+  static Future<void> updateApiAlerts(int prefalertId, bool apiRelated) async {
+    final db = await SQLHelper.db();
+    db.rawQuery("""UPDATE Alerts SET apiRelated = ? WHERE prefalertId = ?""",
+        [apiRelated.toString(), prefalertId]);
   }
 }

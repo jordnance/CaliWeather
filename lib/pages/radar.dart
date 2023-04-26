@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:caliweather/util/sharedprefutil.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 // ignore: depend_on_referenced_packages
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
@@ -96,12 +98,8 @@ class _RadarPageState extends State<RadarPage> {
     }
   }
 
-  void changeOverlays() {
-    if (overlayIndex != 3) {
-      overlayIndex++;
-    } else {
-      overlayIndex = 0;
-    }
+  void changeOverlays(int index) {
+    overlayIndex = index;
     currentSliderValue = -2;
     radarIndex = 4;
     setState(() {});
@@ -258,24 +256,63 @@ class _RadarPageState extends State<RadarPage> {
           fit: StackFit.expand,
           children: [
             Positioned(
-              left: 10,
-              bottom: 30,
-              child: FloatingActionButton.extended(
-                label: Text(
-                  overlayTitle[overlayIndex],
-                  style: const TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
-                backgroundColor: const Color.fromARGB(255, 255, 177, 81),
-                tooltip: 'Overlays',
-                onPressed: changeOverlays,
-                icon: const Icon(
-                  Icons.layers,
-                  size: 40,
-                ),
-              ),
-            ),
+                left: 10,
+                bottom: 30,
+                child: SpeedDial(
+                    spacing: 6,
+                    spaceBetweenChildren: 6,
+                    animatedIconTheme: const IconThemeData(size: 22.0),
+                    animatedIcon: AnimatedIcons.menu_close,
+                    closeManually: false,
+                    curve: Curves.bounceIn,
+                    overlayColor: Colors.black,
+                    overlayOpacity: 0.5,
+                    tooltip: 'Overlays',
+                    heroTag: 'speed-dial-hero-tag',
+                    backgroundColor: const Color.fromARGB(255, 255, 177, 81),
+                    foregroundColor: Colors.white,
+                    elevation: 6.0,
+                    shape: const CircleBorder(),
+                    icon: Icons.layers,
+                    children: [
+                      SpeedDialChild(
+                          child: const Icon(CupertinoIcons.nosign),
+                          backgroundColor: Colors.grey,
+                          foregroundColor: Colors.white,
+                          labelStyle: const TextStyle(fontSize: 18.0),
+                          onTap: () {
+                            setState(() {
+                              changeOverlays(0);
+                            });
+                          }),
+                      SpeedDialChild(
+                          child: const Icon(CupertinoIcons.wind),
+                          backgroundColor: Colors.grey,
+                          foregroundColor: Colors.white,
+                          onTap: () {
+                            setState(() {
+                              changeOverlays(3);
+                            });
+                          }),
+                      SpeedDialChild(
+                          child: const Icon(CupertinoIcons.thermometer),
+                          backgroundColor: Colors.grey,
+                          foregroundColor: Colors.white,
+                          onTap: () {
+                            setState(() {
+                              changeOverlays(2);
+                            });
+                          }),
+                      SpeedDialChild(
+                          child: const Icon(CupertinoIcons.cloud),
+                          backgroundColor: Colors.grey,
+                          foregroundColor: Colors.white,
+                          onTap: () {
+                            setState(() {
+                              changeOverlays(1);
+                            });
+                          }),
+                    ])),
             Positioned(
               right: 10,
               bottom: 150,
