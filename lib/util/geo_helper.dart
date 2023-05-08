@@ -2,6 +2,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:caliweather/util/sharedprefutil.dart';
 
 class GeoHelper {
+
+  // Checks location service permissions from user's device
   static Future<bool> getPermissions() async {
     bool? serviceEnabled;
     LocationPermission? permission;
