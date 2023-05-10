@@ -58,37 +58,16 @@ class SQLHelper {
         .execute("""INSERT INTO User(firstName, lastName, username, password) 
     VALUES 
     ('Bobby', 'Hill', 'testing', '123'), 
-    ('Eric', 'Cartman', 'southpark', '456'), 
-    ('Peter', 'Griffin', 'familyguy', '789'), 
-    ('Quentin', 'Tarantino', 'pulpfiction', '321'), 
-    ('Bruce', 'Wayne', 'batman', '654'), 
-    ('Patrick', 'Star', 'spongebob', '987'), 
-    ('Dennis', 'Reynolds', 'sunny', '090'), 
-    ('Matthew', 'McConaughey', 'alright', '181')
     """);
     await database.execute(
         """INSERT INTO Preference(lang, fontSize, tempFormat, location, theme) 
     VALUES 
     ('English', 'Small', 'F', 'Bakersfield', 'Light'),
-    ('English', 'Small', 'C', 'Modesto', 'Dark'),
-    ('Spanish', 'Small', 'F', 'Chico', 'Light'),
-    ('English', 'Medium', 'F', 'Los Angeles', 'Light'), 
-    ('English', 'Medium', 'C', 'San Diego', 'Dark'), 
-    ('Spanish', 'Medium', 'F', 'Sacramento', 'Light'), 
-    ('English', 'Large', 'F', 'San Luis Obispo', 'Light'), 
-    ('Spanish', 'Large', 'C', 'Palm Springs', 'Dark')
     """);
     await database.execute(
         """INSERT INTO Alerts(conserveEnergy, conserveWater, apiRelated) 
     VALUES 
     ('Off', 'Off', 'Off'),
-    ('On', 'Off', 'Off'),
-    ('Off', 'On', 'Off'),
-    ('Off', 'Off', 'On'),
-    ('On', 'On', 'Off'),
-    ('On', 'Off', 'On'),
-    ('Off', 'On', 'On'), 
-    ('On', 'On', 'On')
     """);
   }
 
@@ -104,7 +83,7 @@ class SQLHelper {
     );
   }
 
-  // Create new user <-- WORKS
+  // Create new user
   static Future<void> createUser(String? firstName, String? lastName,
       String? username, String? password) async {
     final db = await SQLHelper.db();
@@ -114,7 +93,7 @@ class SQLHelper {
     db.rawQuery("""INSERT INTO Alerts DEFAULT VALUES""");
   }
 
-  // Create new weather data points <-- WORKS
+  // Create new weather data points
   static Future<void> createWeatherData(
       int? userId,
       String? apiCallDate,
@@ -142,7 +121,7 @@ class SQLHelper {
         ]);
   }
 
-  // Read a single user by username <-- WORKS
+  // Select a single user by username
   static Future<List<Map<dynamic, dynamic>>> getUserByUsername(
       String? username) async {
     sql.Database db = await SQLHelper.db();
@@ -150,7 +129,7 @@ class SQLHelper {
         .rawQuery("SELECT * FROM User WHERE username = ? LIMIT 1", [username]);
   }
 
-  // Read user, preference, and alert info by userId <-- WORKS
+  // Select user, preference, and alert info by userId
   static Future<List<Map<String, dynamic>>> getUserInfo(int userId) async {
     final db = await SQLHelper.db();
     return db.rawQuery("""SELECT u.*, p.*, a.* FROM User AS u
@@ -160,7 +139,7 @@ class SQLHelper {
      """, [userId]);
   }
 
-  // Read weather data stored by userid <-- WORKS
+  // Select weather data stored by userId
   static Future<List<Map<String, dynamic>>> getUserData(int userId) async {
     final db = await SQLHelper.db();
     return db.rawQuery("""SELECT w.* FROM User AS u
@@ -169,12 +148,14 @@ class SQLHelper {
      """, [userId]);
   }
 
+  // Select all userprefIds
   static Future<List<Map<String, dynamic>>> getUserPref(int userId) async {
     final db = await SQLHelper.db();
     return db
         .rawQuery("SELECT * FROM Preference WHERE userprefId = ?", [userId]);
   }
 
+  // Select all api calls in the past 3 hrs
   static Future<List<Map<String, dynamic>>> getFrequency(int userId) async {
     final db = await SQLHelper.db();
     return db.rawQuery("""SELECT COUNT(*) FROM WeatherData  
@@ -182,7 +163,7 @@ class SQLHelper {
      """, [userId]);
   }
 
-  // Update user's profile info <-- WORKS
+  // Update user's profile info
   static Future<List<Map<String, dynamic>>> updateUser(String? firstName,
       String? lastName, String? username, String? password, int userId) async {
     final db = await SQLHelper.db();
@@ -191,49 +172,49 @@ class SQLHelper {
         [firstName, lastName, username, password, userId]);
   }
 
-  // Update password <-- WORKS
+  // Update password
   static Future<void> updatePassword(String? username, String? password) async {
     final db = await SQLHelper.db();
     db.rawQuery("UPDATE User SET password = ? WHERE username = ?",
         [password, username]);
   }
 
-  // Update language <-- NEEDS TO BE TESTED
+  // Update language
   static Future<void> updateLang(int userprefId, String lang) async {
     final db = await SQLHelper.db();
     db.rawQuery("UPDATE Preference SET lang = ? WHERE userprefId = ?",
         [lang, userprefId]);
   }
 
-  // Update font size <-- WORKS
+  // Update font size
   static Future<void> updateSize(int userprefId, String fontSize) async {
     final db = await SQLHelper.db();
     db.rawQuery("UPDATE Preference SET fontSize = ? WHERE userprefId = ?",
         [fontSize, userprefId]);
   }
 
-  // Update temp format <-- WORKS
+  // Update temp format
   static Future<void> updateTemp(int userprefId, String tempFormat) async {
     final db = await SQLHelper.db();
     db.rawQuery("UPDATE Preference SET tempFormat = ? WHERE userprefId = ?",
         [tempFormat, userprefId]);
   }
 
-  // Update location <-- NEEDS TO BE TESTED
+  // Update location
   static Future<void> updateLocation(int userprefId, String location) async {
     final db = await SQLHelper.db();
     db.rawQuery("UPDATE Preference SET location = ? WHERE userprefId = ?",
         [location, userprefId]);
   }
 
-  // Update theme <-- NEEDS TO BE TESTED
+  // Update theme
   static Future<void> updateTheme(int userprefId, String theme) async {
     final db = await SQLHelper.db();
     db.rawQuery("UPDATE Preference SET theme = ? WHERE userprefId = ?",
         [theme, userprefId]);
   }
 
-  // Update alerts <-- NEEDS TO BE TESTED
+  // Update energy alerts
   static Future<void> updateEnergyAlerts(
       int prefalertId, bool conserveEnergy) async {
     final db = await SQLHelper.db();
@@ -242,6 +223,7 @@ class SQLHelper {
         [conserveEnergy.toString(), prefalertId]);
   }
 
+  // Update water alerts
   static Future<void> updateWaterAlerts(
       int prefalertId, bool conserveWater) async {
     final db = await SQLHelper.db();
@@ -249,6 +231,7 @@ class SQLHelper {
         [conserveWater.toString(), prefalertId]);
   }
 
+  // Update api related alerts
   static Future<void> updateApiAlerts(int prefalertId, bool apiRelated) async {
     final db = await SQLHelper.db();
     db.rawQuery("""UPDATE Alerts SET apiRelated = ? WHERE prefalertId = ?""",

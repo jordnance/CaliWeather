@@ -3,6 +3,8 @@ import '../util/sharedprefutil.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class GraphHelper {
+
+  // Computes x-coordinates from api call data
   static Future<List<double>> getXCoords() async {
     var data = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
     var mostCurrent = data[data.length - 1]['apiCallDate'];
@@ -25,6 +27,7 @@ class GraphHelper {
     return xCoords;
   }
 
+  // Computes y-coordinates from api call data
   static Future<List<List<double>>> getYCoords() async {
     var data = await SQLHelper.getUserData(SharedPrefUtil.getUserId());
     double? yRain, yTemp, yHum, ySnow, yWind, yPress;
@@ -53,6 +56,7 @@ class GraphHelper {
     return yCoords;
   }
 
+  // Joins x-coordinates and y-coordinates
   static Future<List<List<FlSpot>>> newCoords() async {
     if (SharedPrefUtil.getIsLoggedIn()) {
       var data = await SQLHelper.getUserData(SharedPrefUtil.getUserId());

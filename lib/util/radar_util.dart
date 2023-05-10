@@ -1,4 +1,6 @@
 class RadarUtil {
+
+  // Computes timestamps for Radar Page overlays
   static int getTimestamps(int index) {
     int lastTimeStamp = 0;
     List<int> timeStamps = [0, 0, 0, 0, 0];

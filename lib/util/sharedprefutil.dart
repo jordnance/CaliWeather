@@ -145,9 +145,9 @@ class SharedPrefUtil {
     setLocation(user[location]);
     setTheme(user[theme]);
     setUserPrefAlertId(user[prefalertId]);
-    setConserveEnergy(user[conserveEnergy]);
-    setConserveWater(user[conserveWater]);
-    setApiRelated(user[apiRelated]);
+    setConserveEnergy(false);
+    setConserveWater(false);
+    setApiRelated(false);
     setServiceEnabled(true);
     setLatitude(35.393528);
     setLongitude(-119.043732);
