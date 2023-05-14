@@ -2,6 +2,4 @@
 
 - Works on Android devices
 
-- Download apk here: https://odin.cs.csub.edu/~jcox/caliweather/
-
 - Enjoy!
